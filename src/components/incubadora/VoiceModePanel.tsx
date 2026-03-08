@@ -182,16 +182,22 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
   }
 
   async function requestPermissionAndStart() {
+    console.log('[VoiceMode] 1. requestPermissionAndStart llamado')
+    console.log('[VoiceMode] 2. navigator.mediaDevices:', navigator.mediaDevices)
     if (!navigator.mediaDevices?.getUserMedia) {
+      console.log('[VoiceMode] 3. SIN mediaDevices — contexto inseguro o browser no compatible')
       setPermissionDenied(true)
       setVS('paused')
       return
     }
     try {
+      console.log('[VoiceMode] 4. Pidiendo permiso de micrófono...')
       await navigator.mediaDevices.getUserMedia({ audio: true })
+      console.log('[VoiceMode] 5. Permiso concedido — iniciando SpeechRecognition')
       setPermissionDenied(false)
       startListening()
-    } catch {
+    } catch (err) {
+      console.log('[VoiceMode] 6. ERROR permiso mic:', err)
       setPermissionDenied(true)
       setVS('paused')
     }
@@ -224,7 +230,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     return (
       <main className="flex-1 flex flex-col items-center justify-center bg-[#0F0F11]">
         <p className="text-[#6b6d75] text-sm">Modo voz disponible en Chrome</p>
-        <button onClick={onExit} className="mt-4 text-sm text-[#C9A84C] hover:underline">Volver al chat</button>
+        <button type="button" onClick={onExit} className="mt-4 text-sm text-[#C9A84C] hover:underline">Volver al chat</button>
       </main>
     )
   }
@@ -232,7 +238,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
   return (
     <main className="flex-1 flex flex-col overflow-hidden relative bg-[#0F0F11]">
       <div className="absolute top-4 right-4 z-10">
-        <button onClick={handleExit}
+        <button type="button" onClick={handleExit}
           className="text-sm text-[#6b6d75] border border-[#2a2b30] px-3 py-1.5 rounded-lg hover:text-white hover:border-[#3a3b40] transition-colors">
           Salir del modo voz
         </button>

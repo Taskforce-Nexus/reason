@@ -53,6 +53,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const fileInputRef = useRef<HTMLInputElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null)
+  const keepListeningRef = useRef(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -205,6 +206,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
       return
     }
     if (isRecording) {
+      keepListeningRef.current = false
       recognitionRef.current?.stop()
       setIsRecording(false)
       return
@@ -235,6 +237,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
       const raw = last[0].transcript as string
       setInput(raw)
       if (last.isFinal) {
+        keepListeningRef.current = false
         recognition.stop()
         try {
           const res = await fetch('/api/voice/correct', {
@@ -247,9 +250,17 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         } catch { /* keep raw */ }
       }
     }
-    recognition.onend = () => setIsRecording(false)
-    recognition.onerror = () => setIsRecording(false)
+    recognition.onend = () => {
+      if (keepListeningRef.current) {
+        // Chrome auto-stopped on silence — restart
+        try { recognition.start() } catch { keepListeningRef.current = false; setIsRecording(false) }
+      } else {
+        setIsRecording(false)
+      }
+    }
+    recognition.onerror = () => { keepListeningRef.current = false; setIsRecording(false) }
     recognitionRef.current = recognition
+    keepListeningRef.current = true
     recognition.start()
     setIsRecording(true)
   }
