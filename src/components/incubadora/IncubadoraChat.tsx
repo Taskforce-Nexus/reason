@@ -33,6 +33,7 @@ function formatBytes(bytes: number): string {
 
 export default function IncubadoraChat({ project, conversation, userEmail }: Props) {
   const [messages, setMessages] = useState<Message[]>(conversation?.messages ?? [])
+  const [activeConversationId, setActiveConversationId] = useState<string | undefined>(conversation?.id)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
@@ -40,6 +41,13 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const [isRecording, setIsRecording] = useState(false)
   const [voiceUnavailable, setVoiceUnavailable] = useState(false)
   const [voiceMode, setVoiceMode] = useState(false)
+  const [extractState, setExtractState] = useState<'idle' | 'running' | 'done'>('idle')
+  const [extractProgress, setExtractProgress] = useState(0) // 0–5
+  const [extractedRepo, setExtractedRepo] = useState<string | null>(null)
+  const [assignedCouncil, setAssignedCouncil] = useState<string[]>(
+    (conversation?.extracted_docs as Record<string, string[]> | null)?.council ?? []
+  )
+  const [currentPhase, setCurrentPhase] = useState(conversation?.phase ?? 'semilla')
   const bottomRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,6 +65,42 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const userMsgCount = messages.filter(m => m.role === 'user').length
   const coveredTopics = TOPICS.map((_, i) => i < Math.floor(userMsgCount / 2))
 
+  async function runExtract() {
+    if (extractState !== 'idle') return
+    setExtractState('running')
+    setExtractProgress(0)
+
+    // Animate progress while waiting (each wave ~8s estimated)
+    const stages = [
+      'Propuesta de valor…',
+      'Modelo de negocio…',
+      'Recorrido del cliente…',
+      'Identidad de marca…',
+      'Plan de negocio…',
+    ]
+    let step = 0
+    const interval = setInterval(() => {
+      step = Math.min(step + 1, stages.length - 1)
+      setExtractProgress(step)
+    }, 7000)
+
+    try {
+      const res = await fetch('/api/extract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId: project.id, conversationId: activeConversationId }),
+      })
+      const data = await res.json()
+      clearInterval(interval)
+      setExtractProgress(5)
+      setExtractState('done')
+      if (data.repo) setExtractedRepo(data.repo)
+    } catch {
+      clearInterval(interval)
+      setExtractState('idle')
+    }
+  }
+
   async function sendInitialMessage() {
     setLoading(true)
     try {
@@ -65,7 +109,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           projectId: project.id,
-          conversationId: conversation?.id,
+          conversationId: activeConversationId,
           messages: [],
           phase: 'semilla',
         }),
@@ -73,6 +117,9 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
       const data = await res.json()
       if (data.message) {
         setMessages([{ role: 'assistant', content: data.message, author: 'Nexo' }])
+      }
+      if (data.conversationId && !activeConversationId) {
+        setActiveConversationId(data.conversationId)
       }
     } catch {}
     setLoading(false)
@@ -104,7 +151,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           projectId: project.id,
-          conversationId: conversation?.id,
+          conversationId: activeConversationId,
           messages: apiMessages,
           phase: 'semilla',
         }),
@@ -112,6 +159,15 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
       const data = await res.json()
       if (data.message) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.message, author: 'Nexo' }])
+      }
+      if (data.conversationId && !activeConversationId) {
+        setActiveConversationId(data.conversationId)
+      }
+      if (data.council) {
+        setAssignedCouncil(data.council)
+      }
+      if (data.phase) {
+        setCurrentPhase(data.phase)
       }
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Error al conectar con Nexo. Intenta de nuevo.', author: 'Nexo' }])
@@ -179,9 +235,9 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
           AURUM
         </Link>
         <div className="flex items-center gap-3 text-sm text-[#6b6d75]">
-          <span>{project.name} — Fase Semilla</span>
+          <span>{project.name} — {currentPhase === 'value_proposition' ? 'Propuesta de Valor' : 'Fase Semilla'}</span>
           <span className="text-[#2a2b30]">|</span>
-          <span>Fase 1 de 13</span>
+          <span>Fase {currentPhase === 'value_proposition' ? 2 : 1} de 13</span>
           <span className="flex items-center gap-1.5 text-xs bg-green-500/20 text-green-400 border border-green-500/30 px-2.5 py-0.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
             En curso
@@ -301,16 +357,79 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
             </div>
           </div>
 
-          {/* Resumen del fundador */}
-          <div>
-            <p className="text-xs text-[#6b6d75] uppercase tracking-wider mb-2">Resumen del Fundador</p>
-            <div className="bg-[#1A1B1E] border border-[#2a2b30] rounded-lg p-3">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#6b6d75]" />
-                <p className="text-xs text-[#6b6d75]">Pendiente — se genera al completar la sesión</p>
+          {/* Consejo asignado */}
+          {assignedCouncil.length > 0 && (
+            <div>
+              <p className="text-xs text-[#C9A84C] uppercase tracking-wider font-medium mb-2">Consejo Asignado</p>
+              <div className="space-y-1.5">
+                {assignedCouncil.map(role => {
+                  const COUNCIL_LABELS: Record<string, string> = {
+                    mercado: '📊 Investigación de Mercado',
+                    ux: '🎨 Experto UX',
+                    negocio: '📋 Analista de Negocio',
+                    tecnico: '🔧 Líder Técnico',
+                    estrategia: '🎯 Estratega de Negocio',
+                    precios: '💰 Líder de Precios',
+                    cliente: '👤 Voz del Cliente',
+                    constructivo: '🛠️ Nexo Constructivo',
+                    critico: '⚠️ Nexo Crítico',
+                  }
+                  return (
+                    <div key={role} className="flex items-center gap-2 bg-[#1A1B1E] border border-[#2a2b30] rounded-lg px-3 py-2">
+                      <span className="text-xs text-[#9a9ba5]">{COUNCIL_LABELS[role] ?? role}</span>
+                    </div>
+                  )
+                })}
+                <p className="text-xs text-[#3a3b40] mt-1">Listo para la siguiente fase</p>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Generar documentos AURUM */}
+          {userMsgCount >= 5 && (
+            <div>
+              <p className="text-xs text-[#6b6d75] uppercase tracking-wider mb-2">Documentos AURUM</p>
+              {extractState === 'idle' && (
+                <button
+                  type="button"
+                  onClick={runExtract}
+                  className="w-full bg-[#C9A84C] hover:bg-[#b8963f] text-[#0F0F11] font-semibold text-xs px-3 py-2.5 rounded-lg transition-colors"
+                >
+                  Generar documentos AURUM
+                </button>
+              )}
+              {extractState === 'running' && (
+                <div className="space-y-2">
+                  {['Propuesta de valor', 'Modelo de negocio', 'Recorrido del cliente', 'Identidad de marca', 'Plan de negocio'].map((label, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${
+                        i < extractProgress ? 'bg-[#C9A84C]' :
+                        i === extractProgress ? 'bg-[#C9A84C] animate-pulse' :
+                        'border border-[#3a3b40]'
+                      }`} />
+                      <span className={`text-xs ${i <= extractProgress ? 'text-[#9a9ba5]' : 'text-[#3a3b40]'}`}>
+                        {label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {extractState === 'done' && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <span className="text-[#C9A84C] text-xs">✓</span>
+                    <p className="text-xs text-[#C9A84C] font-medium">Documentos generados</p>
+                  </div>
+                  {extractedRepo && (
+                    <a href={`https://github.com/${extractedRepo}`} target="_blank" rel="noopener noreferrer"
+                      className="text-xs text-[#6b6d75] hover:text-[#C9A84C] transition-colors block truncate">
+                      Ver en GitHub →
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </aside>
 
         {/* Voice mode */}

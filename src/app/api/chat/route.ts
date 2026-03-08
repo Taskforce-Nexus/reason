@@ -106,12 +106,17 @@ export async function POST(req: NextRequest) {
         ? [{ role: 'user', content: 'Inicia la sesión semilla.' }]
         : messages.map((m: Message) => ({ role: m.role, content: m.content }))
 
-    const response = await callClaude(
+    const rawResponse = await callClaude(
       systemPrompt,
       claudeMessages,
       voiceMode ? 512 : 2048,
       voiceMode ? 'claude-haiku-4-5-20251001' : undefined
     )
+
+    // Parse [CONSEJO:...] signal from response
+    const councilMatch = rawResponse.match(/\[CONSEJO:([^\]]+)\]/)
+    const selectedCouncil = councilMatch ? councilMatch[1].split(',').map(s => s.trim()) : null
+    const response = rawResponse.replace(/\[CONSEJO:[^\]]+\]\s*/g, '').trim()
 
     // Save messages to DB
     const updatedMessages: Message[] = [
@@ -119,10 +124,43 @@ export async function POST(req: NextRequest) {
       { role: 'assistant' as const, content: response, author: 'Nexo' }
     ]
 
-    if (conversationId) {
+    // Build conversation update payload
+    const convUpdate: Record<string, unknown> = {
+      messages: updatedMessages,
+      updated_at: new Date().toISOString(),
+    }
+    if (selectedCouncil) {
+      convUpdate.extracted_docs = { council: selectedCouncil }
+      convUpdate.phase = 'value_proposition'
+    }
+
+    let activeConversationId = conversationId
+    if (activeConversationId) {
       await supabase.from('conversations')
-        .update({ messages: updatedMessages, updated_at: new Date().toISOString() })
-        .eq('id', conversationId)
+        .update(convUpdate)
+        .eq('id', activeConversationId)
+    } else {
+      // Create conversation if it doesn't exist (fallback for missing conversationId)
+      const { data: existing } = await supabase
+        .from('conversations')
+        .select('id')
+        .eq('project_id', projectId)
+        .eq('phase', 'semilla')
+        .maybeSingle()
+      if (existing) {
+        activeConversationId = existing.id
+        await supabase.from('conversations')
+          .update(convUpdate)
+          .eq('id', activeConversationId)
+      } else {
+        const { data: newConv } = await supabase.from('conversations').insert({
+          project_id: projectId,
+          phase: selectedCouncil ? 'value_proposition' : 'semilla',
+          messages: updatedMessages,
+          ...(selectedCouncil ? { extracted_docs: { council: selectedCouncil } } : {}),
+        }).select('id').single()
+        if (newConv) activeConversationId = newConv.id
+      }
     }
 
     // Update project last_active_at
@@ -143,7 +181,11 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ message: response })
+    return NextResponse.json({
+      message: response,
+      conversationId: activeConversationId,
+      ...(selectedCouncil ? { council: selectedCouncil, phase: 'value_proposition' } : {}),
+    })
   } catch (err) {
     console.error('Chat API error:', err)
     return NextResponse.json({ error: 'Error interno' }, { status: 500 })
