@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
@@ -15,8 +15,19 @@ export default function NewProjectButton({ userId, organizationId, primary }: Pr
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [githubConnected, setGithubConnected] = useState<boolean | null>(null)
   const router = useRouter()
   const supabase = createClient()
+
+  useEffect(() => {
+    supabase
+      .from('user_integrations')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('provider', 'github')
+      .maybeSingle()
+      .then(({ data }) => setGithubConnected(!!data))
+  }, [userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function createProject(e: React.FormEvent) {
     e.preventDefault()
@@ -42,7 +53,7 @@ export default function NewProjectButton({ userId, organizationId, primary }: Pr
       return
     }
     if (data) {
-      // Fire GitHub repo creation — don't block redirect on failure
+      // Create GitHub repo in founder's account — don't block redirect on failure
       try {
         await fetch('/api/github/init', {
           method: 'POST',
@@ -50,7 +61,7 @@ export default function NewProjectButton({ userId, organizationId, primary }: Pr
           body: JSON.stringify({ projectId: data.id }),
         })
       } catch {
-        // GitHub init failed — user can connect later from project view
+        // GitHub init failed — visible in project view
       }
       router.push(`/project/${data.id}/incubadora`)
       router.refresh()
@@ -58,7 +69,34 @@ export default function NewProjectButton({ userId, organizationId, primary }: Pr
     setLoading(false)
   }
 
+  function handleOpen() {
+    setOpen(true)
+  }
+
   if (open) {
+    // GitHub not connected — block project creation
+    if (githubConnected === false) {
+      return (
+        <div className="flex flex-col gap-3 bg-[#1A1B1E] border border-[#C9A84C]/40 rounded-xl px-5 py-4 max-w-sm">
+          <p className="text-sm text-white font-medium">Conecta tu GitHub primero</p>
+          <p className="text-xs text-[#6b6d75] leading-5">
+            AURUM guardará todos tus entregables en tu propio repo de GitHub —
+            founder_brief, value proposition, plan de negocio y más.
+          </p>
+          <div className="flex gap-2 mt-1">
+            <a href="/api/auth/github"
+              className="bg-[#C9A84C] hover:bg-[#b8963f] text-[#0F0F11] font-semibold px-4 py-2 rounded-lg text-sm transition-colors">
+              Conectar GitHub
+            </a>
+            <button type="button" onClick={() => setOpen(false)}
+              className="text-[#6b6d75] hover:text-white px-3 py-2 text-sm transition-colors">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <form onSubmit={createProject} className="flex gap-2">
         <input autoFocus value={name} onChange={e => setName(e.target.value)}
@@ -78,7 +116,7 @@ export default function NewProjectButton({ userId, organizationId, primary }: Pr
   }
 
   return (
-    <button onClick={() => setOpen(true)}
+    <button type="button" onClick={handleOpen}
       className={`font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors ${
         primary
           ? 'bg-[#C9A84C] hover:bg-[#b8963f] text-[#0F0F11]'

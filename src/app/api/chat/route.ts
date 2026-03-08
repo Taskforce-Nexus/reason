@@ -131,9 +131,16 @@ export async function POST(req: NextRequest) {
       .eq('id', projectId)
 
     // Incremental GitHub sync — fire and forget, non-blocking
-    const token = process.env.GITHUB_TOKEN
-    if (token && project.github_repo && !voiceMode && messages.length > 0) {
-      void incrementalGitHubSync(projectId, project.github_repo, messages, response, token)
+    if (project.github_repo && !voiceMode && messages.length > 0) {
+      const { data: integration } = await supabase
+        .from('user_integrations')
+        .select('access_token')
+        .eq('user_id', user.id)
+        .eq('provider', 'github')
+        .single()
+      if (integration?.access_token) {
+        void incrementalGitHubSync(projectId, project.github_repo, messages, response, integration.access_token)
+      }
     }
 
     return NextResponse.json({ message: response })

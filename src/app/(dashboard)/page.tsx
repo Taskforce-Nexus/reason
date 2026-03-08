@@ -1,20 +1,21 @@
 export const dynamic = 'force-dynamic'
 
 import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
 import NewProjectButton from '@/components/dashboard/NewProjectButton'
-import { formatDistanceToNow } from 'date-fns'
-import { es } from 'date-fns/locale'
+import ProjectCard from '@/components/dashboard/ProjectCard'
 
 export default async function DashboardPage() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const { data: org } = await supabase
+  const { data: org, error: orgError } = await supabase
     .from('organizations')
     .select('id')
     .eq('owner_id', user!.id)
     .single()
+
+  if (orgError) console.error('[dashboard] org query error:', orgError)
+  console.log('[dashboard] user.id:', user!.id, '| org:', org)
 
   const organizationId = org?.id ?? ''
 
@@ -54,20 +55,13 @@ export default async function DashboardPage() {
         ) : (
           <div className="grid gap-4">
             {projects.map(project => (
-              <Link key={project.id} href={`/project/${project.id}`}
-                className="block bg-[#1A1B1E] border border-[#2a2b30] rounded-xl p-6 hover:border-[#C9A84C]/40 transition-colors group">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h2 className="font-semibold text-lg group-hover:text-[#C9A84C] transition-colors">{project.name}</h2>
-                    <p className="text-sm text-[#6b6d75] mt-1">{project.current_phase ?? 'Semilla'}</p>
-                  </div>
-                  <span className="text-xs text-[#6b6d75] bg-[#2a2b30] px-2 py-1 rounded-full">
-                    {project.last_active_at
-                      ? formatDistanceToNow(new Date(project.last_active_at), { addSuffix: true, locale: es })
-                      : 'Nuevo'}
-                  </span>
-                </div>
-              </Link>
+              <ProjectCard
+                key={project.id}
+                id={project.id}
+                name={project.name}
+                currentPhase={project.current_phase}
+                lastActiveAt={project.last_active_at}
+              />
             ))}
           </div>
         )}

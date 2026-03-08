@@ -13,15 +13,24 @@ function slugify(name: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const token = process.env.GITHUB_TOKEN
-    if (!token) return NextResponse.json({ error: 'GITHUB_TOKEN not configured' }, { status: 500 })
-
     const { projectId, repoName } = await req.json()
     if (!projectId) return NextResponse.json({ error: 'projectId requerido' }, { status: 400 })
 
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
+
+    // Get founder's GitHub token
+    const { data: integration } = await supabase
+      .from('user_integrations')
+      .select('access_token, github_login')
+      .eq('user_id', user.id)
+      .eq('provider', 'github')
+      .single()
+    if (!integration) {
+      return NextResponse.json({ error: 'GitHub no conectado. Conecta tu cuenta primero.' }, { status: 400 })
+    }
+    const { access_token: token, github_login: login } = integration
 
     // Verify ownership and get project name
     const { data: project } = await supabase
@@ -36,16 +45,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, repo: project.github_repo, alreadyExists: true })
     }
 
-    // Determine repo name
+    // Determine repo name using founder's login
     const name = repoName?.trim() || slugify(project.name)
-
-    // Get authenticated user to build full repo path
-    const meRes = await fetch(`${GITHUB_API}/user`, {
-      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
-    })
-    if (!meRes.ok) return NextResponse.json({ error: 'GITHUB_TOKEN inválido o expirado' }, { status: 400 })
-    const me = await meRes.json()
-    const fullRepo = `${me.login}/${name}`
+    const fullRepo = `${login}/${name}`
 
     // Create repo (no auto_init — we push a custom README)
     const createRes = await fetch(`${GITHUB_API}/user/repos`, {

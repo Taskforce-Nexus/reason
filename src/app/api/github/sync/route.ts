@@ -51,9 +51,6 @@ async function pushToGitHub(path: string, content: string, repo: string, token: 
 
 export async function POST(req: NextRequest) {
   try {
-    const token = process.env.GITHUB_TOKEN
-    if (!token) return NextResponse.json({ error: 'GITHUB_TOKEN not configured' }, { status: 500 })
-
     const { projectId, field, content } = await req.json()
     if (!projectId || !field || !content) {
       return NextResponse.json({ error: 'projectId, field, content requeridos' }, { status: 400 })
@@ -62,6 +59,18 @@ export async function POST(req: NextRequest) {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
+
+    // Get founder's GitHub token
+    const { data: integration } = await supabase
+      .from('user_integrations')
+      .select('access_token')
+      .eq('user_id', user.id)
+      .eq('provider', 'github')
+      .single()
+    if (!integration) {
+      return NextResponse.json({ error: 'Conecta tu GitHub primero' }, { status: 400 })
+    }
+    const token = integration.access_token
 
     // Verify project ownership and get github_repo
     const { data: project } = await supabase
