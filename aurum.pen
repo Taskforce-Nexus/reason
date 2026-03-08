@@ -50925,121 +50925,6 @@
                           "fontWeight": "500"
                         }
                       ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "fxaj9",
-                      "name": "connectRow",
-                      "width": "fill_container",
-                      "gap": 8,
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "amNAo",
-                          "name": "driveWrapper",
-                          "layout": "vertical",
-                          "gap": 4,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "RU0vD",
-                              "name": "driveIconInner",
-                              "width": 26,
-                              "height": 26,
-                              "fill": "#00000000",
-                              "cornerRadius": 6,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#27282B"
-                              },
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "Vh2Fy",
-                                  "name": "driveG",
-                                  "fill": "#4EA8DE",
-                                  "content": "G",
-                                  "fontFamily": "DM Sans",
-                                  "fontSize": 11,
-                                  "fontWeight": "700"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "6KTqa",
-                              "name": "driveText",
-                              "fill": "#4A5568",
-                              "content": "Google Drive",
-                              "fontFamily": "DM Sans",
-                              "fontSize": 9,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "Kv52V",
-                          "name": "notionWrapper",
-                          "layout": "vertical",
-                          "gap": 4,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "EJQli",
-                              "name": "notionIconInner",
-                              "width": 26,
-                              "height": 26,
-                              "fill": "#00000000",
-                              "cornerRadius": 6,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#27282B"
-                              },
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "Y0dZs",
-                                  "name": "notionN",
-                                  "fill": "#8B9DB7",
-                                  "content": "N",
-                                  "fontFamily": "DM Sans",
-                                  "fontSize": 11,
-                                  "fontWeight": "700"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "bwEIV",
-                              "name": "notionText",
-                              "fill": "#4A5568",
-                              "content": "Notion",
-                              "fontFamily": "DM Sans",
-                              "fontSize": 9,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "iIS6r",
-                          "name": "connectLabel",
-                          "fill": "#4A5568",
-                          "content": "Conectar fuente",
-                          "fontFamily": "DM Sans",
-                          "fontSize": 11,
-                          "fontWeight": "normal"
-                        }
-                      ]
                     }
                   ]
                 },
@@ -51654,8 +51539,9 @@
                 },
                 {
                   "type": "frame",
-                  "id": "5Tthn",
-                  "name": "chatInputRow",
+                  "id": "zzCGM",
+                  "name": "newInputBar",
+                  "clip": true,
                   "width": "fill_container",
                   "fill": "#111113",
                   "cornerRadius": 12,
@@ -51673,8 +51559,31 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "LNc34",
-                      "name": "chatInput",
+                      "id": "6uwr6",
+                      "name": "vapiBtn",
+                      "opacity": 0.4,
+                      "width": 40,
+                      "height": 40,
+                      "fill": "#1A1B1E",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "KjlP0",
+                          "name": "vapiBtnIcon",
+                          "content": "📞",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kPS21",
+                      "name": "newTextField",
                       "width": "fill_container",
                       "height": 44,
                       "fill": "#111113",
@@ -51686,14 +51595,14 @@
                       },
                       "padding": [
                         0,
-                        4
+                        8
                       ],
                       "alignItems": "center",
                       "children": [
                         {
                           "type": "text",
-                          "id": "XFGco",
-                          "name": "placeholder",
+                          "id": "Qe61x",
+                          "name": "newPlaceholder",
                           "fill": "#4A5568",
                           "content": "Escribe tu respuesta o usa el micrófono...",
                           "fontFamily": "DM Sans",
@@ -51704,31 +51613,8 @@
                     },
                     {
                       "type": "frame",
-                      "id": "9ZoOH",
-                      "name": "sendBtn",
-                      "width": 40,
-                      "height": 40,
-                      "fill": "#C9A84C",
-                      "cornerRadius": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "7HaHV",
-                          "name": "icon",
-                          "fill": "#0A0A0B",
-                          "content": "↑",
-                          "fontFamily": "DM Sans",
-                          "fontSize": 18,
-                          "fontWeight": "700"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "KJw46",
-                      "name": "voiceBtn",
+                      "id": "Rj6oC",
+                      "name": "newMicBtn",
                       "width": 40,
                       "height": 40,
                       "fill": "#1A1B1E",
@@ -51738,13 +51624,35 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "ZR7qX",
-                          "name": "icon",
-                          "fill": "#8B9DB7",
-                          "content": "♪",
+                          "id": "Eweo0",
+                          "name": "newMicIcon",
+                          "content": "🎤",
                           "fontFamily": "DM Sans",
-                          "fontSize": 16,
+                          "fontSize": 15,
                           "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "OWGRN",
+                      "name": "newSendBtn",
+                      "width": 40,
+                      "height": 40,
+                      "fill": "#C9A84C",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vmQYL",
+                          "name": "newSendIcon",
+                          "fill": "#0A0A0B",
+                          "content": "↑",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 18,
+                          "fontWeight": "700"
                         }
                       ]
                     }
