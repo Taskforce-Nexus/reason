@@ -7,6 +7,7 @@
 El proyecto opera en dos frentes paralelos:
 
 1. **UX Design Iteration Phase** — frames en Pencil.dev (ITERATE stage)
+
 2. **Incubadora funcional** — código de la app en desarrollo activo
 
 Pipeline position:
@@ -31,9 +32,13 @@ IDEA → INCUBADORA → BUSINESS → PRODUCT CONCEPT → UX ARCHITECTURE → DEF
 # Cambios aplicados en Projects__ProjectView__Default
 
 - Pipeline completo 13 etapas en español
+
 - Counter 3 de 13 / stat card 3/13
+
 - Control tiles: Incubadora · Consejo Asesor · Exportación
+
 - Documentos agrupados: Negocio (5) / Producto (7) / Ingeniería (3) — total 15
+
 - Sidebar limpio sin duplicados
 
 ---
@@ -41,10 +46,15 @@ IDEA → INCUBADORA → BUSINESS → PRODUCT CONCEPT → UX ARCHITECTURE → DEF
 # Cambios aplicados en Projects__Incubator__Default
 
 - Top bar: Fase 3 de 13
+
 - Panel derecho fusionado en columna única
+
 - Botones de acción con jerarquía: gold / secundario / ghost
+
 - Próximas preguntas con candados
+
 - Autopilot pill con punto dorado
+
 - Momentum completamente visible
 
 ---
@@ -70,10 +80,15 @@ Ninguna migración nueva en estas sesiones.
 # Bugs resueltos
 
 - VoiceModePanel cae a "paused" inmediatamente → resuelto con `getUserMedia` check + `requestPermissionAndStart()`
+
 - Chrome auto-detiene SpeechRecognition en silencio → resuelto con `keepListeningRef` pattern
+
 - `navigator.mediaDevices` undefined en contexto no-HTTPS → null guard explícito
+
 - Transcripción sin corrección → nuevo endpoint `/api/voice/correct` con Haiku
+
 - Linter: 9 warnings en IncubadoraChat → resueltos (progress bar nativa, divs sin role, Tailwind arbitrary variants)
+
 - Progress bar con `style={}` dinámico → reemplazado por `<progress value max>` con pseudo-element CSS
 
 ---
@@ -100,4 +115,5 @@ Ingeniería (3): System Design · Backlog · Repo Blueprint
 # Next Planned Step
 
 1. Juan confirma que voz funciona → Faber remueve console.logs de `VoiceModePanel.tsx`
+
 2. Continuar iteración de 3 frames pendientes en Pencil.dev → FREEZE → EXPAND → SCAFFOLD

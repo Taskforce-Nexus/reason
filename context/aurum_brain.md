@@ -13,16 +13,23 @@ idea → business → product → system design → backlog → repository
 The founder mainly contributes:
 
 - idea
+
 - market intuition
+
 - validation of decisions
 
 AI generates:
 
 - structured thinking
+
 - business documentation
+
 - product architecture
+
 - UX design
+
 - system design
+
 - engineering backlog
 
 ---
@@ -32,7 +39,9 @@ AI generates:
 Most startups stall because:
 
 - founders lose momentum after the idea
+
 - business planning is slow
+
 - execution knowledge is missing
 
 AURUM captures the **Eureka moment** and structures it immediately.
@@ -82,10 +91,15 @@ Project overview and activity.
 Operational control center of a venture.
 
 Shows:
+
 - incubation progress
+
 - generated documents
+
 - access to incubator
+
 - advisory board
+
 - export center
 
 ## Seed Session (Incubadora)
@@ -95,11 +109,17 @@ Conversation between founder and **Nexo**.
 Purpose: extract full context of the idea.
 
 Topics explored:
+
 - problem
+
 - target customer
+
 - founder background
+
 - resources
+
 - constraints
+
 - opportunities
 
 Output: structured venture knowledge.
@@ -109,9 +129,13 @@ Output: structured venture knowledge.
 # Advisory Board
 
 Panel of simulated experts:
+
 - AI cofounders
+
 - domain advisors
+
 - buyer personas
+
 - voice of customer
 
 Used to evaluate decisions.
@@ -123,29 +147,45 @@ Used to evaluate decisions.
 AURUM automatically generates:
 
 ### Value Proposition
+
 - ICP
+
 - problem
+
 - solution
+
 - product-market fit
 
 ### Business Model
+
 - channels
+
 - revenue model
+
 - pricing
+
 - unit economics
 
 ### Customer Journey
+
 - acquisition
+
 - activation
+
 - retention
 
 ### Business Plan
 
 ### Branding
+
 - mission
+
 - vision
+
 - positioning
+
 - messaging
+
 - naming
 
 ### PRD
@@ -171,9 +211,13 @@ scaffold = prepare for engineering
 # Technical Stack
 
 - Claude Code
+
 - Pencil.dev MCP
+
 - GitHub repository
+
 - Markdown documentation
+
 - AI document generation
 
 ---

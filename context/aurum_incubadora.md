@@ -11,10 +11,15 @@ No es una sesión de 60-90 minutos — es un proceso de incubación profunda (ob
 ### Fase 1 — Semilla (1:1 Nexo Constructivo + Fundador)
 
 Nexo Constructivo entiende al fundador al 100%:
+
 - idea
+
 - experiencia del fundador
+
 - recursos disponibles
+
 - visión y expectativas
+
 - restricciones
 
 Output de la fase: **Resumen del Fundador** — documento de referencia que se pasa a todas las fases siguientes.
@@ -22,9 +27,13 @@ Output de la fase: **Resumen del Fundador** — documento de referencia que se p
 ### Fases 2–5 — Consejo (por cada documento AURUM)
 
 Cada fase trabaja un documento:
+
 - Fase 2 → Propuesta de Valor
+
 - Fase 3 → Modelo de Negocio
+
 - Fase 4 → Recorrido del Cliente
+
 - Fase 5 → Plan de Negocio
 
 *(Marca / Branding se maneja externamente — no aparece como fase de consejo)*
@@ -49,10 +58,15 @@ Síntesis → produce resultado final
 **Si no coinciden:** el fundador ve **DOS posiciones** y elige.
 
 El resultado queda registrado en `proxy_responses` con campos:
+
 - `draft_content` — borrador constructivo
+
 - `critique_content` — crítica
+
 - `final_content` — síntesis
+
 - `agreement` — boolean
+
 - `status` — pending | approved | discarded | chosen
 
 ---
@@ -70,9 +84,13 @@ El resultado queda registrado en `proxy_responses` con campos:
 ## Flujo de revisión (Review Flow)
 
 El fundador siempre tiene la última palabra. Puede:
+
 - Aprobar el borrador
+
 - Editar el borrador
+
 - Elegir un lado (cuando hay desacuerdo)
+
 - Hablar directo al consejo (Levantar Mano)
 
 ---
@@ -127,7 +145,9 @@ Los sombreros son internos e invisibles al usuario. Solo orientan cómo razona c
 ## Entrada por voz
 
 - Web Speech API para input de voz
+
 - 9 asesores con voces TTS distintas
+
 - Barra de progreso + persistencia de sesión
 
 ---
@@ -137,35 +157,57 @@ Los sombreros son internos e invisibles al usuario. Solo orientan cómo razona c
 Generados al extraer conocimiento acumulado de todas las conversaciones de La Incubadora (5 llamadas Claude en oleadas de 2):
 
 ### 1. Canvas de Propuesta de Valor
+
 - ICP (Ideal Customer Profile)
+
 - Problemas del cliente
+
 - Soluciones propuestas
+
 - Modelo Kano (clasificación de features)
+
 - Evaluación de encaje producto-mercado
 
 ### 2. Canvas de Modelo de Negocio
+
 - Arquitectura de oferta
+
 - Canales de distribución y adquisición
+
 - Modelo de ingresos y pricing
+
 - Economía unitaria
+
 - Simulación Monte Carlo (sensibilidad)
 
 ### 3. Libro de Marca y Posicionamiento
+
 - Misión, visión, valores
+
 - Naming y categoría de mercado
+
 - Mensajes clave y tono de voz
+
 - Dirección de identidad visual
 
 ### 4. Mapa de Recorrido del Cliente
+
 - Mejores acciones por etapa
+
 - Recorridos actuales del cliente
+
 - Puntos de fricción identificados
+
 - Recorrido ideal propuesto
 
 ### 5. Plan de Negocio y Preparación
+
 - 8 evaluaciones de preparación puntuadas 1-10
+
 - Análisis de riesgos clave
+
 - Decisión ir / no-ir (go / no-go)
+
 - Próximos pasos recomendados
 
 ---

@@ -11,11 +11,17 @@ Its purpose is to preserve consistency across conversations and avoid re-opening
 AURUM is not just a chatbot or a code generator.
 
 AURUM is an AI-guided venture creation system that transforms a founder's idea into:
+
 - business documentation
+
 - product architecture
+
 - UX structure
+
 - system design
+
 - backlog
+
 - repository-ready outputs
 
 ---
@@ -23,9 +29,13 @@ AURUM is an AI-guided venture creation system that transforms a founder's idea i
 ## 2. Founder Role
 
 The founder provides:
+
 - the seed idea
+
 - context
+
 - constraints
+
 - approvals
 
 The founder should not be forced to produce heavy documentation manually.
@@ -38,10 +48,15 @@ AURUM must reduce friction and preserve momentum.
 The seed session is essential. It exists to capture the founder's Eureka moment before motivation and clarity are lost.
 
 The system should help the founder externalize:
+
 - the idea
+
 - frustrations
+
 - founder experience
+
 - constraints
+
 - opportunities
 
 This is handled through conversation with Nexo.
@@ -53,10 +68,15 @@ This is handled through conversation with Nexo.
 Nexo is the moderator of the incubation process.
 
 Nexo is responsible for:
+
 - guiding the seed session
+
 - extracting venture context
+
 - orchestrating the advisory system
+
 - deciding which advisors speak during incubation
+
 - maintaining focus and flow
 
 Nexo is not just another advisor. Nexo is the orchestrator.
@@ -70,9 +90,13 @@ The advisory board is not configured manually by default.
 Nexo configures the advisory board automatically after the seed session.
 
 Nexo may:
+
 - select advisors from the library
+
 - generate missing advisors if necessary
+
 - select invited specialists if needed
+
 - select or create buyer personas based on the seed session
 
 Manual modification of the advisory board is allowed later.
@@ -82,17 +106,25 @@ Manual modification of the advisory board is allowed later.
 ## 6. Human and AI Participants
 
 The system includes:
+
 - founder
+
 - optional human cofounders
+
 - AI cofounders
+
 - advisors
+
 - invited specialists
+
 - buyer personas / voice of customer
 
 AI cofounders are distinct from advisors.
 
 AI cofounders act as internal strategic counterparts:
+
 - one constructive
+
 - one critical
 
 ---
@@ -128,10 +160,15 @@ BACKLOG
 REPO
 
 Notes:
+
 - ITERATE and FREEZE are explicit stages, not implicit steps
+
 - EXPAND replaces the former FRAME EXPANSION
+
 - SCAFFOLD replaces the former FRAME SCAFFOLDING
+
 - DESIGN SYSTEM is absorbed into SCAFFOLD and not a visible pipeline stage
+
 - This pipeline should be preserved unless explicitly redesigned by Juan
 
 ---
@@ -139,23 +176,37 @@ Notes:
 ## 8. Business vs Product vs Engineering
 
 ### Business
+
 - value proposition
+
 - business model
+
 - customer journey
+
 - branding
+
 - business plan
 
 ### Product
+
 - product concept
+
 - UX architecture
+
 - default frames
+
 - frame expansion
+
 - frame scaffolding
+
 - design system
 
 ### Engineering
+
 - system design
+
 - backlog
+
 - repo outputs
 
 ---
@@ -165,7 +216,9 @@ Notes:
 Branding belongs to the BUSINESS layer.
 
 Branding includes:
+
 - purpose, mission, vision, values
+
 - positioning, voice, naming, identity direction
 
 Branding informs Product and Design System later.
@@ -177,10 +230,15 @@ Branding informs Product and Design System later.
 The UI workflow is: default → iterate → freeze → expand → scaffold
 
 Rules:
+
 - never generate hundreds of frames in the first pass
+
 - always start with default frames
+
 - freeze before expansion
+
 - expansion derives from approved defaults
+
 - scaffolding prepares the UI for engineering
 
 ---
@@ -196,10 +254,15 @@ The source of truth is the structured inventory and project docs.
 ## 12. Default Frame Strategy
 
 Do not generate before freeze:
+
 - loading states
+
 - error states
+
 - empty states
+
 - responsive variants
+
 - hover/microinteraction variants
 
 ---
@@ -216,10 +279,15 @@ Document Hub logic lives inside ProjectView.
 Export Center evolves into a handoff center.
 
 Supports:
+
 - documents
+
 - markdown bundles
+
 - repo package
+
 - slides / pitch deck
+
 - investor materials
 
 ---
@@ -227,11 +295,17 @@ Supports:
 ## 15. Build Scope Decision
 
 AURUM v1 generates:
+
 - strategy
+
 - business docs
+
 - product structure
+
 - system design
+
 - backlog
+
 - repo-ready artifacts
 
 Full autonomous build is a future milestone, not v1.
@@ -264,16 +338,23 @@ It should never feel like a chaotic prompt toy.
 The INCUBADORA stage contains 5 internal sub-phases:
 
 1. Semilla — initial idea capture with Nexo
+
 2. Propuesta de Valor — value proposition exploration
+
 3. Modelo de Negocio — business model definition
+
 4. Recorrido del Cliente — customer journey mapping
+
 5. Plan de Negocio — business plan synthesis
 
 These sub-phases are internal to INCUBADORA and do not appear as separate stages in the main pipeline.
 
 The Nexo Dual mechanism operates across all sub-phases:
+
 - Constructive cofounder proposes
+
 - Critical cofounder challenges
+
 - Nexo synthesizes and advances
 
 Three operating modes: Normal, Autopilot, Levantar Mano (raise hand).
@@ -285,19 +366,28 @@ The advisory board is activated and configured by Nexo after Semilla is complete
 ## 20. Modelo de Monetización y Retención
 
 Ingresos:
+
 - Suscripción mensual fija — acceso a la plataforma
+
 - Saldo de tokens prepagado — consumo variable por uso real
+
 - El usuario nunca conecta su propia API key
+
 - AURUM controla el acceso al modelo y aplica margen sobre costo Anthropic
 
 El costo es variable por diseño: founders con más contexto, más archivos
 y más conversación consumen más tokens. El saldo captura esa variabilidad.
 
 Tiers:
+
 - Core — pipeline completo
+
 - Branding — upsell: identidad visual, naming, dirección de marca
+
 - Frames — upsell: generación de UI con Pencil para founders de producto
+
 - Consejo Premium — advisors especializados por industria
+
 - Consultoría — acceso solo al Consejo sin pipeline completo
 
 Modelo de retención estructural:
@@ -329,10 +419,15 @@ Nexo construye un Venture Profile durante la Sesión Semilla:
 }
 
 Con ese perfil el sistema configura automáticamente:
+
 - qué etapas del pipeline tienen peso real
+
 - qué preguntas hace Nexo en cada fase
+
 - qué advisors se activan y con qué énfasis
+
 - qué documentos se generan
+
 - qué benchmarks y referencias de dominio se usan
 
 Los prompts son paramétricos — un prompt base más contexto de dominio:
@@ -349,10 +444,15 @@ Agregar un vertical nuevo = escribir su context_[vertical].md
 y definir su doc_set y pipeline_variant. No se toca la UI ni el pipeline.
 
 Verticales v1:
+
 - SaaS / producto digital
+
 - Construcción / real estate
+
 - Servicios / consultoría
+
 - Retail / e-commerce
+
 - Otros — ruta genérica
 
 En v2: pipelines verticalizados con etapas distintas por industria.
@@ -362,8 +462,11 @@ En v2: pipelines verticalizados con etapas distintas por industria.
 ## 22. Niveles de Entrada — Expansión
 
 Niveles adicionales a raw_idea / has_prd / has_partial:
+
 - has_brand — founder ya tiene identidad de marca.
+
   Nexo salta la fase de Branding.
+
 - consulting_only — acceso directo al Consejo sin pipeline completo.
 
 ---
@@ -379,11 +482,17 @@ Después de eso AURUM trabaja. El founder solo aparece cuando
 algo necesita su ojo — no su esfuerzo.
 
 Reglas:
+
 - sin formularios post-Semilla
+
 - sin configuración manual de advisors
+
 - sin selección de documentos a generar
+
 - sin elección de pipeline o vertical
+
 - Nexo infiere, configura, ejecuta y presenta resultados
+
 - el founder aprueba o corrige en lenguaje natural
 
 El Venture Profile no es algo que el founder llena —
@@ -392,6 +501,36 @@ es algo que AURUM construye y el founder puede contradecir.
 Corrección = lenguaje natural, no formulario:
 "Mis clientes no son compradores individuales, son fondos de inversión"
 Nexo actualiza el Venture Profile y regenera lo afectado.
+
+---
+
+## 26. Voice Stack — Deepgram STT + Cartesia TTS
+
+**Decisión:** Reemplazar Web Speech API + speechSynthesis con Deepgram Nova-3 (STT) y Cartesia Sonic-3 (TTS).
+
+**Razón:** Web Speech API no es confiable (loop infinito en Chrome, sin control de calidad). Deepgram + Cartesia ofrecen mejor calidad en español, latencia predecible y costo controlado.
+
+**Stacks evaluados y descartados:** Vapi ($12k/mes a 1k sesiones), ElevenLabs (5× más caro), LiveKit (WebRTC overhead), OpenAI Realtime (ata a GPT-4o), Chatterbox (mala calidad español), Qwen3-TTS (reservado v2+ self-hosted).
+
+**Costo proyectado:** ~$127/mes a 1,000 sesiones de 40 min. Migración futura a Qwen3-TTS cuando volumen supere ~10k sesiones/mes.
+
+**Voz de Nexo:** Cartesia "Spanish-speaking Man" — ID: `34dbb662-8e98-413c-a1ef-1a3407675fe7`
+
+**Implementación:**
+
+- `POST /api/voice/stt` — recibe FormData con audio webm/opus, devuelve `{ transcript }`
+
+- `POST /api/voice/tts` — recibe `{ text }`, devuelve `audio/mpeg` stream
+
+- `VoiceModePanel.tsx` — MediaRecorder + AudioContext + VAD (amplitude threshold)
+
+- VAD: SPEECH_START_THRESHOLD=20, SILENCE_THRESHOLD=12, SILENCE_DURATION=600ms
+
+- Interrupt: usuario habla durante SPEAKING → cancela AudioBufferSourceNode → vuelve a LISTENING
+
+**Variables de entorno requeridas:** `DEEPGRAM_API_KEY`, `CARTESIA_API_KEY`
+
+**Estado:** implementado — pendiente de API keys de Juan
 
 ---
 
@@ -404,8 +543,11 @@ Nexo actualiza el Venture Profile y regenera lo afectado.
 **Impacto:** `VoiceModePanel.tsx`, `IncubadoraChat.tsx`
 
 **Componentes:**
+
 - `requestPermissionAndStart()` — pide `getUserMedia` primero, luego lanza SpeechRecognition
+
 - `keepListeningRef` — controla si `onend` debe reiniciar o detenerse definitivamente
+
 - `/api/voice/correct` — Haiku corrige transcripción española en final result
 
 **Estado:** activo — pendiente confirmación de Juan en browser real
@@ -433,8 +575,11 @@ Capa 3 — Configuración en runtime:
   Módulos inactivos simplemente no existen — no grayed out, no bloqueados.
 
 Escalar a un vertical nuevo:
+
 - diseñar sus módulos específicos una vez
+
 - agregar regla de activación en la configuración
+
 - costo marginal casi cero
 
 Nexo configura — no construye en runtime.

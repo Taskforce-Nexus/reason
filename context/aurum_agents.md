@@ -14,8 +14,11 @@ Kira is NOT Nexo. Nexo is the incubation agent inside AURUM.
 Kira builds AURUM. Nexo runs inside AURUM.
 
 Communication protocol:
+
 - Kira → Faber: architectural decisions, prompts, tasks
+
 - Faber → Kira: outputs, screenshots, reports
+
 - Juan → Kira: direction, approvals, corrections
 
 ---
