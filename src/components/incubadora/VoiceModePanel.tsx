@@ -100,9 +100,11 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const recognition: any = new SpeechAPI()
-    recognition.lang = 'es-ES'
+    recognition.lang = 'es-MX'
     recognition.continuous = true
     recognition.interimResults = true
+
+    let hasError = false
 
     recognition.onstart = () => console.log('[VoiceMode] 7. recognition.onstart')
 
@@ -127,15 +129,23 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
 
     recognition.onend = () => {
       console.log('[VoiceMode] 10. onend — recognition terminó')
-      if (voiceStateRef.current === 'listening') {
-        try { recognition.start() } catch { /* browser may throttle */ }
+      if (voiceStateRef.current === 'listening' && !hasError) {
+        hasError = false
+        setTimeout(() => { try { recognition.start() } catch { setVS('paused') } }, 100)
+      } else {
+        hasError = false
       }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onerror = (e: any) => {
       console.log('[VoiceMode] 9. onerror', e.error, e.message)
-      if (e.error !== 'aborted') setVS('paused')
+      hasError = true
+      if (e.error === 'aborted' || e.error === 'no-speech') {
+        setVS('paused')
+      } else {
+        setVS('paused')
+      }
     }
 
     recognitionRef.current = recognition
