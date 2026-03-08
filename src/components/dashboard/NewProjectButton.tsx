@@ -42,6 +42,16 @@ export default function NewProjectButton({ userId, organizationId, primary }: Pr
       return
     }
     if (data) {
+      // Fire GitHub repo creation — don't block redirect on failure
+      try {
+        await fetch('/api/github/init', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId: data.id }),
+        })
+      } catch {
+        // GitHub init failed — user can connect later from project view
+      }
       router.push(`/project/${data.id}/incubadora`)
       router.refresh()
     }

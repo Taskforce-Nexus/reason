@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
 const GITHUB_API = 'https://api.github.com'
-const REPO = process.env.GITHUB_REPO ?? 'Taskforce-Nexus/aurum'
 
 // Maps project field names to output filenames
 const DOC_FILENAMES: Record<string, string> = {
@@ -14,8 +13,8 @@ const DOC_FILENAMES: Record<string, string> = {
   aurum_business_plan: 'business_plan.md',
 }
 
-async function getExistingSha(path: string, token: string): Promise<string | null> {
-  const res = await fetch(`${GITHUB_API}/repos/${REPO}/contents/${path}`, {
+async function getExistingSha(path: string, repo: string, token: string): Promise<string | null> {
+  const res = await fetch(`${GITHUB_API}/repos/${repo}/contents/${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/vnd.github+json',
@@ -26,15 +25,15 @@ async function getExistingSha(path: string, token: string): Promise<string | nul
   return typeof data.sha === 'string' ? data.sha : null
 }
 
-async function pushToGitHub(path: string, content: string, token: string): Promise<void> {
-  const sha = await getExistingSha(path, token)
+async function pushToGitHub(path: string, content: string, repo: string, token: string): Promise<void> {
+  const sha = await getExistingSha(path, repo, token)
   const body: Record<string, string> = {
     message: `docs: sync ${path.split('/').pop()}`,
     content: Buffer.from(content).toString('base64'),
   }
   if (sha) body.sha = sha
 
-  const res = await fetch(`${GITHUB_API}/repos/${REPO}/contents/${path}`, {
+  const res = await fetch(`${GITHUB_API}/repos/${repo}/contents/${path}`, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -64,22 +63,26 @@ export async function POST(req: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
 
-    // Verify project ownership
+    // Verify project ownership and get github_repo
     const { data: project } = await supabase
       .from('projects')
-      .select('id, name')
+      .select('id, name, github_repo')
       .eq('id', projectId)
       .eq('user_id', user.id)
       .single()
     if (!project) return NextResponse.json({ error: 'Proyecto no encontrado' }, { status: 404 })
 
+    if (!project.github_repo) {
+      return NextResponse.json({ error: 'Conecta tu GitHub primero' }, { status: 400 })
+    }
+
     const filename = DOC_FILENAMES[field]
     if (!filename) return NextResponse.json({ error: `Campo desconocido: ${field}` }, { status: 400 })
 
     const path = `venture_outputs/${projectId}/${filename}`
-    await pushToGitHub(path, content, token)
+    await pushToGitHub(path, content, project.github_repo, token)
 
-    return NextResponse.json({ ok: true, path, repo: REPO })
+    return NextResponse.json({ ok: true, path, repo: project.github_repo })
   } catch (err) {
     console.error('[github/sync]', err)
     return NextResponse.json({ error: 'Error sincronizando con GitHub' }, { status: 500 })

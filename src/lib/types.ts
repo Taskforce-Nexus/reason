@@ -31,6 +31,7 @@ export type Project = {
   aurum_branding: string | null
   aurum_customer_journey: string | null
   aurum_business_plan: string | null
+  github_repo: string | null
   created_at: string
   updated_at: string
 }

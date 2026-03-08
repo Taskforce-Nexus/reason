@@ -4,6 +4,84 @@ import { callClaude } from '@/lib/claude'
 import { NEXO_SEED_SYSTEM } from '@/lib/prompts'
 import type { Message } from '@/lib/types'
 
+const GITHUB_API = 'https://api.github.com'
+
+const EXTRACTION_SYSTEM = `Eres un extractor de información de ventures. Analiza la conversación y determina si hay información nueva y significativa sobre el venture del founder que justifique actualizar un documento.
+
+Responde ÚNICAMENTE con JSON válido, sin texto adicional:
+{
+  "should_update": boolean,
+  "document": "founder_brief" | "value_proposition" | null,
+  "content": "contenido completo en markdown" | null,
+  "commit_message": "mensaje descriptivo del commit" | null
+}
+
+Reglas:
+- should_update = true solo si hay información nueva y concreta (no mensajes genéricos de saludo o apertura)
+- founder_brief: captura problema, experiencia del founder, recursos disponibles, visión, restricciones
+- value_proposition: captura cliente objetivo, dolor, solución propuesta — solo si hay info suficiente
+- content: documento markdown completo con toda la info extraída de la conversación hasta ahora
+- commit_message: descriptivo en inglés, ej: "update: founder background captured", "update: problem definition refined"
+- Si no hay info nueva sustancial, responde { "should_update": false, "document": null, "content": null, "commit_message": null }`
+
+const DOC_PATHS: Record<string, string> = {
+  founder_brief: 'venture_outputs/founder_brief.md',
+  value_proposition: 'venture_outputs/value_proposition.md',
+}
+
+async function incrementalGitHubSync(
+  projectId: string,
+  repo: string,
+  messages: Message[],
+  nexoResponse: string,
+  token: string,
+): Promise<void> {
+  try {
+    // Build conversation context for extraction (last 10 messages + current response)
+    const context = [...messages.slice(-10), { role: 'assistant' as const, content: nexoResponse }]
+    const contextText = context.map(m => `${m.role === 'user' ? 'Founder' : 'Nexo'}: ${m.content}`).join('\n\n')
+
+    const extractionResponse = await callClaude(
+      EXTRACTION_SYSTEM,
+      [{ role: 'user', content: contextText }],
+      512,
+      'claude-haiku-4-5-20251001'
+    )
+
+    const extracted = JSON.parse(extractionResponse)
+    if (!extracted.should_update || !extracted.document || !extracted.content) return
+
+    const path = DOC_PATHS[extracted.document]
+    if (!path) return
+
+    // Override the generic message with the descriptive one from extraction
+    const fullPath = `venture_outputs/${projectId}/${path.split('/').pop()}`
+    const shaRes = await fetch(`${GITHUB_API}/repos/${repo}/contents/${fullPath}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+    })
+    const body: Record<string, string> = {
+      message: extracted.commit_message ?? `update: ${extracted.document}`,
+      content: Buffer.from(extracted.content).toString('base64'),
+    }
+    if (shaRes.ok) {
+      const data = await shaRes.json()
+      if (typeof data.sha === 'string') body.sha = data.sha
+    }
+    await fetch(`${GITHUB_API}/repos/${repo}/contents/${fullPath}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+  } catch (err) {
+    // Non-blocking — log but don't affect chat response
+    console.error('[incremental-github-sync]', err)
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { projectId, conversationId, messages, voiceMode } = await req.json()
@@ -11,10 +89,10 @@ export async function POST(req: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
 
-    // Verify project ownership
+    // Verify project ownership and get github_repo
     const { data: project } = await supabase
       .from('projects')
-      .select('id')
+      .select('id, github_repo')
       .eq('id', projectId)
       .eq('user_id', user.id)
       .single()
@@ -51,6 +129,12 @@ export async function POST(req: NextRequest) {
     await supabase.from('projects')
       .update({ last_active_at: new Date().toISOString() })
       .eq('id', projectId)
+
+    // Incremental GitHub sync — fire and forget, non-blocking
+    const token = process.env.GITHUB_TOKEN
+    if (token && project.github_repo && !voiceMode && messages.length > 0) {
+      void incrementalGitHubSync(projectId, project.github_repo, messages, response, token)
+    }
 
     return NextResponse.json({ message: response })
   } catch (err) {
