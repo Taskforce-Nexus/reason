@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 import type { Project, Conversation, Message } from '@/lib/types'
 
 interface Props {
@@ -173,7 +174,20 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
                     ? 'bg-[#2a2b30] text-white rounded-tr-sm'
                     : 'bg-[#1A1B1E] border border-[#2a2b30] text-[#e0e0e5] rounded-tl-sm'
                 }`}>
-                  {msg.content}
+                  {msg.role === 'assistant' ? (
+                    <ReactMarkdown components={{
+                      h1: ({ children }) => <h1 className="text-[#C9A84C] font-bold text-lg mb-3 mt-1">{children}</h1>,
+                      h2: ({ children }) => <h2 className="text-[#C9A84C] font-bold text-base mb-2 mt-1">{children}</h2>,
+                      h3: ({ children }) => <h3 className="text-[#C9A84C] font-semibold mb-2 mt-1">{children}</h3>,
+                      strong: ({ children }) => <strong className="text-white font-semibold">{children}</strong>,
+                      p: ({ children }) => <p className="text-[#e0e0e5] leading-7 mb-3 last:mb-0">{children}</p>,
+                      ul: ({ children }) => <ul className="space-y-1.5 mb-3 pl-1">{children}</ul>,
+                      ol: ({ children }) => <ol className="space-y-1.5 mb-3 pl-1 list-decimal list-inside">{children}</ol>,
+                      li: ({ children }) => <li className="text-[#e0e0e5] pl-3 relative before:content-['•'] before:absolute before:left-0 before:text-[#C9A84C]">{children}</li>,
+                    }}>
+                      {msg.content}
+                    </ReactMarkdown>
+                  ) : msg.content}
                 </div>
                 {msg.role === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-[#3a3b40] flex items-center justify-center text-xs font-bold shrink-0 mt-1">
