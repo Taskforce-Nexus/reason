@@ -50660,7 +50660,7 @@
                 "fill": "#27282B"
               },
               "layout": "vertical",
-              "gap": 16,
+              "gap": 20,
               "padding": [
                 20,
                 24
@@ -51561,11 +51561,16 @@
                       "type": "frame",
                       "id": "6uwr6",
                       "name": "vapiBtn",
-                      "opacity": 0.4,
+                      "opacity": 0.7,
                       "width": 40,
                       "height": 40,
                       "fill": "#1A1B1E",
                       "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#3A3B40"
+                      },
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
@@ -51573,6 +51578,7 @@
                           "type": "text",
                           "id": "KjlP0",
                           "name": "vapiBtnIcon",
+                          "fill": "#AAAAAA",
                           "content": "📞",
                           "fontFamily": "DM Sans",
                           "fontSize": 15,
@@ -51619,6 +51625,11 @@
                       "height": 40,
                       "fill": "#1A1B1E",
                       "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#3A3B40"
+                      },
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
@@ -51626,6 +51637,7 @@
                           "type": "text",
                           "id": "Eweo0",
                           "name": "newMicIcon",
+                          "fill": "#AAAAAA",
                           "content": "🎤",
                           "fontFamily": "DM Sans",
                           "fontSize": 15,
