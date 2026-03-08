@@ -6,7 +6,7 @@ import type { Message } from '@/lib/types'
 
 export async function POST(req: NextRequest) {
   try {
-    const { projectId, conversationId, messages, phase } = await req.json()
+    const { projectId, conversationId, messages, voiceMode } = await req.json()
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
@@ -28,7 +28,12 @@ export async function POST(req: NextRequest) {
         ? [{ role: 'user', content: 'Inicia la sesión semilla.' }]
         : messages.map((m: Message) => ({ role: m.role, content: m.content }))
 
-    const response = await callClaude(systemPrompt, claudeMessages)
+    const response = await callClaude(
+      systemPrompt,
+      claudeMessages,
+      voiceMode ? 512 : 2048,
+      voiceMode ? 'claude-haiku-4-5-20251001' : undefined
+    )
 
     // Save messages to DB
     const updatedMessages: Message[] = [

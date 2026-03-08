@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { createClient } from '@/lib/supabase/client'
+import VoiceModePanel from './VoiceModePanel'
 import type { Project, Conversation, Message } from '@/lib/types'
 
 interface UploadedFile {
@@ -38,6 +39,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const [pendingContext, setPendingContext] = useState('')
   const [isRecording, setIsRecording] = useState(false)
   const [voiceUnavailable, setVoiceUnavailable] = useState(false)
+  const [voiceMode, setVoiceMode] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -188,14 +190,9 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={toggleVoice}
-            className={`flex items-center gap-1.5 text-sm border px-3 py-1.5 rounded-lg transition-colors ${
-              isRecording
-                ? 'border-[#C9A84C]/50 text-[#C9A84C] bg-[#C9A84C]/10'
-                : 'border-[#2a2b30] text-[#6b6d75] hover:text-white hover:border-[#3a3b40]'
-            }`}
+            onClick={() => setVoiceMode(true)}
+            className="flex items-center gap-1.5 text-sm border border-[#2a2b30] text-[#6b6d75] hover:text-white hover:border-[#3a3b40] px-3 py-1.5 rounded-lg transition-colors"
           >
-            {isRecording && <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse shrink-0" />}
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
               <path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/>
@@ -316,8 +313,19 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
           </div>
         </aside>
 
+        {/* Voice mode */}
+        {voiceMode && (
+          <VoiceModePanel
+            projectId={project.id}
+            conversationId={conversation?.id}
+            messages={messages}
+            onMessagesUpdate={setMessages}
+            onExit={() => setVoiceMode(false)}
+          />
+        )}
+
         {/* Chat area */}
-        <main className="flex-1 flex flex-col overflow-hidden">
+        <main className={`flex-1 flex flex-col overflow-hidden ${voiceMode ? 'hidden' : ''}`}>
           <div className="flex-1 overflow-y-auto px-8 py-6 space-y-6">
             {messages.map((msg, i) => (
               <div key={i} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>

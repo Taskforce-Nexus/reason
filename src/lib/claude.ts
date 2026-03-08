@@ -9,13 +9,14 @@ const MODEL = process.env.CLAUDE_USE_CHEAP === 'true'
 export async function callClaude(
   systemPrompt: string,
   messages: Array<{ role: 'user' | 'assistant'; content: string }>,
-  maxTokens = 2048
+  maxTokens = 2048,
+  modelOverride?: string
 ): Promise<string> {
   let attempt = 0
   while (attempt < 4) {
     try {
       const response = await client.messages.create({
-        model: MODEL,
+        model: modelOverride ?? MODEL,
         max_tokens: maxTokens,
         system: systemPrompt,
         messages,
