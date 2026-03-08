@@ -119,14 +119,11 @@ Esta acción no requiere instrucción de Juan. Es parte del cierre estándar de 
 
 ## Protocolo de reporte de diseño
 
-Después de cada iteración de frame, incluir en el reporte a Nexo la URL raw de la imagen en GitHub:
+Después de cada iteración de frame:
+1. Faber toma screenshot con `get_screenshot` y lo incluye en el reporte
+2. Juan copia la imagen desde el chat de Claude Code y la pega a Nexo en claude.ai
 
-`https://raw.githubusercontent.com/Taskforce-Nexus/aurum/main/images/[NOMBRE_DEL_FRAME].png`
-
-Ejemplo:
-`https://raw.githubusercontent.com/Taskforce-Nexus/aurum/main/images/Projects__SeedSession__Default.png`
-
-Nexo usa esa URL directamente. Juan no necesita hacer nada.
+El repo es privado — las URLs raw de GitHub no funcionan para usuarios externos.
 
 ---
 
