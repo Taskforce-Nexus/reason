@@ -11,7 +11,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'GITHUB_CLIENT_ID not configured' }, { status: 500 })
   }
 
-  const callbackUrl = `${req.nextUrl.origin}/api/auth/github/callback`
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ||
+    `${req.headers.get('x-forwarded-proto') || 'http'}://${req.headers.get('host')}`
+  const callbackUrl = `${baseUrl}/api/auth/github/callback`
 
   const params = new URLSearchParams({
     client_id: clientId,

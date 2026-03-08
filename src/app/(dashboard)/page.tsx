@@ -8,14 +8,34 @@ export default async function DashboardPage() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const { data: org, error: orgError } = await supabase
+  let { data: org } = await supabase
     .from('organizations')
     .select('id')
     .eq('owner_id', user!.id)
     .single()
 
-  if (orgError) console.error('[dashboard] org query error:', orgError)
-  console.log('[dashboard] user.id:', user!.id, '| org:', org)
+  // Fallback: create org if trigger didn't fire during signup
+  if (!org) {
+    const emailSlug = (user!.email?.split('@')[0] ?? 'founder')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)
+    const { data: newOrg } = await supabase
+      .from('organizations')
+      .insert({
+        name: user!.email?.split('@')[0] ?? 'Mi organización',
+        slug: `${emailSlug}-${user!.id.slice(0, 6)}`,
+        owner_id: user!.id,
+      })
+      .select('id')
+      .single()
+    if (newOrg) {
+      await supabase.from('organization_members').insert({
+        organization_id: newOrg.id,
+        user_id: user!.id,
+        role: 'owner',
+      })
+      org = newOrg
+    }
+  }
 
   const organizationId = org?.id ?? ''
 
