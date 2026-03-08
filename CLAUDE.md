@@ -117,6 +117,17 @@ Al finalizar cualquier sesión de trabajo que modifique archivos en /context o /
 
 Esta acción no requiere instrucción de Juan. Es parte del cierre estándar de cada sesión.
 
+## Protocolo de reporte de diseño
+
+Después de cada iteración de frame, incluir en el reporte a Nexo la URL raw de la imagen en GitHub:
+
+`https://raw.githubusercontent.com/Taskforce-Nexus/aurum/main/images/[NOMBRE_DEL_FRAME].png`
+
+Ejemplo:
+`https://raw.githubusercontent.com/Taskforce-Nexus/aurum/main/images/Projects__SeedSession__Default.png`
+
+Nexo usa esa URL directamente. Juan no necesita hacer nada.
+
 ---
 
 ## Reglas de operación
