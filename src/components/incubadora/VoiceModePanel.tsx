@@ -25,21 +25,41 @@ function stripMarkdown(text: string): string {
     .trim()
 }
 
+function getSupportedMimeType(): string {
+  const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus']
+  for (const type of candidates) {
+    if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(type)) return type
+  }
+  return 'audio/webm'
+}
+
+// VAD thresholds (0-127 range — getByteTimeDomainData normalized amplitude)
+const SPEECH_START_THRESHOLD = 20  // above this = speech detected → start recording
+const SILENCE_THRESHOLD = 12       // below this = silence → allow timer to expire
+const SILENCE_DURATION_MS = 600    // ms of silence after speech before sending
+
 export default function VoiceModePanel({ projectId, conversationId, messages, onMessagesUpdate, onExit }: Props) {
-  const [voiceState, setVoiceState] = useState<VoiceState>('listening')
+  const [voiceState, setVoiceState] = useState<VoiceState>('paused')
   const [transcript, setTranscript] = useState('')
   const [nexoText, setNexoText] = useState('')
-  const [supported, setSupported] = useState(true)
   const [permissionDenied, setPermissionDenied] = useState(false)
 
-  const voiceStateRef = useRef<VoiceState>('listening')
+  const voiceStateRef = useRef<VoiceState>('paused')
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recognitionRef = useRef<any>(null)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const animFrameRef = useRef<number | null>(null)
   const barsRef = useRef<number[]>(Array(24).fill(0.1))
   const messagesRef = useRef(messages)
+
+  // Audio pipeline refs
+  const streamRef = useRef<MediaStream | null>(null)
+  const audioCtxRef = useRef<AudioContext | null>(null)
+  const analyserRef = useRef<AnalyserNode | null>(null)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
+  const isCapturingRef = useRef(false)
+  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const vadFrameRef = useRef<number | null>(null)
+  const currentSourceRef = useRef<AudioBufferSourceNode | null>(null)
 
   function setVS(state: VoiceState) {
     voiceStateRef.current = state
@@ -48,7 +68,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
 
   useEffect(() => { messagesRef.current = messages }, [messages])
 
-  // Canvas animation — reads only from refs, stable reference
+  // ─── Canvas animation ─────────────────────────────────────────────────────
   const drawBars = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -90,68 +110,110 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     return () => { if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current) }
   }, [drawBars])
 
-  function startListening() {
-    console.log('[VoiceMode] 6. startListening llamado')
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SpeechAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SpeechAPI) { setSupported(false); return }
-
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const recognition: any = new SpeechAPI()
-    recognition.lang = 'es-MX'
-    recognition.continuous = true
-    recognition.interimResults = true
-
-    let hasError = false
-
-    recognition.onstart = () => console.log('[VoiceMode] 7. recognition.onstart')
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    recognition.onresult = (event: any) => {
-      console.log('[VoiceMode] 8. onresult', event)
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-      timeoutRef.current = setTimeout(() => { recognition.stop(); setVS('paused') }, 30000)
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const results: any[] = Array.from(event.results)
-      const last = results[results.length - 1]
-      setTranscript(last[0].transcript)
-
-      if (last.isFinal) {
-        const text = last[0].transcript
-        recognition.stop()
-        setVS('processing')
-        processMessage(text)
-      }
+  // ─── VAD helpers ──────────────────────────────────────────────────────────
+  function getRMS(analyser: AnalyserNode): number {
+    const data = new Uint8Array(analyser.fftSize)
+    analyser.getByteTimeDomainData(data)
+    let sum = 0
+    for (let i = 0; i < data.length; i++) {
+      const n = data[i] - 128
+      sum += n * n
     }
+    return Math.sqrt(sum / data.length)
+  }
 
-    recognition.onend = () => {
-      console.log('[VoiceMode] 10. onend — recognition terminó')
-      if (voiceStateRef.current === 'listening' && !hasError) {
-        hasError = false
-        setTimeout(() => { try { recognition.start() } catch { setVS('paused') } }, 100)
+  function resetSilenceTimer() {
+    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
+    silenceTimerRef.current = setTimeout(() => stopCapture(), SILENCE_DURATION_MS)
+  }
+
+  function startCapture() {
+    const stream = streamRef.current
+    if (!stream || isCapturingRef.current) return
+    isCapturingRef.current = true
+    audioChunksRef.current = []
+
+    const mimeType = getSupportedMimeType()
+    const recorder = new MediaRecorder(stream, { mimeType })
+
+    recorder.ondataavailable = (e) => {
+      if (e.data.size > 0) audioChunksRef.current.push(e.data)
+    }
+    recorder.onstop = () => {
+      isCapturingRef.current = false
+      if (audioChunksRef.current.length > 0) {
+        const blob = new Blob(audioChunksRef.current, { type: mimeType })
+        void sendToSTT(blob)
       } else {
-        hasError = false
+        setVS('listening')
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    recognition.onerror = (e: any) => {
-      console.log('[VoiceMode] 9. onerror', e.error, e.message)
-      hasError = true
-      if (e.error === 'aborted' || e.error === 'no-speech') {
-        setVS('paused')
+    mediaRecorderRef.current = recorder
+    recorder.start()
+  }
+
+  function stopCapture() {
+    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
+    const recorder = mediaRecorderRef.current
+    if (recorder && recorder.state !== 'inactive') {
+      setVS('processing')
+      recorder.stop()
+    }
+  }
+
+  // ─── VAD loop ─────────────────────────────────────────────────────────────
+  function startVADLoop() {
+    if (vadFrameRef.current) cancelAnimationFrame(vadFrameRef.current)
+
+    function loop() {
+      vadFrameRef.current = requestAnimationFrame(loop)
+      const analyser = analyserRef.current
+      if (!analyser) return
+
+      const state = voiceStateRef.current
+
+      if (state === 'listening') {
+        const rms = getRMS(analyser)
+
+        if (!isCapturingRef.current && rms > SPEECH_START_THRESHOLD) {
+          startCapture()
+          resetSilenceTimer()
+        } else if (isCapturingRef.current && rms > SILENCE_THRESHOLD) {
+          resetSilenceTimer()
+        }
+      } else if (state === 'speaking') {
+        const rms = getRMS(analyser)
+        if (rms > SPEECH_START_THRESHOLD * 2) {
+          // User interrupts Nexo
+          currentSourceRef.current?.stop()
+          currentSourceRef.current = null
+          setVS('listening')
+        }
+      }
+    }
+
+    loop()
+  }
+
+  // ─── STT → Chat → TTS pipeline ────────────────────────────────────────────
+  async function sendToSTT(audioBlob: Blob) {
+    try {
+      const formData = new FormData()
+      formData.append('audio', audioBlob, 'audio.webm')
+
+      const res = await fetch('/api/voice/stt', { method: 'POST', body: formData })
+      const data = await res.json()
+
+      if (data.transcript?.trim()) {
+        setTranscript(data.transcript)
+        await processMessage(data.transcript)
       } else {
-        setVS('paused')
+        setVS('listening')
       }
+    } catch {
+      setVS('listening')
     }
-
-    recognitionRef.current = recognition
-    setVS('listening')
-    timeoutRef.current = setTimeout(() => { recognition.stop(); setVS('paused') }, 30000)
-    try { recognition.start(); console.log('[VoiceMode] 6b. recognition.start() llamado') } catch { setVS('paused') }
   }
 
   async function processMessage(text: string) {
@@ -171,67 +233,106 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
         const assistantMsg: Message = { role: 'assistant', content: data.message, author: 'Nexo' }
         onMessagesUpdate([...newMessages, assistantMsg])
         setNexoText(data.message)
-        speakResponse(data.message)
+        await speakResponse(data.message)
       } else {
-        setVS('listening'); startListening()
+        setVS('listening')
       }
     } catch {
-      setVS('listening'); startListening()
+      setVS('listening')
     }
   }
 
-  function speakResponse(text: string) {
-    if (!window.speechSynthesis) { setVS('listening'); startListening(); return }
-    window.speechSynthesis.cancel()
-    const utterance = new SpeechSynthesisUtterance(stripMarkdown(text))
-    utterance.lang = 'es-ES'
-    utterance.rate = 0.92
-    utterance.pitch = 1.0
-    const voices = window.speechSynthesis.getVoices()
-    const esVoice = voices.find(v => v.lang.startsWith('es'))
-    if (esVoice) utterance.voice = esVoice
-    utterance.onstart = () => setVS('speaking')
-    utterance.onend = () => { setVS('listening'); startListening() }
-    utterance.onerror = () => { setVS('listening'); startListening() }
+  async function speakResponse(text: string) {
+    const audioCtx = audioCtxRef.current
+    if (!audioCtx) { setVS('listening'); return }
+
     setVS('speaking')
-    window.speechSynthesis.speak(utterance)
+    try {
+      if (audioCtx.state === 'suspended') await audioCtx.resume()
+
+      const res = await fetch('/api/voice/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: stripMarkdown(text) }),
+      })
+      if (!res.ok) throw new Error('TTS failed')
+
+      const arrayBuffer = await res.arrayBuffer()
+      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer)
+
+      currentSourceRef.current?.stop()
+      const source = audioCtx.createBufferSource()
+      source.buffer = audioBuffer
+      source.connect(audioCtx.destination)
+      currentSourceRef.current = source
+
+      source.onended = () => {
+        if (voiceStateRef.current === 'speaking') {
+          setVS('listening')
+        }
+      }
+      source.start()
+    } catch {
+      setVS('listening')
+    }
   }
 
-  async function requestPermissionAndStart() {
-    console.log('[VoiceMode] 1. requestPermissionAndStart llamado')
-    console.log('[VoiceMode] 2. navigator.mediaDevices:', navigator.mediaDevices)
+  // ─── Init / cleanup ───────────────────────────────────────────────────────
+  async function initAudio() {
+    stopAll()
+
     if (!navigator.mediaDevices?.getUserMedia) {
-      console.log('[VoiceMode] 3. SIN mediaDevices — contexto inseguro o browser no compatible')
       setPermissionDenied(true)
       setVS('paused')
       return
     }
     try {
-      console.log('[VoiceMode] 4. Pidiendo permiso de micrófono...')
-      await navigator.mediaDevices.getUserMedia({ audio: true })
-      console.log('[VoiceMode] 5. Permiso concedido — iniciando SpeechRecognition')
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      streamRef.current = stream
+
+      const audioCtx = new AudioContext()
+      audioCtxRef.current = audioCtx
+      if (audioCtx.state === 'suspended') await audioCtx.resume()
+
+      const micSource = audioCtx.createMediaStreamSource(stream)
+      const analyser = audioCtx.createAnalyser()
+      analyser.fftSize = 1024
+      micSource.connect(analyser)
+      analyserRef.current = analyser
+
       setPermissionDenied(false)
-      startListening()
-    } catch (err) {
-      console.log('[VoiceMode] 6. ERROR permiso mic:', err)
+      setVS('listening')
+      startVADLoop()
+    } catch {
       setPermissionDenied(true)
       setVS('paused')
     }
   }
 
-  useEffect(() => {
-    void requestPermissionAndStart()
-    return () => {
-      recognitionRef.current?.stop()
-      window.speechSynthesis?.cancel()
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+  function stopAll() {
+    if (vadFrameRef.current) { cancelAnimationFrame(vadFrameRef.current); vadFrameRef.current = null }
+    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
+    if (mediaRecorderRef.current?.state !== 'inactive') {
+      try { mediaRecorderRef.current?.stop() } catch { /* ignore */ }
     }
+    currentSourceRef.current?.stop()
+    currentSourceRef.current = null
+    streamRef.current?.getTracks().forEach(t => t.stop())
+    streamRef.current = null
+    audioCtxRef.current?.close().catch(() => null)
+    audioCtxRef.current = null
+    analyserRef.current = null
+    isCapturingRef.current = false
+  }
+
+  useEffect(() => {
+    void initAudio()
+    return () => stopAll()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function handleExit() {
-    recognitionRef.current?.stop()
-    window.speechSynthesis?.cancel()
+    stopAll()
     onExit()
   }
 
@@ -240,15 +341,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     processing: 'Procesando',
     speaking: 'Hablando',
     paused: 'En pausa',
-  }
-
-  if (!supported) {
-    return (
-      <main className="flex-1 flex flex-col items-center justify-center bg-[#0F0F11]">
-        <p className="text-[#6b6d75] text-sm">Modo voz disponible en Chrome</p>
-        <button type="button" onClick={onExit} className="mt-4 text-sm text-[#C9A84C] hover:underline">Volver al chat</button>
-      </main>
-    )
   }
 
   return (
@@ -268,7 +360,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
 
         {/* Avatar with rings */}
         <div className="relative flex items-center justify-center w-32 h-32">
-          {/* Outer ring */}
           <div className={`absolute -inset-5 rounded-full border-2 ${
             voiceState === 'processing'
               ? 'border-transparent border-t-[#5a5b60] animate-spin'
@@ -278,7 +369,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
               ? 'border-[#2a2b30]'
               : 'border-[#C9A84C]/30 animate-pulse'
           }`} />
-          {/* Inner ring */}
           <div className={`absolute -inset-2 rounded-full border ${
             voiceState === 'speaking'
               ? 'border-[#C9A84C]/70 animate-pulse'
@@ -286,7 +376,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
               ? 'border-[#C9A84C]/40'
               : 'border-[#2a2b30]'
           }`} />
-          {/* Avatar */}
           <div className={`w-32 h-32 rounded-full flex items-center justify-center text-4xl font-bold transition-colors ${
             voiceState === 'speaking'
               ? 'bg-[#C9A84C]/30 border-2 border-[#C9A84C]/60 text-[#C9A84C]'
@@ -317,7 +406,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
             {permissionDenied && (
               <p className="text-xs text-[#6b6d75]">Activa el micrófono en tu navegador</p>
             )}
-            <button type="button" onClick={() => void requestPermissionAndStart()}
+            <button type="button" onClick={() => void initAudio()}
               className="bg-[#C9A84C] hover:bg-[#b8963f] text-[#0F0F11] font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors">
               Reanudar escucha
             </button>
