@@ -4133,8 +4133,8 @@
     {
       "type": "frame",
       "id": "H18Fg",
-      "x": 0,
-      "y": 1500,
+      "x": -1576,
+      "y": -5489,
       "name": "Projects__Dashboard__Default",
       "width": 1440,
       "height": 900,
@@ -5435,8 +5435,8 @@
     {
       "type": "frame",
       "id": "q8SC3",
-      "x": 1540,
-      "y": 1500,
+      "x": 3301,
+      "y": -5489,
       "name": "Projects__ProjectView__Default",
       "width": 1440,
       "height": 1356,
@@ -8820,8 +8820,8 @@
     {
       "type": "frame",
       "id": "EkILi",
-      "x": 0,
-      "y": -2598,
+      "x": 4909,
+      "y": -5489,
       "name": "Projects__Incubator__Default",
       "width": 1440,
       "height": 900,
@@ -13332,8 +13332,8 @@
     {
       "type": "frame",
       "id": "cFRkE",
-      "x": 4625,
-      "y": 1500,
+      "x": 1683,
+      "y": -5489,
       "name": "Projects__AdvisoryBoard__MyBoard",
       "width": 1440,
       "height": 900,
@@ -50497,8 +50497,8 @@
     {
       "type": "frame",
       "id": "zNxsb",
-      "x": 0,
-      "y": -3802,
+      "x": 49,
+      "y": -5489,
       "name": "Projects__SeedSession__Default",
       "width": 1440,
       "height": 900,
@@ -51647,14 +51647,13 @@
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "X7UKB",
-                          "name": "attachIcon",
-                          "fill": "#AAAAAA",
-                          "content": "📎",
-                          "fontFamily": "Inter",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "type": "icon_font",
+                          "id": "kTIBI",
+                          "name": "attachIco",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#AAAAAA"
                         }
                       ]
                     },
@@ -51675,14 +51674,13 @@
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "Eweo0",
-                          "name": "newMicIcon",
-                          "fill": "#AAAAAA",
-                          "content": "🎤",
-                          "fontFamily": "DM Sans",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "type": "icon_font",
+                          "id": "V8zOz",
+                          "name": "micIco",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#AAAAAA"
                         }
                       ]
                     },
@@ -51698,14 +51696,13 @@
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "vmQYL",
-                          "name": "newSendIcon",
-                          "fill": "#0A0A0B",
-                          "content": "↑",
-                          "fontFamily": "DM Sans",
-                          "fontSize": 18,
-                          "fontWeight": "700"
+                          "type": "icon_font",
+                          "id": "kU1im",
+                          "name": "sendIco",
+                          "width": 18,
+                          "height": 18,
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#0A0A0B"
                         }
                       ]
                     }
@@ -52993,8 +52990,8 @@
     {
       "type": "frame",
       "id": "aXs5x",
-      "x": 15374,
-      "y": 1500,
+      "x": 6489,
+      "y": -5489,
       "name": "Export__Center__Default",
       "width": 1440,
       "height": 900,
