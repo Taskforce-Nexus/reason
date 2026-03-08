@@ -578,3 +578,30 @@ Escalar a un vertical nuevo:
 
 Nexo configura — no construye en runtime.
 La construcción ocurre en fase de diseño, no en ejecución.
+
+---
+
+## 27. Tavus CVI — Nexo con cara
+
+Implementado como modal sobre Projects__SeedSession__Default.
+Activado desde el botón "Hablar con Nexo" en el top bar (solo fase 1 — Semilla).
+Replica: Daniel - Office (r72f7f7f7c8b), Phoenix-4.
+Nombre en UI: siempre "Nexo", nunca "Daniel" ni "Tavus".
+LLM: Claude Haiku vía callback_url a /api/tavus/llm.
+Cámara del founder: opcional (pip, esquina inferior izquierda del iframe).
+Grabación automática con timer visible durante la sesión.
+Transcripción copiada al chat principal al cerrar el modal.
+Fases 2-5: siguen usando Deepgram + Cartesia (VoiceModePanel).
+Costo estimado: ~$8-9 por sesión Semilla.
+Modelo de negocio: créditos por uso.
+
+Archivos:
+
+- `src/app/api/tavus/conversation/route.ts` — POST (crear) + DELETE (terminar)
+- `src/app/api/tavus/llm/route.ts` — POST (LLM callback Tavus) + GET (polling transcript)
+- `src/components/incubadora/NexoModal.tsx` — modal completo con iframe + pip + transcripción
+
+Variable de entorno requerida: `TAVUS_API_KEY`
+
+Nota: callback_url a localhost no es accesible externamente — para producción usar URL pública.
+En local, el iframe de Tavus funciona pero el LLM callback no recibirá llamadas de Tavus.
