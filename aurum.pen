@@ -50649,6 +50649,7 @@
               "type": "frame",
               "id": "SjyqN",
               "name": "seedSidebar",
+              "clip": true,
               "width": 320,
               "height": "fill_container",
               "fill": "#111113",
@@ -50660,7 +50661,7 @@
                 "fill": "#27282B"
               },
               "layout": "vertical",
-              "gap": 20,
+              "gap": 16,
               "padding": [
                 20,
                 24
@@ -51613,6 +51614,34 @@
                           "content": "Escribe tu respuesta o usa el micrófono...",
                           "fontFamily": "DM Sans",
                           "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lnt9C",
+                      "name": "attachBtn",
+                      "width": 40,
+                      "height": 40,
+                      "fill": "#1A1B1E",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#3A3B40"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "X7UKB",
+                          "name": "attachIcon",
+                          "fill": "#AAAAAA",
+                          "content": "📎",
+                          "fontFamily": "Inter",
+                          "fontSize": 15,
                           "fontWeight": "normal"
                         }
                       ]
