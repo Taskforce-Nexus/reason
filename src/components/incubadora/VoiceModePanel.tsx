@@ -91,6 +91,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
   }, [drawBars])
 
   function startListening() {
+    console.log('[VoiceMode] 6. startListening llamado')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SpeechAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     if (!SpeechAPI) { setSupported(false); return }
@@ -103,8 +104,11 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     recognition.continuous = true
     recognition.interimResults = true
 
+    recognition.onstart = () => console.log('[VoiceMode] 7. recognition.onstart')
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onresult = (event: any) => {
+      console.log('[VoiceMode] 8. onresult', event)
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
       timeoutRef.current = setTimeout(() => { recognition.stop(); setVS('paused') }, 30000)
 
@@ -122,6 +126,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     }
 
     recognition.onend = () => {
+      console.log('[VoiceMode] 10. onend — recognition terminó')
       if (voiceStateRef.current === 'listening') {
         try { recognition.start() } catch { /* browser may throttle */ }
       }
@@ -129,13 +134,14 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onerror = (e: any) => {
+      console.log('[VoiceMode] 9. onerror', e.error, e.message)
       if (e.error !== 'aborted') setVS('paused')
     }
 
     recognitionRef.current = recognition
     setVS('listening')
     timeoutRef.current = setTimeout(() => { recognition.stop(); setVS('paused') }, 30000)
-    try { recognition.start() } catch { setVS('paused') }
+    try { recognition.start(); console.log('[VoiceMode] 6b. recognition.start() llamado') } catch { setVS('paused') }
   }
 
   async function processMessage(text: string) {
