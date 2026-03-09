@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const TAVUS_API = 'https://tavusapi.com/v2'
 const REPLICA_ID = 'r3a715eeff8d'
+const PERSONA_ID = 'p9dc8eddb3a0' // Nexo — Cartesia Pedro (15d0c2e2, sonic-3)
 
 const NEXO_GREETING =
   'Hola, soy Nexo. Estoy aquí para ayudarte a estructurar tu idea en un venture real. ' +
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
 
     const requestBody = {
       replica_id: REPLICA_ID,
+      persona_id: PERSONA_ID,
       callback_url: `${appUrl}/api/tavus/llm`,
       conversation_name: `AURUM Semilla - ${project_id}`,
       custom_greeting: NEXO_GREETING,

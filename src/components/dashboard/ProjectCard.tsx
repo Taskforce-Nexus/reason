@@ -121,6 +121,7 @@ export default function ProjectCard({ id, name, currentPhase, lastActiveAt }: Pr
                 onChange={e => setEditName(e.target.value)}
                 onBlur={saveEdit}
                 onKeyDown={e => { if (e.key === 'Enter') saveEdit(); if (e.key === 'Escape') setEditing(false) }}
+                aria-label="Nombre del proyecto"
                 className="bg-[#0F0F11] border border-[#C9A84C] rounded-lg px-3 py-1 text-white text-lg font-semibold focus:outline-none w-full"
               />
             ) : (
