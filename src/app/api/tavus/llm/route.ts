@@ -49,6 +49,8 @@ export async function POST(req: NextRequest) {
       messages?: Array<{ role: string; content: string }>
     }
 
+    console.log('[Tavus webhook] body:', JSON.stringify(body))
+
     const conversationId = body.conversation_id ?? 'default'
 
     // ── Utterance webhook (transcription events)

@@ -24,11 +24,8 @@ export default function NexoModal({ projectId, projectName, idea, onClose }: Nex
   const [transcript, setTranscript] = useState<Message[]>([])
   const [textInput, setTextInput] = useState('')
   const [elapsed, setElapsed] = useState(0)
-  const [cameraOn, setCameraOn] = useState(false)
   const [closing, setClosing] = useState(false)
 
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const cameraStreamRef = useRef<MediaStream | null>(null)
   const transcriptBottomRef = useRef<HTMLDivElement>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -77,7 +74,6 @@ export default function NexoModal({ projectId, projectName, idea, onClose }: Nex
           messages: Message[]
           transcript: Array<{ role: string; text: string; timestamp: number }>
         }
-        // Prefer webhook transcript; fall back to LLM history if empty
         const source = data.transcript.length > 0 ? data.transcript : data.messages
         if (source.length > knownLengthRef.current) {
           knownLengthRef.current = source.length
@@ -100,28 +96,6 @@ export default function NexoModal({ projectId, projectName, idea, onClose }: Nex
     transcriptBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [transcript])
 
-  // ─── Camera pip ──────────────────────────────────────────────────────────
-  async function toggleCamera() {
-    if (cameraOn) {
-      cameraStreamRef.current?.getTracks().forEach(t => t.stop())
-      cameraStreamRef.current = null
-      if (videoRef.current) videoRef.current.srcObject = null
-      setCameraOn(false)
-      return
-    }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      cameraStreamRef.current = stream
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream
-        await videoRef.current.play()
-      }
-      setCameraOn(true)
-    } catch {
-      // Permission denied or unavailable — silently ignore
-    }
-  }
-
   // ─── Close handler ───────────────────────────────────────────────────────
   const handleClose = useCallback(async () => {
     if (closing) return
@@ -129,8 +103,6 @@ export default function NexoModal({ projectId, projectName, idea, onClose }: Nex
 
     if (timerRef.current) clearInterval(timerRef.current)
     if (pollRef.current) clearInterval(pollRef.current)
-
-    cameraStreamRef.current?.getTracks().forEach(t => t.stop())
 
     if (conversationId) {
       try {
@@ -174,7 +146,7 @@ export default function NexoModal({ projectId, projectName, idea, onClose }: Nex
       {/* Modal */}
       <div className="relative w-full max-w-6xl mx-4 h-[85vh] bg-[#0F0F11] border border-[#2a2b30] rounded-2xl overflow-hidden flex flex-col shadow-2xl">
 
-        {/* Top bar */}
+        {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-[#2a2b30] shrink-0">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1.5 text-sm font-semibold text-white">
@@ -232,47 +204,6 @@ export default function NexoModal({ projectId, projectName, idea, onClose }: Nex
                 title="Nexo — Sesión de voz"
               />
             )}
-
-            {/* CSS injected into parent page — Tavus iframe is cross-origin so these
-                selectors cannot penetrate the iframe boundary. Documented as known limitation. */}
-            <style>{`
-              [data-testid="leave-button"],
-              [data-testid="people-button"],
-              .leave-button,
-              .people-button { display: none !important; }
-              .participant-name { visibility: hidden; }
-            `}</style>
-
-            {/* Founder PiP camera */}
-            {cameraOn && (
-              <div className="absolute bottom-4 left-4 w-40 h-[120px] rounded-xl overflow-hidden border-2 border-[#C9A84C]/40 bg-black shadow-lg">
-                <video
-                  ref={videoRef}
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover scale-x-[-1]"
-                />
-              </div>
-            )}
-
-            {/* Camera toggle */}
-            {conversationUrl && (
-              <button
-                type="button"
-                onClick={() => void toggleCamera()}
-                className={`absolute bottom-4 right-4 flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border transition-colors ${
-                  cameraOn
-                    ? 'bg-[#C9A84C]/20 border-[#C9A84C]/40 text-[#C9A84C]'
-                    : 'border-[#2a2b30] text-[#6b6d75] hover:text-white hover:border-[#3a3b40]'
-                }`}
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M23 7l-7 5 7 5V7z"/>
-                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-                </svg>
-                {cameraOn ? 'Cámara on' : 'Activar cámara'}
-              </button>
-            )}
           </div>
 
           {/* Right panel — Transcript (40%) */}
@@ -281,7 +212,6 @@ export default function NexoModal({ projectId, projectName, idea, onClose }: Nex
               <p className="text-xs text-[#6b6d75] uppercase tracking-wider font-medium">Transcripción</p>
             </div>
 
-            {/* Messages */}
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
               {transcript.length === 0 && conversationUrl && (
                 <p className="text-xs text-[#3a3b40] italic">La transcripción aparecerá aquí…</p>
