@@ -40,8 +40,8 @@ function getSupportedMimeType(): string {
 const SPEECH_START_THRESHOLD = 20
 const SILENCE_THRESHOLD = 12
 const SILENCE_DURATION_MS = 600
-// Bug 2 fix: interrupt threshold lowered from SPEECH_START_THRESHOLD*2 (40) to 20
-const INTERRUPT_THRESHOLD = 20
+// T3 fix: raised to 45 to prevent acoustic echo (Nexo's audio) from self-interrupting
+const INTERRUPT_THRESHOLD = 45
 
 // Sentence streaming: flush buffer when ≥ this length AND ends in boundary
 const MIN_SENTENCE_CHARS = 80
@@ -201,8 +201,8 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     // Clear TTS queue
     audioQueueRef.current = []
     isPlayingQueueRef.current = false
-    // Bug 3 fix: increment turnId — all in-flight TTS for previous turn are invalidated
-    currentTurnIdRef.current++
+    // T4 fix: use Date.now() — globally unique, prevents any stale-turn ID collision
+    currentTurnIdRef.current = Date.now()
     pendingTTSCountRef.current = 0
     streamDoneRef.current = false
     // Reset text reveal accumulator
@@ -251,7 +251,10 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     ) {
       if (voiceStateRef.current === 'speaking') {
         setNexoText(nexoDisplayedRef.current)
-        setVS('listening')
+        // T3 fix: 300ms cooldown — lets residual echo decay before VAD re-activates
+        setTimeout(() => {
+          if (voiceStateRef.current === 'speaking') setVS('listening')
+        }, 300)
       }
     }
   }
@@ -277,21 +280,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     source.connect(audioCtx.destination)
     currentSourceRef.current = source
 
-    // Bug 1 fix: reveal this sentence's text progressively over its audio duration
-    const totalChars = chunk.text.length
-    const durationMs = Math.max(chunk.buffer.duration * 1000, 100)
-    const charsPerTick = Math.max(1, Math.ceil(totalChars / (durationMs / REVEAL_INTERVAL_MS)))
-    let revealed = 0
-
-    revealIntervalRef.current = setInterval(() => {
-      revealed = Math.min(revealed + charsPerTick, totalChars)
-      setNexoText(nexoDisplayedRef.current + chunk.text.slice(0, revealed))
-      if (revealed >= totalChars) {
-        clearInterval(revealIntervalRef.current!)
-        revealIntervalRef.current = null
-      }
-    }, REVEAL_INTERVAL_MS)
-
     source.onended = () => {
       // Commit sentence to displayed text and clear interval
       nexoDisplayedRef.current += chunk.text
@@ -308,7 +296,30 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       }
     }
 
-    source.start()
+    source.start(0)
+
+    // T2 fix: delay reveal by 100ms so audio starts before text appears
+    // Enforce minimum 5 ticks so text never flashes in all at once
+    const totalChars = chunk.text.length
+    const durationMs = Math.max(chunk.buffer.duration * 1000, 100)
+    const audioDrivenCharsPerTick = Math.max(1, Math.ceil(totalChars / (durationMs / REVEAL_INTERVAL_MS)))
+    const minTicksCharsPerTick = Math.max(1, Math.ceil(totalChars / 5))
+    const charsPerTick = audioDrivenCharsPerTick > minTicksCharsPerTick
+      ? minTicksCharsPerTick
+      : audioDrivenCharsPerTick
+    let revealed = 0
+
+    setTimeout(() => {
+      if (voiceStateRef.current !== 'speaking') return
+      revealIntervalRef.current = setInterval(() => {
+        revealed = Math.min(revealed + charsPerTick, totalChars)
+        setNexoText(nexoDisplayedRef.current + chunk.text.slice(0, revealed))
+        if (revealed >= totalChars) {
+          clearInterval(revealIntervalRef.current!)
+          revealIntervalRef.current = null
+        }
+      }, REVEAL_INTERVAL_MS)
+    }, 100)
   }
 
   async function addToTTSQueue(text: string) {
@@ -377,7 +388,10 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     const newMessages = [...messagesRef.current, userMsg]
     onMessagesUpdate(newMessages)
 
-    // Bug 3 fix: reset all voice state for new turn (increments turnId, invalidating stale TTS)
+    // T4 fix: explicit resets before SSE loop — belt-and-suspenders on top of resetVoiceState
+    currentTurnIdRef.current = Date.now()
+    pendingTTSCountRef.current = 0
+    audioQueueRef.current = []
     resetVoiceState()
 
     try {
