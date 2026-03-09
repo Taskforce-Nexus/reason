@@ -5,6 +5,8 @@ import type { Message } from '@/lib/types'
 
 interface NexoModalProps {
   projectId: string
+  projectName?: string
+  idea?: string
   onClose: (transcript: Message[]) => void
 }
 
@@ -14,7 +16,7 @@ function formatTime(seconds: number): string {
   return `${m}:${s}`
 }
 
-export default function NexoModal({ projectId, onClose }: NexoModalProps) {
+export default function NexoModal({ projectId, projectName, idea, onClose }: NexoModalProps) {
   const [conversationUrl, setConversationUrl] = useState<string | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -39,7 +41,7 @@ export default function NexoModal({ projectId, onClose }: NexoModalProps) {
         const res = await fetch('/api/tavus/conversation', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ project_id: projectId }),
+          body: JSON.stringify({ project_id: projectId, project_name: projectName, idea }),
         })
         const data = await res.json()
         if (!res.ok || !data.conversation_url) {
@@ -56,7 +58,7 @@ export default function NexoModal({ projectId, onClose }: NexoModalProps) {
       }
     }
     void createConversation()
-  }, [projectId])
+  }, [projectId, projectName, idea])
 
   // ─── Start timer once conversation is ready ──────────────────────────────
   useEffect(() => {
@@ -65,16 +67,28 @@ export default function NexoModal({ projectId, onClose }: NexoModalProps) {
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [conversationUrl])
 
-  // ─── Poll transcript from LLM callback route ────────────────────────────
+  // ─── Poll transcript (utterance webhook store) ───────────────────────────
   useEffect(() => {
     if (!conversationId) return
     pollRef.current = setInterval(async () => {
       try {
         const res = await fetch(`/api/tavus/llm?conversationId=${conversationId}`)
-        const data = await res.json() as { messages: Message[] }
-        if (data.messages.length > knownLengthRef.current) {
-          knownLengthRef.current = data.messages.length
-          setTranscript(data.messages)
+        const data = await res.json() as {
+          messages: Message[]
+          transcript: Array<{ role: string; text: string; timestamp: number }>
+        }
+        // Prefer webhook transcript; fall back to LLM history if empty
+        const source = data.transcript.length > 0 ? data.transcript : data.messages
+        if (source.length > knownLengthRef.current) {
+          knownLengthRef.current = source.length
+          if (data.transcript.length > 0) {
+            setTranscript(data.transcript.map(e => ({
+              role: e.role === 'Nexo' ? 'assistant' : 'user' as 'user' | 'assistant',
+              content: e.text,
+            })))
+          } else {
+            setTranscript(data.messages)
+          }
         }
       } catch { /* ignore polling errors */ }
     }, 2000)
@@ -133,8 +147,18 @@ export default function NexoModal({ projectId, onClose }: NexoModalProps) {
     if (conversationId) {
       try {
         const res = await fetch(`/api/tavus/llm?conversationId=${conversationId}`)
-        const data = await res.json() as { messages: Message[] }
-        if (data.messages.length > 0) finalTranscript = data.messages
+        const data = await res.json() as {
+          messages: Message[]
+          transcript: Array<{ role: string; text: string }>
+        }
+        if (data.transcript.length > 0) {
+          finalTranscript = data.transcript.map(e => ({
+            role: e.role === 'Nexo' ? 'assistant' : 'user' as 'user' | 'assistant',
+            content: e.text,
+          }))
+        } else if (data.messages.length > 0) {
+          finalTranscript = data.messages
+        }
       } catch { /* use what we have */ }
     }
 
@@ -208,6 +232,16 @@ export default function NexoModal({ projectId, onClose }: NexoModalProps) {
                 title="Nexo — Sesión de voz"
               />
             )}
+
+            {/* CSS injected into parent page — Tavus iframe is cross-origin so these
+                selectors cannot penetrate the iframe boundary. Documented as known limitation. */}
+            <style>{`
+              [data-testid="leave-button"],
+              [data-testid="people-button"],
+              .leave-button,
+              .people-button { display: none !important; }
+              .participant-name { visibility: hidden; }
+            `}</style>
 
             {/* Founder PiP camera */}
             {cameraOn && (
@@ -284,6 +318,7 @@ export default function NexoModal({ projectId, onClose }: NexoModalProps) {
                   value={textInput}
                   onChange={e => setTextInput(e.target.value)}
                   placeholder="Escribe si prefieres…"
+                  aria-label="Mensaje de texto"
                   className="flex-1 bg-[#1A1B1E] border border-[#2a2b30] rounded-lg px-3 py-2 text-xs text-white placeholder-[#3a3b40] focus:outline-none focus:border-[#C9A84C]/40 transition-colors"
                 />
                 <button

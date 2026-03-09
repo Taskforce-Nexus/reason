@@ -472,6 +472,8 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         {nexoModalOpen && (
           <NexoModal
             projectId={project.id}
+            projectName={project.name}
+            idea={project.founder_brief ?? undefined}
             onClose={(transcriptMsgs) => {
               setNexoModalOpen(false)
               if (transcriptMsgs.length > 0) {

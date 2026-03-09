@@ -1,33 +1,73 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { callClaude } from '@/lib/claude'
-import { NEXO_SEED_SYSTEM } from '@/lib/prompts'
 import type { Message } from '@/lib/types'
 
-// In-memory conversation history per Tavus conversation_id.
-// Resets on server restart — acceptable for development and short sessions.
+// ─── In-memory stores ─────────────────────────────────────────────────────────
+// LLM conversation history (LLM callback turns)
 const historyMap = new Map<string, Message[]>()
 
-// ─── POST — LLM callback from Tavus ──────────────────────────────────────────
-// Tavus sends: { conversation_id, transcript, session_id, ... }
-// We respond: { message: string }
+// Webhook utterance transcript (conversation.utterance events)
+type TranscriptEntry = { role: string; text: string; timestamp: number }
+const transcriptStore = new Map<string, TranscriptEntry[]>()
+
+// ─── System prompt ────────────────────────────────────────────────────────────
+const NEXO_CVI_SYSTEM = `Eres Nexo, el arquitecto de ventures de AURUM. Estás en una videollamada en vivo con un founder.
+
+Tu personalidad:
+- Directo, curioso, energético — no terapéutico
+- Haces UNA pregunta a la vez, nunca varias
+- Reaccionas a lo que el founder dice, no a lo que imaginas que siente
+- Nunca dices "entiendo tu frustración" ni frases de coach motivacional
+- Si el founder comparte una idea, reaccionas con curiosidad genuina sobre el negocio
+- Si algo es ambiguo, preguntas para entender mejor — no asumes emoción
+- Cuando el founder menciona un número, mercado, o dato concreto, lo retomas en tu respuesta
+
+Tu objetivo en esta sesión:
+Entender la idea del founder al 100%: el problema, el cliente, los recursos disponibles, la visión. Explora en profundidad antes de pasar al siguiente tema.
+
+Temas que debes cubrir en orden natural (no como checklist):
+1. El problema que resuelve el venture
+2. El cliente objetivo
+3. La experiencia y background del founder
+4. Los recursos disponibles (tiempo, equipo, capital)
+5. La visión a largo plazo
+
+Formato de respuesta:
+- Máximo 2-3 oraciones
+- Termina siempre con una pregunta concreta
+- Sin listas, sin bullets — es una conversación fluida`
+
+// ─── POST — LLM callback from Tavus + utterance webhook ──────────────────────
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as {
+      event_type?: string
       conversation_id?: string
+      role?: string
       transcript?: string
       session_id?: string
-      // Tavus may send OpenAI-compatible format as well
       messages?: Array<{ role: string; content: string }>
     }
 
     const conversationId = body.conversation_id ?? 'default'
 
-    // Extract the user message from either format
+    // ── Utterance webhook (transcription events)
+    if (body.event_type === 'conversation.utterance') {
+      const entries = transcriptStore.get(conversationId) ?? []
+      entries.push({
+        role: body.role === 'replica' ? 'Nexo' : 'user',
+        text: body.transcript ?? '',
+        timestamp: Date.now(),
+      })
+      transcriptStore.set(conversationId, entries)
+      return NextResponse.json({ ok: true })
+    }
+
+    // ── LLM callback (generate reply)
     let userText: string | undefined
     if (body.transcript?.trim()) {
       userText = body.transcript.trim()
     } else if (body.messages) {
-      // OpenAI-compatible fallback
       const last = body.messages.at(-1)
       if (last?.role === 'user') userText = last.content
     }
@@ -36,23 +76,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: '' })
     }
 
-    // Build history
     const history = historyMap.get(conversationId) ?? []
     history.push({ role: 'user', content: userText })
 
-    // Call Claude with Nexo system prompt
     const claudeMessages = history.map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
     const response = await callClaude(
-      NEXO_SEED_SYSTEM,
+      NEXO_CVI_SYSTEM,
       claudeMessages,
       512,
       'claude-haiku-4-5-20251001'
     )
 
-    // Strip [CONSEJO:...] signal — not relevant for voice session
     const clean = response.replace(/\[CONSEJO:[^\]]+\]\s*/g, '').trim()
 
-    // Store assistant response in history
     history.push({ role: 'assistant', content: clean, author: 'Nexo' })
     historyMap.set(conversationId, history)
 
@@ -63,10 +99,10 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// ─── GET — polling endpoint for NexoModal transcript ────────────────────────
-// NexoModal polls this to display real-time transcription in the right panel.
+// ─── GET — polling endpoint for NexoModal ────────────────────────────────────
 export async function GET(req: NextRequest) {
   const conversationId = req.nextUrl.searchParams.get('conversationId') ?? 'default'
   const history = historyMap.get(conversationId) ?? []
-  return NextResponse.json({ messages: history })
+  const transcript = transcriptStore.get(conversationId) ?? []
+  return NextResponse.json({ messages: history, transcript })
 }
