@@ -37,19 +37,18 @@ function getSupportedMimeType(): string {
   return 'audio/webm'
 }
 
-// VAD thresholds (0–127 amplitude after normalization)
-const SPEECH_START_THRESHOLD = 20
-const SILENCE_THRESHOLD = 12
-const SILENCE_DURATION_MS = 600
-// Interrupt threshold — mic is muted during TTS so echo is not an issue
+// Interrupt threshold — amplitude check during TTS to detect founder speaking
 const INTERRUPT_THRESHOLD = 20
 
 // Sentence streaming: flush buffer when ≥ this length AND ends in boundary
 const MIN_SENTENCE_CHARS = 80
 const SENTENCE_END_RE = /[.!?\n]$/
 
-// Bug 1 fix: text reveal interval
+// Text reveal interval (ms)
 const REVEAL_INTERVAL_MS = 50
+
+// Deepgram WS keepalive interval (ms)
+const DG_KEEPALIVE_MS = 8000
 
 export default function VoiceModePanel({ projectId, conversationId, messages, onMessagesUpdate, onExit, onSemillaComplete }: Props) {
   const [voiceState, setVoiceState] = useState<VoiceState>('paused')
@@ -63,14 +62,15 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
   const barsRef = useRef<number[]>(Array(24).fill(0.1))
   const messagesRef = useRef(messages)
 
-  // Audio pipeline — single AudioContext for whole session (Bug 3 fix: never recreate)
+  // Audio pipeline
   const streamRef = useRef<MediaStream | null>(null)
   const audioCtxRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
-  const audioChunksRef = useRef<Blob[]>([])
-  const isCapturingRef = useRef(false)
-  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Deepgram WebSocket
+  const dgSocketRef = useRef<WebSocket | null>(null)
+  const keepaliveRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const vadFrameRef = useRef<number | null>(null)
 
   // TTS queue — stores {buffer, text} pairs
@@ -80,11 +80,11 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
   const pendingTTSCountRef = useRef(0)
   const streamDoneRef = useRef(false)
 
-  // Bug 3 fix: turn ID — prevents stale TTS from corrupting counters after interrupt
+  // Turn ID — prevents stale TTS from corrupting counters after interrupt
   const currentTurnIdRef = useRef(0)
 
-  // Bug 1 fix: text reveal state
-  const nexoDisplayedRef = useRef('')       // text from fully played sentences
+  // Text reveal state
+  const nexoDisplayedRef = useRef('')
   const revealIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   function setVS(state: VoiceState) {
@@ -136,7 +136,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     return () => { if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current) }
   }, [drawBars])
 
-  // ─── VAD helpers ──────────────────────────────────────────────────────────
+  // ─── VAD helpers (interrupt detection only) ───────────────────────────────
   function getRMS(analyser: AnalyserNode): number {
     const data = new Uint8Array(analyser.fftSize)
     analyser.getByteTimeDomainData(data)
@@ -148,79 +148,36 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     return Math.sqrt(sum / data.length)
   }
 
-  function resetSilenceTimer() {
-    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
-    silenceTimerRef.current = setTimeout(() => stopCapture(), SILENCE_DURATION_MS)
-  }
-
-  function startCapture() {
-    const stream = streamRef.current
-    if (!stream || isCapturingRef.current) return
-    isCapturingRef.current = true
-    audioChunksRef.current = []
-
-    const mimeType = getSupportedMimeType()
-    const recorder = new MediaRecorder(stream, { mimeType })
-
-    recorder.ondataavailable = (e) => {
-      if (e.data.size > 0) audioChunksRef.current.push(e.data)
-    }
-    recorder.onstop = () => {
-      isCapturingRef.current = false
-      if (audioChunksRef.current.length > 0) {
-        const blob = new Blob(audioChunksRef.current, { type: mimeType })
-        void sendToSTT(blob)
-      } else {
-        setVS('listening')
-      }
-    }
-
-    mediaRecorderRef.current = recorder
-    recorder.start()
-  }
-
-  function stopCapture() {
-    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
-    const recorder = mediaRecorderRef.current
-    if (recorder && recorder.state !== 'inactive') {
-      setVS('processing')
-      recorder.stop()
-    }
-  }
-
-  // ─── Mic mute/unmute — prevents echo from triggering VAD during TTS ──────────
+  // ─── Mic pause/resume — pauses MediaRecorder during TTS (prevents echo) ──
   function muteMic() {
-    streamRef.current?.getAudioTracks().forEach(t => { t.enabled = false })
+    if (mediaRecorderRef.current?.state === 'recording') {
+      try { mediaRecorderRef.current.pause() } catch { /* ignore */ }
+    }
   }
   function unmuteMic() {
-    streamRef.current?.getAudioTracks().forEach(t => { t.enabled = true })
+    if (mediaRecorderRef.current?.state === 'paused') {
+      try { mediaRecorderRef.current.resume() } catch { /* ignore */ }
+    }
   }
 
   // ─── Centralized reset — called on interrupt, error, and new turn ──────────
-  // Does NOT close AudioContext or stop mic stream (those stay alive for session)
   function resetVoiceState() {
-    // Stop text reveal animation
     if (revealIntervalRef.current) {
       clearInterval(revealIntervalRef.current)
       revealIntervalRef.current = null
     }
-    // Stop current audio source
     try { currentSourceRef.current?.stop() } catch { /* ignore */ }
     currentSourceRef.current = null
-    // Clear TTS queue
     audioQueueRef.current = []
     isPlayingQueueRef.current = false
-    // T4 fix: use Date.now() — globally unique, prevents any stale-turn ID collision
     currentTurnIdRef.current = Date.now()
     pendingTTSCountRef.current = 0
     streamDoneRef.current = false
-    // Reset text reveal accumulator
     nexoDisplayedRef.current = ''
-    // Ensure mic is unmuted when reset fires (interrupt or error)
     unmuteMic()
   }
 
-  // ─── VAD loop ─────────────────────────────────────────────────────────────
+  // ─── VAD loop (interrupt detection only — speech detection via Deepgram) ──
   function startVADLoop() {
     if (vadFrameRef.current) cancelAnimationFrame(vadFrameRef.current)
 
@@ -229,19 +186,8 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       const analyser = analyserRef.current
       if (!analyser) return
 
-      const state = voiceStateRef.current
-
-      if (state === 'listening') {
+      if (voiceStateRef.current === 'speaking') {
         const rms = getRMS(analyser)
-        if (!isCapturingRef.current && rms > SPEECH_START_THRESHOLD) {
-          startCapture()
-          resetSilenceTimer()
-        } else if (isCapturingRef.current && rms > SILENCE_THRESHOLD) {
-          resetSilenceTimer()
-        }
-      } else if (state === 'speaking') {
-        const rms = getRMS(analyser)
-        // Bug 2 fix: threshold lowered from 40 to 20; resetVoiceState clears queue fully
         if (rms > INTERRUPT_THRESHOLD) {
           resetVoiceState()
           setVS('listening')
@@ -262,7 +208,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     ) {
       if (voiceStateRef.current === 'speaking') {
         setNexoText(nexoDisplayedRef.current)
-        // Unmute mic and re-enable VAD after 100ms cooldown
         setTimeout(() => {
           unmuteMic()
           if (voiceStateRef.current === 'speaking') setVS('listening')
@@ -272,7 +217,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
   }
 
   function playNextInQueue() {
-    // Clear any running reveal animation before starting next chunk
     if (revealIntervalRef.current) {
       clearInterval(revealIntervalRef.current)
       revealIntervalRef.current = null
@@ -293,7 +237,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     currentSourceRef.current = source
 
     source.onended = () => {
-      // Commit sentence to displayed text and clear interval
       nexoDisplayedRef.current += chunk.text
       setNexoText(nexoDisplayedRef.current)
       if (revealIntervalRef.current) {
@@ -308,12 +251,9 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       }
     }
 
-    // Mute mic while Cartesia audio plays — prevents echo from triggering VAD
     muteMic()
     source.start(0)
 
-    // T2 fix: delay reveal by 100ms so audio starts before text appears
-    // Enforce minimum 5 ticks so text never flashes in all at once
     const totalChars = chunk.text.length
     const durationMs = Math.max(chunk.buffer.duration * 1000, 100)
     const audioDrivenCharsPerTick = Math.max(1, Math.ceil(totalChars / (durationMs / REVEAL_INTERVAL_MS)))
@@ -337,7 +277,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
   }
 
   async function addToTTSQueue(text: string) {
-    // Bug 3 fix: capture turnId at start — stale requests from interrupted turns are ignored
     const turnId = currentTurnIdRef.current
     if (!text.trim() || voiceStateRef.current !== 'speaking') return
     const audioCtx = audioCtxRef.current
@@ -365,9 +304,8 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       audioQueueRef.current.push({ buffer: audioBuffer, text: stripped })
       if (!isPlayingQueueRef.current) playNextInQueue()
     } catch {
-      // ignore TTS errors — next sentence will continue
+      // ignore TTS errors
     } finally {
-      // Bug 3 fix: only decrement for current turn — prevents counter going negative
       if (turnId === currentTurnIdRef.current) {
         pendingTTSCountRef.current--
         checkQueueDone()
@@ -375,25 +313,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     }
   }
 
-  // ─── STT → Chat (streaming) → TTS pipeline ────────────────────────────────
-  async function sendToSTT(audioBlob: Blob) {
-    try {
-      const formData = new FormData()
-      formData.append('audio', audioBlob, 'audio.webm')
-      const res = await fetch('/api/voice/stt', { method: 'POST', body: formData })
-      const data = await res.json()
-
-      if (data.transcript?.trim()) {
-        setTranscript(data.transcript)
-        await processMessage(data.transcript)
-      } else {
-        setVS('listening')
-      }
-    } catch {
-      setVS('listening')
-    }
-  }
-
+  // ─── Chat streaming → TTS pipeline ───────────────────────────────────────
   async function processMessage(text: string) {
     setTranscript('')
     setNexoText('')
@@ -402,7 +322,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     const newMessages = [...messagesRef.current, userMsg]
     onMessagesUpdate(newMessages)
 
-    // T4 fix: explicit resets before SSE loop — belt-and-suspenders on top of resetVoiceState
     currentTurnIdRef.current = Date.now()
     pendingTTSCountRef.current = 0
     audioQueueRef.current = []
@@ -427,7 +346,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       const contentType = res.headers.get('content-type') ?? ''
 
       if (contentType.includes('text/event-stream')) {
-        // ── Streaming mode ──────────────────────────────────────────────────
         setVS('speaking')
         const reader = res.body.getReader()
         const decoder = new TextDecoder()
@@ -461,7 +379,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
               } else if (parsed.token) {
                 fullText += parsed.token
                 sentenceBuffer += parsed.token
-                // Bug 1 fix: do NOT setNexoText here — text reveals when audio plays
 
                 if (
                   sentenceBuffer.length >= MIN_SENTENCE_CHARS &&
@@ -471,11 +388,10 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
                   sentenceBuffer = ''
                 }
               }
-            } catch { /* ignore malformed SSE events */ }
+            } catch { /* ignore malformed SSE */ }
           }
         }
       } else {
-        // ── Fallback: non-streaming JSON ────────────────────────────────────
         const data = await res.json()
         if (data.message) {
           const assistantMsg: Message = { role: 'assistant', content: data.message, author: 'Nexo' }
@@ -493,6 +409,100 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     }
   }
 
+  // ─── Deepgram WebSocket ───────────────────────────────────────────────────
+  function openDGWebSocket(tempKey: string) {
+    const url = [
+      'wss://api.deepgram.com/v1/listen',
+      '?model=nova-3',
+      '&language=es-419',
+      '&smart_format=true',
+      '&punctuate=true',
+      '&interim_results=true',
+      '&endpointing=500',
+      '&utterance_end_ms=1000',
+    ].join('')
+
+    const ws = new WebSocket(url, ['token', tempKey])
+    dgSocketRef.current = ws
+
+    ws.onopen = () => {
+      keepaliveRef.current = setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'KeepAlive' }))
+        }
+      }, DG_KEEPALIVE_MS)
+    }
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data as string) as {
+          type: string
+          channel?: { alternatives?: Array<{ transcript: string }> }
+          speech_final?: boolean
+        }
+        if (data.type === 'Results') {
+          const transcript = data.channel?.alternatives?.[0]?.transcript?.trim() ?? ''
+          if (data.speech_final && transcript) {
+            const state = voiceStateRef.current
+            if (state === 'listening' || state === 'processing') {
+              setTranscript(transcript)
+              void processMessage(transcript)
+            }
+          }
+        }
+      } catch { /* ignore parse errors */ }
+    }
+
+    ws.onerror = (err) => {
+      console.error('[DG WebSocket] error:', err)
+    }
+
+    ws.onclose = () => {
+      if (keepaliveRef.current) {
+        clearInterval(keepaliveRef.current)
+        keepaliveRef.current = null
+      }
+      // Auto-reconnect if session still active
+      if (voiceStateRef.current !== 'paused') {
+        setTimeout(() => void reconnectDGWebSocket(), 2000)
+      }
+    }
+  }
+
+  async function reconnectDGWebSocket() {
+    try {
+      const res = await fetch('/api/voice/stt-token')
+      if (!res.ok) return
+      const { key } = await res.json() as { key: string }
+      openDGWebSocket(key)
+      // Restart recorder if needed
+      const recorder = mediaRecorderRef.current
+      if (recorder && recorder.state === 'inactive' && streamRef.current) {
+        startContinuousRecorder()
+      }
+    } catch (err) {
+      console.error('[DG WebSocket] reconnect failed:', err)
+    }
+  }
+
+  // ─── Continuous MediaRecorder — sends 250ms chunks to Deepgram WS ────────
+  function startContinuousRecorder() {
+    const stream = streamRef.current
+    if (!stream) return
+
+    const mimeType = getSupportedMimeType()
+    const recorder = new MediaRecorder(stream, { mimeType })
+
+    recorder.ondataavailable = (e) => {
+      if (e.data.size > 0 && dgSocketRef.current?.readyState === WebSocket.OPEN) {
+        dgSocketRef.current.send(e.data)
+      }
+    }
+
+    recorder.start(250) // timeslice — fires ondataavailable every 250ms
+    mediaRecorderRef.current = recorder
+  }
+
   // ─── Init / cleanup ───────────────────────────────────────────────────────
   async function initAudio() {
     stopAll()
@@ -503,7 +513,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       streamRef.current = stream
 
-      // Single AudioContext for the whole session — never recreate between turns
+      // AudioContext for VAD interrupt detection and visualization
       const audioCtx = new AudioContext()
       audioCtxRef.current = audioCtx
       if (audioCtx.state === 'suspended') await audioCtx.resume()
@@ -514,17 +524,36 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       micSource.connect(analyser)
       analyserRef.current = analyser
 
+      // Fetch Deepgram temporary key
+      const tokenRes = await fetch('/api/voice/stt-token')
+      if (!tokenRes.ok) throw new Error('Failed to get Deepgram token')
+      const { key } = await tokenRes.json() as { key: string }
+
+      // Open Deepgram WebSocket and start streaming
+      openDGWebSocket(key)
+      startContinuousRecorder()
+
       setPermissionDenied(false)
       setVS('listening')
       startVADLoop()
-    } catch {
+    } catch (err) {
+      console.error('[VoiceMode] init error:', err)
       setPermissionDenied(true); setVS('paused')
     }
   }
 
   function stopAll() {
     if (vadFrameRef.current) { cancelAnimationFrame(vadFrameRef.current); vadFrameRef.current = null }
-    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current)
+    if (keepaliveRef.current) { clearInterval(keepaliveRef.current); keepaliveRef.current = null }
+    if (dgSocketRef.current) {
+      try {
+        if (dgSocketRef.current.readyState === WebSocket.OPEN) {
+          dgSocketRef.current.send(JSON.stringify({ type: 'CloseStream' }))
+          dgSocketRef.current.close()
+        }
+      } catch { /* ignore */ }
+      dgSocketRef.current = null
+    }
     if (mediaRecorderRef.current?.state !== 'inactive') {
       try { mediaRecorderRef.current?.stop() } catch { /* ignore */ }
     }
@@ -534,7 +563,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     audioCtxRef.current?.close().catch(() => null)
     audioCtxRef.current = null
     analyserRef.current = null
-    isCapturingRef.current = false
   }
 
   useEffect(() => {
@@ -545,7 +573,6 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
 
   function handleExit() { stopAll(); onExit() }
 
-  // Bug 2 fix: manual interrupt button handler
   function handleInterrupt() {
     resetVoiceState()
     setVS('listening')
@@ -615,7 +642,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
         <canvas ref={canvasRef} width={240} height={40}
           className={`rounded transition-opacity ${voiceState === 'paused' ? 'opacity-20' : 'opacity-60'}`} />
 
-        {/* Bug 2 fix: visual interrupt button — pulsing circle, tappable */}
+        {/* Visual interrupt button */}
         {voiceState === 'speaking' && (
           <button
             type="button"
@@ -644,7 +671,7 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
           </div>
         )}
 
-        {/* Nexo response — Bug 1 fix: text reveals progressively synchronized with audio */}
+        {/* Nexo response — text reveals progressively synchronized with audio */}
         {nexoText && (
           <div className="max-w-2xl text-center text-[#e0e0e5] text-sm leading-7 bg-[#1A1B1E] border border-[#2a2b30] rounded-2xl px-6 py-4 mt-2">
             {nexoText}

@@ -20,9 +20,13 @@ interface Props {
 }
 
 const TOPICS = [
-  'Descripción del problema',
-  'Perfil del fundador',
-  'Recursos disponibles',
+  'El problema que resuelves',
+  'El cliente objetivo',
+  'Tu experiencia como founder',
+  'Recursos disponibles (tiempo, equipo, capital)',
+  'Visión a 12 meses',
+  'Restricciones clave',
+  'Por qué tú eres quien debe resolverlo',
 ]
 
 function formatBytes(bytes: number): string {
@@ -52,6 +56,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const [founderBrief, setFounderBrief] = useState<string | null>(project.founder_brief ?? null)
   const [semillaComplete, setSemillaComplete] = useState(!!project.founder_brief)
   const [briefExpanded, setBriefExpanded] = useState(false)
+  const [coveredTopics, setCoveredTopics] = useState<number[]>([])
   const bottomRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,7 +73,6 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   }, [])
 
   const userMsgCount = messages.filter(m => m.role === 'user').length
-  const coveredTopics = TOPICS.map((_, i) => i < Math.floor(userMsgCount / 2))
 
   async function runExtract() {
     if (extractState !== 'idle') return
@@ -178,6 +182,14 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         setFounderBrief(data.founder_brief)
         setSemillaComplete(true)
       }
+      // Background: update covered topics (non-blocking)
+      void fetch('/api/chat/topics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages }),
+      }).then(r => r.json()).then((d: { covered?: number[] }) => {
+        if (d.covered) setCoveredTopics(d.covered)
+      }).catch(() => null)
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Error al conectar con Nexo. Intenta de nuevo.', author: 'Nexo' }])
     }
@@ -189,18 +201,34 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
     if (!file) return
 
     let content = ''
-    if (file.name.endsWith('.md') || file.name.endsWith('.txt')) {
+    let truncated = false
+
+    const isPdf = file.name.toLowerCase().endsWith('.pdf')
+    const isText = file.name.toLowerCase().endsWith('.md') || file.name.toLowerCase().endsWith('.txt')
+
+    if (isText) {
       content = await file.text()
-    } else if (file.name.endsWith('.pdf')) {
-      content = `[PDF cargado: ${file.name} — texto no extraíble en browser]`
+      if (content.length > 32000) { content = content.slice(0, 32000); truncated = true }
+    } else if (isPdf) {
+      try {
+        const form = new FormData()
+        form.append('file', file)
+        const res = await fetch('/api/files/extract-text', { method: 'POST', body: form })
+        const data = await res.json() as { text?: string; truncated?: boolean; error?: string }
+        if (data.text) { content = data.text; truncated = !!data.truncated }
+        else content = `[PDF cargado: ${file.name} — no se pudo extraer texto]`
+      } catch {
+        content = `[PDF cargado: ${file.name} — error al extraer texto]`
+      }
     }
 
     const path = `${project.id}/${file.name}`
     const { error } = await supabase.storage.from('project-files').upload(path, file, { upsert: true })
     if (error) console.error('[upload]', error.message)
 
-    setUploadedFiles(prev => [...prev, { name: file.name, size: formatBytes(file.size), content }])
-    if (content) setPendingContext(prev => prev ? `${prev}\n\n${content}` : content)
+    const displayContent = truncated ? `${content}\n\n[Nota: documento truncado a 32,000 caracteres]` : content
+    setUploadedFiles(prev => [...prev, { name: file.name, size: formatBytes(file.size), content: displayContent }])
+    if (displayContent) setPendingContext(prev => prev ? `${prev}\n\n${displayContent}` : displayContent)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -358,43 +386,27 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
             </button>
           </div>
 
-          {/* Progreso de extracción */}
-          <div>
-            <p className="text-xs text-[#6b6d75] uppercase tracking-wider mb-2">Progreso de Extracción</p>
-            <div className="space-y-2">
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-[#9a9ba5]">Contexto del fundador</span>
-                  <span className="text-[#C9A84C]">{Math.min(userMsgCount * 10, 100)}%</span>
-                </div>
-                <progress value={Math.min(userMsgCount * 10, 100)} max={100}
-                  className="w-full h-1 appearance-none [&::-webkit-progress-bar]:bg-[#2a2b30] [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-value]:bg-[#C9A84C] [&::-webkit-progress-value]:rounded-full [&::-moz-progress-bar]:bg-[#C9A84C] [&::-moz-progress-bar]:rounded-full" />
-              </div>
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-[#9a9ba5]">Idea de producto</span>
-                  <span className="text-[#6b6d75]">{Math.min(userMsgCount * 5, 100)}%</span>
-                </div>
-                <progress value={Math.min(userMsgCount * 5, 100)} max={100}
-                  className="w-full h-1 appearance-none [&::-webkit-progress-bar]:bg-[#2a2b30] [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-value]:bg-[#C9A84C]/50 [&::-webkit-progress-value]:rounded-full [&::-moz-progress-bar]:bg-[#C9A84C]/50 [&::-moz-progress-bar]:rounded-full" />
-              </div>
-            </div>
-          </div>
-
           {/* Temas */}
           <div>
-            <p className="text-xs text-[#6b6d75] uppercase tracking-wider mb-2">Temas</p>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-[#6b6d75] uppercase tracking-wider">Temas</p>
+              <span className="text-xs text-[#6b6d75]">
+                <span className={coveredTopics.length > 0 ? 'text-[#C9A84C]' : ''}>{coveredTopics.length}</span>
+                {' / '}{TOPICS.length}
+              </span>
+            </div>
             <div className="space-y-2">
-              {TOPICS.map((topic, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full shrink-0 ${
-                    coveredTopics[i] ? 'bg-[#C9A84C]' : 'border border-[#3a3b40]'
-                  }`} />
-                  <span className={`text-xs ${coveredTopics[i] ? 'text-[#9a9ba5]' : 'text-[#6b6d75]'}`}>
-                    {topic}
-                  </span>
-                </div>
-              ))}
+              {TOPICS.map((topic, i) => {
+                const covered = coveredTopics.includes(i)
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full shrink-0 ${covered ? 'bg-[#C9A84C]' : 'border border-[#3a3b40]'}`} />
+                    <span className={`text-xs ${covered ? 'text-[#9a9ba5]' : 'text-[#6b6d75]'}`}>
+                      {topic}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
 
