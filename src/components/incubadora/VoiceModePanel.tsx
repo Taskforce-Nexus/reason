@@ -40,8 +40,8 @@ function getSupportedMimeType(): string {
 const SPEECH_START_THRESHOLD = 20
 const SILENCE_THRESHOLD = 12
 const SILENCE_DURATION_MS = 600
-// T3 fix: raised to 45 to prevent acoustic echo (Nexo's audio) from self-interrupting
-const INTERRUPT_THRESHOLD = 45
+// Interrupt threshold — mic is muted during TTS so echo is not an issue
+const INTERRUPT_THRESHOLD = 20
 
 // Sentence streaming: flush buffer when ≥ this length AND ends in boundary
 const MIN_SENTENCE_CHARS = 80
@@ -187,6 +187,14 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     }
   }
 
+  // ─── Mic mute/unmute — prevents echo from triggering VAD during TTS ──────────
+  function muteMic() {
+    streamRef.current?.getAudioTracks().forEach(t => { t.enabled = false })
+  }
+  function unmuteMic() {
+    streamRef.current?.getAudioTracks().forEach(t => { t.enabled = true })
+  }
+
   // ─── Centralized reset — called on interrupt, error, and new turn ──────────
   // Does NOT close AudioContext or stop mic stream (those stay alive for session)
   function resetVoiceState() {
@@ -207,6 +215,8 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     streamDoneRef.current = false
     // Reset text reveal accumulator
     nexoDisplayedRef.current = ''
+    // Ensure mic is unmuted when reset fires (interrupt or error)
+    unmuteMic()
   }
 
   // ─── VAD loop ─────────────────────────────────────────────────────────────
@@ -251,10 +261,11 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
     ) {
       if (voiceStateRef.current === 'speaking') {
         setNexoText(nexoDisplayedRef.current)
-        // T3 fix: 300ms cooldown — lets residual echo decay before VAD re-activates
+        // Unmute mic and re-enable VAD after 100ms cooldown
         setTimeout(() => {
+          unmuteMic()
           if (voiceStateRef.current === 'speaking') setVS('listening')
-        }, 300)
+        }, 100)
       }
     }
   }
@@ -296,6 +307,8 @@ export default function VoiceModePanel({ projectId, conversationId, messages, on
       }
     }
 
+    // Mute mic while Cartesia audio plays — prevents echo from triggering VAD
+    muteMic()
     source.start(0)
 
     // T2 fix: delay reveal by 100ms so audio starts before text appears
