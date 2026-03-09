@@ -17,42 +17,43 @@ export async function POST(req: NextRequest) {
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
 
+    const requestBody = {
+      replica_id: REPLICA_ID,
+      callback_url: `${appUrl}/api/tavus/llm`,
+      conversation_name: `AURUM Semilla - ${project_id}`,
+      custom_greeting: NEXO_GREETING,
+      properties: {
+        language: 'es',
+        enable_transcription: true,
+        apply_greenscreen: false,
+      },
+    }
+    console.log('[Tavus] creating conversation, body:', JSON.stringify(requestBody))
+
     const tavusRes = await fetch(`${TAVUS_API}/conversations`, {
       method: 'POST',
       headers: {
         'x-api-key': process.env.TAVUS_API_KEY,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        replica_id: REPLICA_ID,
-        callback_url: `${appUrl}/api/tavus/llm`,
-        conversation_name: `AURUM Semilla - ${project_id}`,
-        custom_greeting: NEXO_GREETING,
-        properties: {
-          language: 'es',
-          enable_transcription: true,
-          apply_greenscreen: false,
-        },
-      }),
+      body: JSON.stringify(requestBody),
     })
 
+    const data = await tavusRes.json()
+    console.log('[Tavus] status:', tavusRes.status)
+    console.log('[Tavus] response:', JSON.stringify(data))
+
     if (!tavusRes.ok) {
-      const err = await tavusRes.text()
-      console.error('[tavus/conversation] Tavus error:', tavusRes.status, err)
-      return NextResponse.json(
-        { error: 'No se pudo crear la sesión con Nexo. Intenta de nuevo.' },
-        { status: 502 }
-      )
+      return NextResponse.json({ error: data }, { status: tavusRes.status })
     }
 
-    const data = await tavusRes.json()
     return NextResponse.json({
       conversation_url: data.conversation_url,
       conversation_id: data.conversation_id,
     })
   } catch (err) {
-    console.error('[tavus/conversation] Error:', err)
-    return NextResponse.json({ error: 'Error interno' }, { status: 500 })
+    console.error('[Tavus] error:', err)
+    return NextResponse.json({ error: String(err) }, { status: 500 })
   }
 }
 
