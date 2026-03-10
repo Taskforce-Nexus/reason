@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — Auth frames iterados (paneles izquierdos), Semilla pendiente verificación
+Etapa actual: Desarrollo activo — Auth__Login__Default panel izquierdo reconstruido + tabs pill style iterados
 
 ---
 
@@ -24,12 +24,13 @@ Etapa actual: Desarrollo activo — Auth frames iterados (paneles izquierdos), S
 
 ## En progreso
 
-- Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006`
-- Pendiente verificación en Railway
+- Auth__Login__Default panel izquierdo reconstruido (stats eliminados, título + mini cards + testimonial)
+- Auth__Login__Default tab bar reemplazado por pill style (Correo y contraseña / Enlace al correo)
+- Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006` — pendiente verificación en Railway
 
 ## Siguiente paso
 
-Aprobar Auth frames iterados → freeze Auth → verificar Semilla en Railway → avanzar a Propósito del Consejo
+Aprobar Auth__Login__Default → freeze Auth → verificar Semilla en Railway → avanzar a Propósito del Consejo
 
 ---
 
@@ -47,6 +48,7 @@ Aprobar Auth frames iterados → freeze Auth → verificar Semilla en Railway �
 
 | Hash | Descripción |
 |---|---|
+| (pending) | fix: Auth__Login__Default — pill tabs, panel izquierdo reconstruido |
 | 2279030 | fix: Auth frames — stat3 eliminado, stat2 icon users, Register headline semanas |
 | 3798a6d | fix: Auth__Login__Default — stats alignment |
 | 76d0b64 | fix: Auth__Login__Default — stat2 icon users, stat3 label Por sesión |
