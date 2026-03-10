@@ -4938,7 +4938,7 @@
       "y": -3193,
       "name": "Projects__ProjectView__Default",
       "width": 1440,
-      "height": 1356,
+      "height": 900,
       "fill": "#0A0A0B",
       "layout": "vertical",
       "children": [
@@ -5146,7 +5146,7 @@
           "id": "cqpny",
           "name": "pvContent",
           "width": "fill_container",
-          "height": 1295,
+          "height": 839,
           "layout": "vertical",
           "children": [
             {
@@ -5250,21 +5250,6 @@
                               "gap": 12,
                               "alignItems": "center",
                               "children": [
-                                {
-                                  "type": "frame",
-                                  "id": "Yd12r",
-                                  "name": "pvProjBadge",
-                                  "width": "fit_content(142)",
-                                  "height": "fit_content(24)",
-                                  "fill": "$success-dim",
-                                  "cornerRadius": 999,
-                                  "gap": 6,
-                                  "padding": [
-                                    4,
-                                    10
-                                  ],
-                                  "alignItems": "center"
-                                },
                                 {
                                   "type": "text",
                                   "id": "z0vT5",
@@ -5923,7 +5908,7 @@
                   "id": "w2nNt",
                   "name": "rightCol",
                   "width": 320,
-                  "height": "fill_container",
+                  "height": 840,
                   "fill": "#111113",
                   "stroke": {
                     "align": "inside",
