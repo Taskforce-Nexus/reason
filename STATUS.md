@@ -46,7 +46,7 @@ Verificar Semilla en Railway → avanzar a Propósito del Consejo
 
 | Hash | Descripción |
 |---|---|
-| (pending) | docs: freeze Auth — 5 frames |
+| 6ed8918 | docs: freeze Auth — 5 frames |
 | 922d7ef | feat: Auth — VerifyEmail, ForgotPassword, ForgotPasswordSent frames |
 | 93fe396 | fix: Auth__Login__Default — pill tabs, panel izquierdo reconstruido |
 | 2279030 | fix: Auth frames — stat3 eliminado, stat2 icon users, Register headline semanas |
