@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — Auth__Login tabs iterados, Semilla pendiente verificación
+Etapa actual: Desarrollo activo — Auth frames iterados (paneles izquierdos), Semilla pendiente verificación
 
 ---
 
@@ -47,6 +47,7 @@ Aprobar Auth frames iterados → freeze Auth → verificar Semilla en Railway �
 
 | Hash | Descripción |
 |---|---|
+| pendiente | iterate: Auth paneles izquierdos — Login icons + Register headline + checklist |
 | 120eae0 | fix: Auth__Login__Default — reemplazar stack por tabs (Contraseña / Enlace mágico) |
 | 5b41181 | iterate: Auth__Login__Default, Auth__Register__Default — copy y magic link |
 | b4bcebf | docs: CLAUDE.md — reglas obligatorias permanentes |
