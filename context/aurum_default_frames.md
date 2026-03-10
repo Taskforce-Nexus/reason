@@ -14,7 +14,7 @@ Auth__ForgotPasswordSent__Default — FREEZE
 ---
 
 # Core Product
-Projects__Dashboard__Default
+Projects__Dashboard__Default — FREEZE
 Projects__ProjectView__Default
 Projects__SeedSession__Default
 Projects__Incubator__Default

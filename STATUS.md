@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — Dashboard iterado (menú CRUD en project cards)
+Etapa actual: Desarrollo activo — Dashboard FREEZE completado
 
 ---
 
@@ -24,7 +24,7 @@ Etapa actual: Desarrollo activo — Dashboard iterado (menú CRUD en project car
 
 ## En progreso
 
-- Projects__Dashboard__Default iterado — menú CRUD ⋯ en cards — `5a6b995`
+- Projects__Dashboard__Default — FREEZE `e7c74ec`
 - Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006` — pendiente verificación en Railway
 
 ## Siguiente paso
