@@ -1,14 +1,45 @@
 # AURUM Venture Creation Pipeline
 
-AURUM converts an idea into a build-ready company through a structured pipeline.
+AURUM convierte una decisión estratégica compleja en documentos estructurados y accionables a través de consejo IA especializado.
+
+REGISTRO
+↓
+SEMILLA
+↓
+PROPÓSITO DEL CONSEJO
+↓
+MARKETPLACE DE CONSEJEROS
+↓
+DEFINICIÓN DE DOCUMENTOS
+↓
+SESIÓN DE CONSEJO
+↓
+EXPORT CENTER
+
+Cada etapa genera outputs estructurados que alimentan la siguiente.
+El objetivo es comprimir semanas de trabajo estratégico en horas.
+
+---
+
+Pipeline técnico completo (producto digital):
 
 IDEA
 ↓
-INCUBADORA
+SEMILLA
 ↓
-BUSINESS
+PROPÓSITO DEL CONSEJO
+↓
+MARKETPLACE
+↓
+DEFINICIÓN DE DOCUMENTOS
+↓
+SESIÓN DE CONSEJO
+↓
+BRANDING (módulo AVA separado)
 ↓
 PRODUCT CONCEPT
+↓
+PRD
 ↓
 UX ARCHITECTURE
 ↓
@@ -24,10 +55,6 @@ SCAFFOLD
 ↓
 SYSTEM DESIGN
 ↓
-BACKLOG
+BACKLOG (Agile Bot — módulo AVA separado)
 ↓
 REPO
-
-Each stage generates structured artifacts that move the venture closer to implementation.
-
-The goal is to compress months of planning into hours.

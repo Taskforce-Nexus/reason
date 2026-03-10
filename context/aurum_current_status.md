@@ -6,14 +6,14 @@
 
 **Etapa: MVP en construcción**
 
-MVP scope: flujo completo Semilla → Resumen del Fundador → Documentos → Project View.
-El founder debe poder completar una incubación end-to-end sin intervención manual.
+MVP scope: flujo completo Semilla → Propósito del Consejo → Sesión de Consejo → Export Center.
+El usuario debe poder completar una sesión estratégica end-to-end sin intervención manual.
 
 Pipeline position:
 
 ```text
-IDEA → INCUBADORA ← current stage → BUSINESS → PRODUCT CONCEPT → UX ARCHITECTURE
-→ DEFAULT FRAMES → ITERATE → FREEZE → EXPAND → SCAFFOLD → SYSTEM DESIGN → BACKLOG → REPO
+SEMILLA ← current stage → PROPÓSITO DEL CONSEJO → MARKETPLACE → DEFINICIÓN DE DOCUMENTOS
+→ SESIÓN DE CONSEJO → EXPORT CENTER
 ```
 
 ---
@@ -80,3 +80,24 @@ Pendiente post-MVP: migración a Deepgram WebSocket.
 | ------- | ------ |
 | console.logs de debug en VoiceModePanel | Intencional — remover post-confirmación |
 | Voz sin acento Monterrey | Limitación Cartesia — documentada en decisión #26 |
+
+---
+
+## Voice Mode — estado actualizado (sesión 8)
+
+Stack: Deepgram Nova-3 WebSocket (STT es-419) + Cartesia Sonic-3 (TTS)
+Voz de Nexo: Alejandro - Calm Mentor (`a1d1c72d-35e6-4520-a38b-a4fcff57e982`)
+Sesión 8: migración a Deepgram WebSocket Live Transcription completada — speech_final dispara processMessage, keepalive 8s, auto-reconexión.
+
+---
+
+# Decisiones de scope — sesión con Porfirio Lima (2026-03-10)
+
+- AURUM es Producto 1 de la AVA Suite
+- Journey definitivo cerrado — ver decision #33
+- Document Specification Library definida — ver decision #34
+- Spec completa ICP Founder (4 documentos) — ver decision #35
+- Branding se hace a mano hasta que AURUM esté terminado
+- Agile Bot es Producto 3 — se construye después de AURUM
+- Export Center: PDF + PPTX en MVP, Google Slides en v2
+- No más cambios de scope hasta terminar AURUM
