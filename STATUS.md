@@ -24,7 +24,7 @@ Etapa actual: Desarrollo activo — ProjectView iterado (6 fixes Kira)
 
 ## En progreso
 
-- Projects__ProjectView__Default iterado — 6 fixes Kira — `485713c`
+- Projects__ProjectView__Default iterado — docs list + journey Sesión de Consejo — `3616f6f`
 - Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006` — pendiente verificación en Railway
 
 ## Siguiente paso
