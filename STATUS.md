@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — Semilla en fixes, contexto sincronizado
+Etapa actual: Desarrollo activo — Semilla en fixes, contexto sincronizado, CLAUDE.md actualizado
 
 ---
 
@@ -47,6 +47,7 @@ Verificar fixes de Semilla en Railway → avanzar a Propósito del Consejo
 
 | Hash | Descripción |
 |---|---|
+| 4c26bef | docs: scope update completo — AVA suite, journey definitivo, todas las specs |
 | 35f6e7c | docs: scope update completo — AVA suite, journey definitivo |
 | b4eec51 | docs: scope update — AVA suite, journey definitivo, document specs |
 | 9b7f006 | feat: semilla fixes — voice ws, topics, progress, pdf reading |

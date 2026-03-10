@@ -48,7 +48,7 @@ Del latín Homo Faber — el hacedor. Quien tiene las manos en el material real.
 Lee estos archivos en este orden:
 1. /context/aurum_brain.md
 2. /context/aurum_decisions.md
-3. /context/aurum_current_status.md
+3. /STATUS.md
 4. /context/aurum_pipeline.md
 
 ---
@@ -58,7 +58,7 @@ Lee estos archivos en este orden:
 - /context/aurum_brain.md — visión, filosofía, pipeline
 - /context/aurum_pipeline.md — etapas del pipeline
 - /context/aurum_decisions.md — decisiones canónicas, no reabrir sin instrucción
-- /context/aurum_current_status.md — estado actual del proyecto
+- /STATUS.md — estado actual del proyecto (fuente de verdad)
 - /context/aurum_documents.md — 15 documentos canónicos
 - /context/aurum_default_frames.md — inventario de frames UI
 - /context/aurum_ui_architecture.md — arquitectura de la interfaz
@@ -80,7 +80,7 @@ Juan se comunica con el Builder Agent directamente en Claude Code.
 Kira se comunica con el Builder Agent a través de:
 - prompts en /prompts/aurum_prompts.md
 - decisiones en /context/aurum_decisions.md
-- estado en /context/aurum_current_status.md
+- estado en /STATUS.md
 
 ### Flujo normal de trabajo
 1. Juan trabaja con Kira en claude.ai → toman decisiones, generan prompts
@@ -129,7 +129,7 @@ El repo es privado — las URLs raw de GitHub no funcionan para usuarios externo
 
 ## Reglas de operación
 
-- Leer aurum_current_status.md al inicio de cada sesión sin excepción
+- Leer STATUS.md al inicio de cada sesión sin excepción
 - No reabrir decisiones de aurum_decisions.md sin instrucción explícita de Juan
 - No crear archivos fuera de la estructura definida sin instrucción
 - No modificar /context sin instrucción explícita de Kira o Juan
