@@ -47,7 +47,7 @@ Aprobar Auth frames → freeze Auth → verificar Semilla en Railway → avanzar
 
 | Hash | Descripción |
 |---|---|
-| (pending) | feat: Auth — VerifyEmail, ForgotPassword, ForgotPasswordSent frames |
+| 922d7ef | feat: Auth — VerifyEmail, ForgotPassword, ForgotPasswordSent frames |
 | 93fe396 | fix: Auth__Login__Default — pill tabs, panel izquierdo reconstruido |
 | 2279030 | fix: Auth frames — stat3 eliminado, stat2 icon users, Register headline semanas |
 | 3798a6d | fix: Auth__Login__Default — stats alignment |
