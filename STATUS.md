@@ -47,7 +47,7 @@ Aprobar Auth frames iterados → freeze Auth → verificar Semilla en Railway �
 
 | Hash | Descripción |
 |---|---|
-| pendiente | fix: Auth frames — stat3 eliminado, stat2 icon users, Register headline semanas |
+| 2279030 | fix: Auth frames — stat3 eliminado, stat2 icon users, Register headline semanas |
 | 3798a6d | fix: Auth__Login__Default — stats alignment |
 | 76d0b64 | fix: Auth__Login__Default — stat2 icon users, stat3 label Por sesión |
 | f754f9d | fix: Auth__Login__Default — icono Consejo IA, alineación cards, stat3 |
