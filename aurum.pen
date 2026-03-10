@@ -7371,8 +7371,8 @@
                           "type": "icon_font",
                           "id": "exsm3",
                           "name": "newStatIcon",
-                          "width": 24,
-                          "height": 24,
+                          "width": 28,
+                          "height": 28,
                           "iconFontName": "users",
                           "iconFontFamily": "lucide",
                           "fill": "#C5A55A"
