@@ -7724,6 +7724,82 @@
                 },
                 {
                   "type": "frame",
+                  "id": "xxZZK",
+                  "name": "tabBar",
+                  "width": "fill_container",
+                  "alignItems": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "F3aOR",
+                      "name": "tabPass",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        10,
+                        20
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ZVIYE",
+                          "name": "lPass",
+                          "fill": "#EDEDEF",
+                          "textGrowth": "fixed-width",
+                          "width": 100,
+                          "content": "Contraseña",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "rectangle",
+                          "id": "eqQ9F",
+                          "name": "tabPassLine",
+                          "fill": "#C5A55A",
+                          "width": "fill_container",
+                          "height": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "XpG2k",
+                      "name": "tabMagic",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        10,
+                        20
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "yDqoe",
+                          "name": "lMagic",
+                          "fill": "#6E6E76",
+                          "textGrowth": "fixed-width",
+                          "width": 120,
+                          "content": "Enlace mágico",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 14
+                        },
+                        {
+                          "type": "rectangle",
+                          "id": "HlT8a",
+                          "name": "tabMagicLine",
+                          "fill": "#0A0A0B",
+                          "width": "fill_container",
+                          "height": 2
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
                   "id": "jlvsg",
                   "name": "formFields",
                   "width": "fill_container",
@@ -7970,75 +8046,6 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 14,
                           "fontWeight": "500"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "M0kL4",
-                      "name": "magicWrap",
-                      "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 8,
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "uSUBe",
-                          "name": "mlInput",
-                          "width": "fill_container",
-                          "fill": "#0A0A0B",
-                          "cornerRadius": 8,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#27282B"
-                          },
-                          "padding": [
-                            12,
-                            16
-                          ],
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "df49i",
-                              "name": "mlPh",
-                              "fill": "#4E4E56",
-                              "content": "tu@ejemplo.com",
-                              "fontFamily": "DM Sans",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "69puQ",
-                          "name": "mlBtn",
-                          "width": "fill_container",
-                          "cornerRadius": 8,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#27282B"
-                          },
-                          "padding": [
-                            12,
-                            20
-                          ],
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "kU22n",
-                              "name": "mlBtnLabel",
-                              "fill": "#A0A0A6",
-                              "content": "Enviar enlace de acceso",
-                              "fontFamily": "DM Sans",
-                              "fontSize": 14,
-                              "fontWeight": "500"
-                            }
-                          ]
                         }
                       ]
                     }
