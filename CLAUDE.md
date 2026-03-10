@@ -135,3 +135,38 @@ El repo es privado — las URLs raw de GitHub no funcionan para usuarios externo
 - No modificar /context sin instrucción explícita de Kira o Juan
 - Reportar al inicio de cada sesión: archivos leídos + estado actual según tu lectura
 - Nunca inventar datos, etapas, documentos o frames que no estén en los archivos de contexto
+
+---
+
+## REGLAS OBLIGATORIAS DE EJECUCIÓN
+
+Estas reglas aplican a toda tarea, siempre, sin excepción.
+
+1. Leer todos los archivos en /context/ ANTES de ejecutar cualquier tarea
+2. No crear archivos fuera de los indicados en la instrucción recibida
+3. No modificar archivos no relacionados con la tarea
+4. Al terminar, actualizar los archivos dinámicos que correspondan:
+   - STATUS.md — siempre, después de cada ejecución
+   - aurum_decisions.md — si se tomó una decisión nueva
+   - aurum_prompts.md — si se validó un prompt nuevo
+   - aurum_document_specs.md — si cambió o se creó una spec
+   - aurum_pipeline.md — si cambió el pipeline o journey
+   - aurum_brain.md — si cambió la visión o scope
+   - aurum_incubadora.md — si cambió el flujo de Sesión de Consejo
+   - aurum_documents.md — si cambió el sistema de documentos
+   - aurum_agents.md — si cambió el marketplace o agentes
+   - aurum_ui_architecture.md — si cambió arquitectura de pantallas
+   - aurum_default_frames.md — si se aprobaron o agregaron frames
+   - aurum_ava_suite.md — si cambió la arquitectura de la suite
+5. Commits semánticos obligatorios: feat / fix / docs / refactor
+6. Push a main antes de reportar
+7. Reporte final con formato:
+
+De: Faber
+Para: Kira
+Asunto: [tarea completada]
+
+Ejecutado:
+Archivos dinámicos actualizados:
+Limitaciones:
+Siguiente paso:
