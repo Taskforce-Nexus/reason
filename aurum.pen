@@ -7401,7 +7401,7 @@
                           "id": "Wy3Wn",
                           "name": "num",
                           "fill": "#C5A55A",
-                          "content": "30",
+                          "content": "1",
                           "fontFamily": "Cormorant Garamond",
                           "fontSize": 28,
                           "fontWeight": "normal"
@@ -7411,7 +7411,7 @@
                           "id": "YtRvz",
                           "name": "label",
                           "fill": "#4E4E56",
-                          "content": "Min. objetivo",
+                          "content": "Para arrancar",
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "normal"
@@ -7440,11 +7440,9 @@
                         "fill": "#27282B"
                       },
                       "layout": "vertical",
-                      "gap": 4,
-                      "padding": [
-                        10,
-                        12
-                      ],
+                      "gap": 6,
+                      "padding": 12,
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "icon_font",
@@ -7482,19 +7480,17 @@
                         "fill": "#27282B"
                       },
                       "layout": "vertical",
-                      "gap": 4,
-                      "padding": [
-                        10,
-                        12
-                      ],
+                      "gap": 6,
+                      "padding": 12,
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "icon_font",
-                          "id": "5Oawj",
-                          "name": "icon",
+                          "id": "YrVpo",
+                          "name": "copiedIcon",
                           "width": 16,
                           "height": 16,
-                          "iconFontName": "building-2",
+                          "iconFontName": "users",
                           "iconFontFamily": "lucide",
                           "fill": "#C5A55A"
                         },
@@ -7524,11 +7520,9 @@
                         "fill": "#27282B"
                       },
                       "layout": "vertical",
-                      "gap": 4,
-                      "padding": [
-                        10,
-                        12
-                      ],
+                      "gap": 6,
+                      "padding": 12,
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "icon_font",
@@ -7566,11 +7560,9 @@
                         "fill": "#27282B"
                       },
                       "layout": "vertical",
-                      "gap": 4,
-                      "padding": [
-                        10,
-                        12
-                      ],
+                      "gap": 6,
+                      "padding": 12,
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "icon_font",
@@ -8145,7 +8137,7 @@
                   "fill": "#EDEDEF",
                   "textGrowth": "fixed-width",
                   "width": 400,
-                  "content": "Estructura cualquier decisión estratégica.\nEn semanas, no meses.",
+                  "content": "Estructura cualquier decisión estratégica.\nEn horas, no meses.",
                   "lineHeight": 1.4,
                   "fontFamily": "Cormorant Garamond",
                   "fontSize": 28,
