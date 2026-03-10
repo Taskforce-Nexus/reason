@@ -7368,14 +7368,14 @@
                       "gap": 2,
                       "children": [
                         {
-                          "type": "text",
-                          "id": "rJ1ax",
-                          "name": "num",
-                          "fill": "#C5A55A",
-                          "content": "✦",
-                          "fontFamily": "Cormorant Garamond",
-                          "fontSize": 28,
-                          "fontWeight": "normal"
+                          "type": "icon_font",
+                          "id": "exsm3",
+                          "name": "newStatIcon",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "users",
+                          "iconFontFamily": "lucide",
+                          "fill": "#C5A55A"
                         },
                         {
                           "type": "text",
@@ -7411,7 +7411,7 @@
                           "id": "YtRvz",
                           "name": "label",
                           "fill": "#4E4E56",
-                          "content": "Para arrancar",
+                          "content": "Por sesión",
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "normal"
