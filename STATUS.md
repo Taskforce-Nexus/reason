@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — Dashboard iterado (subtítulo, stats, progreso 6 etapas, limpieza UI)
+Etapa actual: Desarrollo activo — Dashboard iterado (menú CRUD en project cards)
 
 ---
 
@@ -24,7 +24,7 @@ Etapa actual: Desarrollo activo — Dashboard iterado (subtítulo, stats, progre
 
 ## En progreso
 
-- Projects__Dashboard__Default iterado — 5 correcciones Kira
+- Projects__Dashboard__Default iterado — menú CRUD ⋯ en cards — `5a6b995`
 - Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006` — pendiente verificación en Railway
 
 ## Siguiente paso
@@ -47,6 +47,9 @@ Verificar Semilla en Railway → avanzar a Propósito del Consejo
 
 | Hash | Descripción |
 |---|---|
+| 5a6b995 | feat: Dashboard — menú CRUD (⋯) en project cards, dropdown abierto en FinTrack |
+| 342112a | fix: Dashboard — dropdown removido, nav muestra saldo en estado cerrado |
+| dbaec90 | fix: Dashboard — saldo dropdown integrado en saldoWrapper dentro del nav |
 | 36564af | fix: Dashboard — header completo con notif, saldo dropdown y avatar |
 | b1877d1 | fix: Dashboard — stats Documentos/Sesiones + pills de etapa restaurados |
 | 2aa9a70 | fix: Dashboard — subtítulo, En progreso, denominador 6, tokens y filtros |
