@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-11
-Etapa actual: Rebrand completo AURUM → Reason — SeedSession 7 variantes pendiente freeze
+Etapa actual: Brand guidelines documentadas — SeedSession 7 variantes pendiente freeze
 
 ---
 
