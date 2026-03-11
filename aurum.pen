@@ -5925,33 +5925,23 @@
                           "padding": 20,
                           "children": [
                             {
-                              "type": "text",
-                              "id": "7sImx",
-                              "name": "label",
-                              "fill": "#6E6E76",
-                              "content": "EXPORTACIÓN",
-                              "fontFamily": "DM Sans",
-                              "fontSize": 10,
-                              "fontWeight": "600",
-                              "letterSpacing": 2
-                            },
-                            {
                               "type": "frame",
-                              "id": "aejrl",
-                              "name": "readyRow",
+                              "id": "c1xj4",
+                              "name": "exportTopRow",
                               "width": "fill_container",
                               "justifyContent": "space_between",
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "IIbuz",
-                                  "name": "text",
-                                  "fill": "#EDEDEF",
-                                  "content": "2 de 4 documentos listos",
+                                  "id": "7sImx",
+                                  "name": "label",
+                                  "fill": "#6E6E76",
+                                  "content": "EXPORTACIÓN",
                                   "fontFamily": "DM Sans",
-                                  "fontSize": 15,
-                                  "fontWeight": "600"
+                                  "fontSize": 10,
+                                  "fontWeight": "600",
+                                  "letterSpacing": 2
                                 },
                                 {
                                   "type": "frame",
@@ -5977,6 +5967,16 @@
                                   ]
                                 }
                               ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "IIbuz",
+                              "name": "text",
+                              "fill": "#EDEDEF",
+                              "content": "2 de 4 documentos listos",
+                              "fontFamily": "DM Sans",
+                              "fontSize": 15,
+                              "fontWeight": "600"
                             },
                             {
                               "type": "frame",
