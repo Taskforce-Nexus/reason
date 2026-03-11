@@ -24,7 +24,7 @@ Etapa actual: Desarrollo activo — ProjectView iterado (6 fixes Kira)
 
 ## En progreso
 
-- Projects__ProjectView__Default iterado — card Semilla + 4 cards row — `31be0bc`
+- Projects__ProjectView__Default iterado — correcciones visuales cards — `b2f4ed7`
 - Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006` — pendiente verificación en Railway
 
 ## Siguiente paso
