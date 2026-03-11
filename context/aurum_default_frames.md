@@ -17,6 +17,8 @@ Auth__ForgotPasswordSent__Default — FREEZE
 Projects__Dashboard__Default — FREEZE
 Projects__ProjectView__Default — FREEZE
 Projects__SeedSession__Default — FREEZE
+Projects__SeedSession__ConsejerosPropuesta
+Projects__SeedSession__EntregablesPropuesta
 Projects__Incubator__Default
 Projects__AdvisoryBoard__MyBoard
 

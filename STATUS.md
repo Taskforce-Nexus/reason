@@ -24,11 +24,12 @@ Etapa actual: Desarrollo activo — SeedSession en iteración
 
 ## En progreso
 
-- Projects__SeedSession__Default — FREEZE ✓
+- Projects__SeedSession__ConsejerosPropuesta — creado
+- Projects__SeedSession__EntregablesPropuesta — creado
 
 ## Siguiente paso
 
-Avanzar al siguiente frame del pipeline
+Iterar y freeze SeedSession variantes → avanzar a Incubator
 
 ---
 
