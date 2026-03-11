@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-11
-Etapa actual: SeedSession fixes completos — 4 modales nuevos creados — pendiente freeze
+Etapa actual: CofoundersPropuesta + CatalogDrawerModal fixes completos — pendiente freeze
 
 ---
 
@@ -24,7 +24,7 @@ Etapa actual: SeedSession fixes completos — 4 modales nuevos creados — pendi
 
 ## En progreso
 
-- SeedSession fixes + 4 modales nuevos: CambiarCofounder, EspecialistaDetalle, ICPDetalle, EntregableDetalle
+- CofoundersPropuesta + CatalogDrawerModal: 6 correcciones aplicadas (nombres reales, Paso 2 de 6, Sombreros ⓘ, badges upper-right, edit icons hidden, star tooltip)
 
 ## Siguiente paso
 
@@ -46,6 +46,7 @@ Freeze SeedSession (7 frames + 4 modales) → avanzar a Incubator
 
 | Hash | Descripción |
 |---|---|
+| (pending) | fix: CofoundersPropuesta + CatalogDrawerModal — 6 correcciones (nombres, paso, sombreros, badges, icons, tooltip) |
 | (pending) | feat: SeedSession fixes + 4 modales (CambiarCofounder, EspecialistaDetalle, ICPDetalle, EntregableDetalle) |
 | 4532428 | fix: ConsejoPrincipalPropuesta — NEXO + ASESORES; feat: CofoundersPropuesta |
 | d8093cb | fix: SeedSession__EntregablesPropuesta — paginación, Responde, Ver detalle, Pedir ajuste |
