@@ -14158,7 +14158,7 @@
                           "id": "GynLn",
                           "name": "slotConstructivo",
                           "width": "fill_container",
-                          "fill": "#151208",
+                          "fill": "#142045",
                           "cornerRadius": 14,
                           "stroke": {
                             "align": "inside",
@@ -14178,7 +14178,7 @@
                               "name": "s1av",
                               "width": 40,
                               "height": 40,
-                              "fill": "#1A2A1A",
+                              "fill": "#0D1535",
                               "cornerRadius": 20,
                               "stroke": {
                                 "align": "inside",
@@ -14244,7 +14244,7 @@
                           "id": "Jyxnz",
                           "name": "slotCritico",
                           "width": "fill_container",
-                          "fill": "#151208",
+                          "fill": "#142045",
                           "cornerRadius": 14,
                           "stroke": {
                             "align": "inside",
@@ -14264,7 +14264,7 @@
                               "name": "s2av",
                               "width": 40,
                               "height": 40,
-                              "fill": "#2A1A1A",
+                              "fill": "#0D1535",
                               "cornerRadius": 20,
                               "stroke": {
                                 "align": "inside",
@@ -16080,6 +16080,7 @@
                           "type": "frame",
                           "id": "Fsjh5",
                           "name": "starTooltip",
+                          "opacity": 0,
                           "fill": "#1C2A4A",
                           "padding": [
                             4,
@@ -16631,32 +16632,22 @@
                                   "type": "text",
                                   "id": "zhpg3",
                                   "name": "sombrerosLabel",
-                                  "fill": "#B8860B",
+                                  "fill": "#6E8EAD",
                                   "content": "Sombreros activos",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "600"
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 10,
+                                  "fontWeight": "600",
+                                  "letterSpacing": 1
                                 },
                                 {
-                                  "type": "frame",
-                                  "id": "N57RB",
+                                  "type": "icon_font",
+                                  "id": "od636",
                                   "name": "infoIcon",
-                                  "width": 16,
-                                  "height": 16,
-                                  "fill": "#B8860B",
-                                  "justifyContent": "center",
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "id": "E1Y9Z",
-                                      "name": "infoText",
-                                      "content": "i",
-                                      "fontFamily": "Inter",
-                                      "fontSize": 10,
-                                      "fontWeight": "700"
-                                    }
-                                  ]
+                                  "width": 12,
+                                  "height": 12,
+                                  "iconFontName": "info",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#4A6080"
                                 }
                               ]
                             },
@@ -16741,7 +16732,7 @@
                                   "type": "frame",
                                   "id": "5ZyeQ",
                                   "name": "hatRojo",
-                                  "fill": "#0F1A3D",
+                                  "fill": "#1A2D5A",
                                   "cornerRadius": 10,
                                   "gap": 3,
                                   "padding": [
@@ -16776,7 +16767,7 @@
                                   "type": "frame",
                                   "id": "7eYVG",
                                   "name": "hatAmarillo",
-                                  "fill": "#0F1A3D",
+                                  "fill": "#1A2D5A",
                                   "cornerRadius": 10,
                                   "gap": 3,
                                   "padding": [
@@ -16811,7 +16802,7 @@
                                   "type": "frame",
                                   "id": "8Gyhg",
                                   "name": "hatVerde",
-                                  "fill": "#0F1A3D",
+                                  "fill": "#1A2D5A",
                                   "cornerRadius": 10,
                                   "gap": 3,
                                   "padding": [
@@ -16846,7 +16837,7 @@
                                   "type": "frame",
                                   "id": "zXiS9",
                                   "name": "hatAzul",
-                                  "fill": "#0F1A3D",
+                                  "fill": "#1A2D5A",
                                   "cornerRadius": 10,
                                   "gap": 3,
                                   "padding": [
@@ -16904,7 +16895,7 @@
                               "id": "CXSBV",
                               "name": "idiomaSelect",
                               "width": "fill_container",
-                              "fill": "#0F1A3D",
+                              "fill": "#142045",
                               "cornerRadius": 8,
                               "padding": [
                                 8,
@@ -16993,7 +16984,7 @@
                                   "id": "6y4ZG",
                                   "name": "gFemale",
                                   "width": "fill_container",
-                                  "fill": "#0F1A3D",
+                                  "fill": "#1A2D5A",
                                   "padding": [
                                     8,
                                     0
@@ -17035,7 +17026,7 @@
                                       "type": "text",
                                       "id": "6BL2o",
                                       "name": "pitchLabel",
-                                      "fill": "#2C3E50",
+                                      "fill": "#6E8EAD",
                                       "content": "Tono (pitch)",
                                       "fontFamily": "Open Sans",
                                       "fontSize": 10,
@@ -17059,7 +17050,7 @@
                                   "name": "pitchTrack",
                                   "width": "fill_container",
                                   "height": 4,
-                                  "fill": "#0F1A3D",
+                                  "fill": "#1A2D5A",
                                   "cornerRadius": 2,
                                   "children": [
                                     {
@@ -17095,7 +17086,7 @@
                                       "type": "text",
                                       "id": "lEBfs",
                                       "name": "speedLabel",
-                                      "fill": "#2C3E50",
+                                      "fill": "#6E8EAD",
                                       "content": "Velocidad",
                                       "fontFamily": "Open Sans",
                                       "fontSize": 10,
@@ -17119,7 +17110,7 @@
                                   "name": "speedTrack",
                                   "width": "fill_container",
                                   "height": 4,
-                                  "fill": "#0F1A3D",
+                                  "fill": "#1A2D5A",
                                   "cornerRadius": 2,
                                   "children": [
                                     {
