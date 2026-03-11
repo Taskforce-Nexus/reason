@@ -4159,7 +4159,8 @@
                       "type": "frame",
                       "id": "muqLM",
                       "name": "left",
-                      "width": "fill_container",
+                      "width": 1257,
+                      "height": 113,
                       "layout": "vertical",
                       "gap": 8,
                       "children": [
@@ -4360,7 +4361,7 @@
                               "id": "wg8wP",
                               "name": "frac1",
                               "fill": "#C5A55A",
-                              "content": "3/6",
+                              "content": "3/5",
                               "fontFamily": "DM Sans",
                               "fontSize": 12,
                               "fontWeight": "600"
@@ -4669,7 +4670,7 @@
                               "id": "mavr7",
                               "name": "frac2",
                               "fill": "#3B82F6",
-                              "content": "2/6",
+                              "content": "2/5",
                               "fontFamily": "DM Sans",
                               "fontSize": 12,
                               "fontWeight": "600"
@@ -4894,7 +4895,7 @@
                               "id": "zMSXA",
                               "name": "frac3",
                               "fill": "#6E6E76",
-                              "content": "1/6",
+                              "content": "1/5",
                               "fontFamily": "DM Sans",
                               "fontSize": 12,
                               "fontWeight": "600"
@@ -5547,12 +5548,12 @@
                               "id": "yXkL2",
                               "name": "semBtn",
                               "width": "fill_container",
-                              "fill": "#0A1A0A",
+                              "fill": "#111113",
                               "cornerRadius": 6,
                               "stroke": {
                                 "align": "inside",
                                 "thickness": 1,
-                                "fill": "#30A46C40"
+                                "fill": "#FFFFFF33"
                               },
                               "layout": "vertical",
                               "padding": [
@@ -5566,7 +5567,7 @@
                                   "type": "text",
                                   "id": "h3Gs5",
                                   "name": "semBtnLbl",
-                                  "fill": "#30A46C",
+                                  "fill": "#EDEDEF",
                                   "content": "Ver sesión completa →",
                                   "fontFamily": "DM Sans",
                                   "fontSize": 13,
@@ -5581,7 +5582,7 @@
                           "id": "2VHqC",
                           "name": "tile_incubadora",
                           "width": "fill_container",
-                          "height": 198,
+                          "height": 216,
                           "fill": "#111113",
                           "cornerRadius": 10,
                           "stroke": {
@@ -5705,6 +5706,7 @@
                           "id": "yIQae",
                           "name": "tile_advisory",
                           "width": "fill_container",
+                          "height": 216,
                           "fill": "#111113",
                           "cornerRadius": 10,
                           "stroke": {
@@ -5908,6 +5910,7 @@
                           "id": "V8eTS",
                           "name": "tile_export",
                           "width": "fill_container",
+                          "height": 216,
                           "fill": "#111113",
                           "cornerRadius": 10,
                           "stroke": {
