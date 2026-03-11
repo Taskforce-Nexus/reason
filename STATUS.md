@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-11
-Etapa actual: CofoundersPropuesta + CatalogDrawerModal fixes completos — pendiente freeze
+Etapa actual: CofounderSelector Drawer renombrado + badges fixes — pendiente freeze
 
 ---
 
