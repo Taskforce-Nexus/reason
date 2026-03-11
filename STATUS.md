@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — ProjectView iterado — correcciones visuales completas
+Etapa actual: Desarrollo activo — ProjectView FREEZE — siguiente: SeedSession frame
 
 ---
 
@@ -24,12 +24,12 @@ Etapa actual: Desarrollo activo — ProjectView iterado — correcciones visuale
 
 ## En progreso
 
-- Projects__ProjectView__Default — iteración visual completa — pendiente freeze
+- Projects__ProjectView__Default — FREEZE ✓
 - Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006` — pendiente verificación en Railway
 
 ## Siguiente paso
 
-Freeze Projects__ProjectView__Default → verificar Semilla en Railway → avanzar a SeedSession frame
+Verificar Semilla en Railway → avanzar a SeedSession frame
 
 ---
 
