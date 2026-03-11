@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — ProjectView iterado (6 fixes Kira)
+Etapa actual: Desarrollo activo — ProjectView iterado — correcciones visuales completas
 
 ---
 
@@ -24,12 +24,12 @@ Etapa actual: Desarrollo activo — ProjectView iterado (6 fixes Kira)
 
 ## En progreso
 
-- Projects__ProjectView__Default iterado — correcciones visuales cards — `b2f4ed7`
+- Projects__ProjectView__Default — iteración visual completa — pendiente freeze
 - Fixes de Semilla (voice ws, temas IA, progreso, PDF) — `9b7f006` — pendiente verificación en Railway
 
 ## Siguiente paso
 
-Verificar Semilla en Railway → avanzar a Propósito del Consejo
+Freeze Projects__ProjectView__Default → verificar Semilla en Railway → avanzar a SeedSession frame
 
 ---
 
@@ -47,6 +47,7 @@ Verificar Semilla en Railway → avanzar a Propósito del Consejo
 
 | Hash | Descripción |
 |---|---|
+| 3b6e380 | fix: ProjectView — badge 40% exportación sin traslape, topRow separado |
 | 485713c | fix: ProjectView — header, terminología, pipeline 6 etapas, docs, consumo, sidebar |
 | aba441f | docs: freeze Projects__Dashboard__Default |
 | e7c74ec | fix: Dashboard — cards con solo ícono ⋯, sin dropdown |
