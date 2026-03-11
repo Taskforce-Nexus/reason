@@ -62687,6 +62687,20 @@
           ]
         }
       ]
+    },
+    {
+      "type": "rectangle",
+      "id": "6e7Li",
+      "x": -552,
+      "y": -4551,
+      "fill": {
+        "type": "image",
+        "enabled": true,
+        "url": "logo-claro-reason.png",
+        "mode": "fill"
+      },
+      "width": 500,
+      "height": 150
     }
   ],
   "variables": {
