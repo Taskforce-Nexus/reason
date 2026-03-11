@@ -24,12 +24,11 @@ Etapa actual: Desarrollo activo — SeedSession en iteración
 
 ## En progreso
 
-- Projects__SeedSession__ConsejerosPropuesta — creado
-- Projects__SeedSession__EntregablesPropuesta — creado
+- SeedSession variantes (5 frames) — ConsejoPrincipal, Especialistas, ICPs, Entregables, ConsejoListo
 
 ## Siguiente paso
 
-Iterar y freeze SeedSession variantes → avanzar a Incubator
+Freeze SeedSession variantes → avanzar a Incubator
 
 ---
 
