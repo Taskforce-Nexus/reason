@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — SeedSession 5 variantes completas, pendiente freeze
+Etapa actual: Desarrollo activo — SeedSession 7 variantes en iteración
 
 ---
 
@@ -24,11 +24,11 @@ Etapa actual: Desarrollo activo — SeedSession 5 variantes completas, pendiente
 
 ## En progreso
 
-- SeedSession variantes (5 frames completos) — ConsejoPrincipal, Especialistas, ICPs, Entregables, ConsejoListo
+- SeedSession variantes (7 frames) — ConsejoPrincipal (rediseñado), Cofounders (nuevo), Especialistas, ICPs, Entregables, ConsejoListo
 
 ## Siguiente paso
 
-Freeze SeedSession 5 variantes → avanzar a Incubator
+Freeze SeedSession 7 variantes → avanzar a Incubator
 
 ---
 
@@ -46,6 +46,7 @@ Freeze SeedSession 5 variantes → avanzar a Incubator
 
 | Hash | Descripción |
 |---|---|
+| (pendiente) | fix: ConsejoPrincipalPropuesta — NEXO + ASESORES estructura; feat: CofoundersPropuesta |
 | d8093cb | fix: SeedSession__EntregablesPropuesta — paginación, Responde, Ver detalle, Pedir ajuste |
 | b0d342f | feat: SeedSession — 5 variantes (ConsejoPrincipal, Especialistas, ICPs, Entregables, ConsejoListo) |
 | 4cb78ac | fix: SeedSession — Etapa 1 de 5, 1:1 con Nexo, pill Idea cruda eliminada |
