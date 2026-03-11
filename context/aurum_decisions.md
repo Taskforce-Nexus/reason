@@ -1,6 +1,6 @@
-# AURUM Architectural Decisions
+﻿# Reason Architectural Decisions
 
-This file stores important architectural and product decisions already made for AURUM.
+This file stores important architectural and product decisions already made for Reason.
 
 Its purpose is to preserve consistency across conversations and avoid re-opening already decided topics unless explicitly requested.
 
@@ -8,9 +8,9 @@ Its purpose is to preserve consistency across conversations and avoid re-opening
 
 ## 1. Core Product Identity
 
-AURUM is not just a chatbot or a code generator.
+Reason is not just a chatbot or a code generator.
 
-AURUM is an AI-guided venture creation system that transforms a founder's idea into:
+Reason is an AI-guided venture creation system that transforms a founder's idea into:
 
 - business documentation
 
@@ -39,7 +39,7 @@ The founder provides:
 - approvals
 
 The founder should not be forced to produce heavy documentation manually.
-AURUM must reduce friction and preserve momentum.
+Reason must reduce friction and preserve momentum.
 
 ---
 
@@ -131,7 +131,7 @@ AI cofounders act as internal strategic counterparts:
 
 ## 7. Venture Creation Pipeline
 
-The canonical AURUM pipeline has 13 stages:
+The canonical Reason pipeline has 13 stages:
 
 IDEA
 ↓
@@ -294,7 +294,7 @@ Supports:
 
 ## 15. Build Scope Decision
 
-AURUM v1 generates:
+Reason v1 generates:
 
 - strategy
 
@@ -328,7 +328,7 @@ Technical documentation may remain in English.
 
 ## 18. Product Experience Principle
 
-AURUM should feel: premium, serious, clear, structured, energizing.
+Reason should feel: premium, serious, clear, structured, energizing.
 It should never feel like a chaotic prompt toy.
 
 ---
@@ -373,7 +373,7 @@ Ingresos:
 
 - El usuario nunca conecta su propia API key
 
-- AURUM controla el acceso al modelo y aplica margen sobre costo Anthropic
+- Reason controla el acceso al modelo y aplica margen sobre costo Anthropic
 
 El costo es variable por diseño: founders con más contexto, más archivos
 y más conversación consumen más tokens. El saldo captura esa variabilidad.
@@ -391,10 +391,10 @@ Tiers:
 - Consultoría — acceso solo al Consejo sin pipeline completo
 
 Modelo de retención estructural:
-El Consejo Asesor es el switching cost principal de AURUM.
+El Consejo Asesor es el switching cost principal de Reason.
 El Consejo acumula advisors configurados, buyer personas, historial
 de decisiones e inteligencia del negocio construida sesión a sesión.
-Abandonar AURUM significa abandonar la memoria institucional del negocio.
+Abandonar Reason significa abandonar la memoria institucional del negocio.
 El valor acumulado supera el costo mensual — ese es el ancla de retención.
 
 El Consejo no es producto separado — es una capa presente en todos
@@ -473,12 +473,12 @@ Niveles adicionales a raw_idea / has_prd / has_partial:
 
 ## 23. Principio de Operación Mínima del Founder
 
-AURUM opera como un artifact de Claude:
-el founder describe, AURUM genera, el founder corrige si algo
+Reason opera como un artifact de Claude:
+el founder describe, Reason genera, el founder corrige si algo
 no refleja su realidad.
 
 El founder habla en Semilla. Una vez.
-Después de eso AURUM trabaja. El founder solo aparece cuando
+Después de eso Reason trabaja. El founder solo aparece cuando
 algo necesita su ojo — no su esfuerzo.
 
 Reglas:
@@ -496,7 +496,7 @@ Reglas:
 - el founder aprueba o corrige en lenguaje natural
 
 El Venture Profile no es algo que el founder llena —
-es algo que AURUM construye y el founder puede contradecir.
+es algo que Reason construye y el founder puede contradecir.
 
 Corrección = lenguaje natural, no formulario:
 "Mis clientes no son compradores individuales, son fondos de inversión"
@@ -649,9 +649,9 @@ Fuera de MVP v1:
 
 ## 31. AVA Suite Architecture
 
-AURUM es uno de tres productos independientes bajo AVA:
-- AURUM — estrategia de negocio + consejo IA
-- Branding — identidad de marca completa (se hace a mano hasta post-AURUM)
+Reason es uno de tres productos independientes bajo AVA:
+- Reason — estrategia de negocio + consejo IA
+- Branding — identidad de marca completa (se hace a mano hasta post-Reason)
 - Agile Bot — backlog estructurado → GitHub / Jira / Linear
 
 Cada producto tiene su propio ICP, precio y marca. Se complementan pero funcionan solos.
@@ -660,15 +660,15 @@ El modelo de negocio es tipo Zoho/Odoo: cada módulo se vende solo o como suite 
 
 ---
 
-## 32. AURUM no es una incubadora
+## 32. Reason no es una incubadora
 
-AURUM es un sistema de toma de decisiones estratégicas asistido por consejo IA.
+Reason es un sistema de toma de decisiones estratégicas asistido por consejo IA.
 El ICP puede ser cualquier persona que necesite estructurar una decisión compleja.
 No está limitado a founders. El pipeline y los documentos se adaptan al ICP y al propósito declarado.
 
 ---
 
-## 33. Journey definitivo de AURUM
+## 33. Journey definitivo de Reason
 
 1. Registro
 2. Semilla — Nexo extrae contexto completo del usuario
@@ -693,7 +693,7 @@ Biblioteca viva de specs técnicas por ICP y propósito. Cada spec contiene:
 - Secciones con descripción exacta de contenido
 - Datos que necesita extraer de la sesión para generarlo
 - Consejeros mejor posicionados para contribuir
-- Criterio de calidad — cómo sabe AURUM que el documento está completo
+- Criterio de calidad — cómo sabe Reason que el documento está completo
 
 La biblioteca crece con cada usuario nuevo que no tiene spec previa.
 
@@ -784,14 +784,30 @@ El término "incubadora" queda solo en código legacy donde sea necesario para c
 
 ## 41. Pipeline se adapta por venture type
 
-El pipeline base es el de producto digital. El pipeline visible al usuario se filtra según el venture type detectado en Semilla. Branding, Agile Bot y módulos AVA son externos — AURUM los orquesta pero no los contiene.
+El pipeline base es el de producto digital. El pipeline visible al usuario se filtra según el venture type detectado en Semilla. Branding, Agile Bot y módulos AVA son externos — Reason los orquesta pero no los contiene.
 
 ---
 
 ## 42. Orden de construcción AVA Suite
 
-1. AURUM completo — se construye ahora
-2. Agile Bot — siguiente módulo después de AURUM
+1. Reason completo — se construye ahora
+2. Agile Bot — siguiente módulo después de Reason
 3. Branding — se hace a mano hasta que sea su turno
 
-No más cambios de scope hasta terminar AURUM.
+No más cambios de scope hasta terminar Reason.
+
+---
+
+## 43. Rebranding AURUM → Reason
+
+**Decisión:** El producto se renombra de AURUM a Reason.
+
+**Scope del rebrand:**
+- Nombre visible al usuario: AURUM → Reason en toda la UI, docs y código fuente
+- Brandbook Reason aplicado: Navy Blue #0A1128 (bg), Off-White #F8F8F8 (texto), Dark Gold #B8860B (acento), Cool Blue #007BFF (secundario), Charcoal Grey #2C3E50 (texto secundario)
+- Tipografía: Outfit (headers/nav/labels), Open Sans (cuerpo/párrafos)
+- Logos: archivos en public/branding/ — usar logo-claro-reason.png (blanco sobre oscuro)
+- Archivos de contexto en /context/ y /prompts/: siguen llamándose `aurum_*.md` (no renombrados)
+- Variables internas de código (nombres de funciones, tipos TS): sin cambios
+
+**Fecha:** 2026-03-11

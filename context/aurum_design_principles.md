@@ -1,4 +1,4 @@
-# AURUM — Principios de Diseño UI/UX
+﻿# Reason — Principios de Diseño UI/UX
 
 Lectura obligatoria antes de modificar cualquier frame.
 
@@ -158,7 +158,7 @@ Lectura obligatoria antes de modificar cualquier frame.
 
 ---
 
-## 13. Estilo global AURUM
+## 13. Estilo global Reason
 
 - Fondo oscuro, premium, estructurado
 - Colores de acento: gold = acciones primarias / azul = Nexo y sistema / verde = estados activos / gris = pendiente / rojo = destructivo o error

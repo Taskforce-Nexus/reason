@@ -1,6 +1,6 @@
-# AURUM — Sesión de Consejo
+﻿# Reason — Sesión de Consejo
 
-La Sesión de Consejo es el corazón de AURUM. Es donde el usuario convierte
+La Sesión de Consejo es el corazón de Reason. Es donde el usuario convierte
 su decisión estratégica en documentos estructurados con ayuda de un consejo IA especializado.
 
 No está limitada a founders. El consejo y los documentos se adaptan al ICP y al propósito.

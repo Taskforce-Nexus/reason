@@ -1,6 +1,6 @@
-# Venture Builder — AURUM Framework
+﻿# Venture Builder — Reason Framework
 
-Herramienta interna de incubación de negocios. Permite concebir y documentar productos de alto valor usando el AURUM Framework, guiado por un consejo asesor de IA.
+Herramienta interna de incubación de negocios. Permite concebir y documentar productos de alto valor usando el Reason Framework, guiado por un consejo asesor de IA.
 
 ## Requisitos previos
 
@@ -47,7 +47,7 @@ CLAUDE_USE_CHEAP=true            # true = usa Haiku (pruebas), omitir = Sonnet (
 
 Los archivos `.pen` contienen los mockups y pantallas del sistema:
 
-- `aurum.pen` — Pantallas del AURUM Framework
+- `Reason.pen` — Pantallas del Reason Framework
 - `venture-builder.pen` — Pantallas de la Incubadora
 
 Para abrirlos:

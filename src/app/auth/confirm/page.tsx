@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -42,7 +42,7 @@ function AuthConfirmInner() {
   return (
     <div className="min-h-screen bg-[#0F0F11] flex items-center justify-center p-4">
       <div className="w-full max-w-md text-center">
-        <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-8">AURUM</h1>
+        <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-8">Reason</h1>
         <div className="bg-[#1A1B1E] border border-[#2a2b30] rounded-xl p-8">
           {status === 'loading' && (
             <>
@@ -61,7 +61,7 @@ function AuthConfirmInner() {
                 </svg>
               </div>
               <h2 className="font-semibold mb-2">Cuenta verificada</h2>
-              <p className="text-sm text-[#6b6d75]">Entrando a AURUM...</p>
+              <p className="text-sm text-[#6b6d75]">Entrando a Reason...</p>
             </>
           )}
           {status === 'error' && (

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -65,7 +65,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#0F0F11] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-2">AURUM</h1>
+          <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-2">Reason</h1>
           <p className="text-sm text-[#6b6d75]">Sistema de creación de ventures</p>
         </div>
 

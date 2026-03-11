@@ -1,4 +1,4 @@
-# AURUM — Tech Stack & Builder Operations
+﻿# Reason — Tech Stack & Builder Operations
 
 ---
 
@@ -57,7 +57,7 @@ GITHUB_CLIENT_SECRET=          # OAuth app GitHub
 | `POST /api/chat` | Chat principal — semilla 1:1 + consejo + auto-generación debate Nexo Dual |
 | `POST /api/chat/proxy` | Acciones de proxy: generar borrador, aprobar, descartar, elegir lado |
 | `POST /api/chat/brief` | Generar Resumen del Fundador desde conversación semilla |
-| `POST /api/extract` | Extraer 5 documentos AURUM Framework (5 llamadas Claude en oleadas de 2) |
+| `POST /api/extract` | Extraer 5 documentos Reason Framework (5 llamadas Claude en oleadas de 2) |
 | `GET/POST /api/advisors` | CRUD de asesores |
 | `POST /api/voice/correct` | Corrección de transcripción española con Haiku — recibe `{ text }`, devuelve `{ corrected }` |
 
@@ -76,11 +76,11 @@ founder_brief       text
 entry_level         text              -- raw_idea | has_prd | has_partial
 current_phase       text
 last_active_at      timestamptz
-aurum_value_proposition   text        -- documento generado
-aurum_business_model      text        -- documento generado
-aurum_branding            text        -- documento generado
-aurum_customer_journey    text        -- documento generado
-aurum_business_plan       text        -- documento generado
+Reason_value_proposition   text        -- documento generado
+Reason_business_model      text        -- documento generado
+Reason_branding            text        -- documento generado
+Reason_customer_journey    text        -- documento generado
+Reason_business_plan       text        -- documento generado
 created_at          timestamptz
 updated_at          timestamptz
 
@@ -142,7 +142,7 @@ venture-builder/
 │   │   │   │   ├── route.ts               # Chat principal
 │   │   │   │   ├── proxy/route.ts         # Acciones de proxy
 │   │   │   │   └── brief/route.ts         # Resumen del fundador
-│   │   │   ├── extract/route.ts           # Extracción docs AURUM
+│   │   │   ├── extract/route.ts           # Extracción docs Reason
 │   │   │   └── advisors/route.ts          # CRUD asesores
 │   │   ├── layout.tsx
 │   │   └── page.tsx                        # Landing / redirección
@@ -160,7 +160,7 @@ venture-builder/
 │   │   └── utils.ts                        # Utilidades
 │   └── middleware.ts                       # Auth middleware
 ├── supabase/migrations/                    # Migraciones SQL
-├── docs/aurum-framework.md                 # Referencia AURUM Framework
+├── docs/Reason-framework.md                 # Referencia Reason Framework
 └── CLAUDE.md
 ```
 

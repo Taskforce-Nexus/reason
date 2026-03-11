@@ -1,6 +1,6 @@
-# AURUM Document System
+﻿# Reason Document System
 
-AURUM genera documentos estratégicos estructurados a través de la Sesión de Consejo.
+Reason genera documentos estratégicos estructurados a través de la Sesión de Consejo.
 Los documentos se definen dinámicamente según el ICP y el propósito del usuario.
 
 La fuente de verdad es la Document Specification Library.

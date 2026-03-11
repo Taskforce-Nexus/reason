@@ -1,4 +1,4 @@
-# AURUM Document Specification Library
+﻿# Reason Document Specification Library
 
 Biblioteca viva de specs técnicas por ICP y propósito.
 Nexo selecciona dinámicamente qué documentos proponer según el usuario.

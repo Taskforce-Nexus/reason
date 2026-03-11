@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -38,7 +38,7 @@ export default function RegisterPage() {
     return (
       <div className="min-h-screen bg-[#0F0F11] flex items-center justify-center p-4">
         <div className="w-full max-w-md text-center">
-          <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-8">AURUM</h1>
+          <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-8">Reason</h1>
           <div className="bg-[#1A1B1E] border border-[#2a2b30] rounded-xl p-8">
             <div className="w-12 h-12 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center mx-auto mb-4">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2">
@@ -64,7 +64,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-[#0F0F11] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-2">AURUM</h1>
+          <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-2">Reason</h1>
           <p className="text-sm text-[#6b6d75]">Sistema de creación de ventures</p>
         </div>
         <div className="bg-[#1A1B1E] border border-[#2a2b30] rounded-xl p-8">

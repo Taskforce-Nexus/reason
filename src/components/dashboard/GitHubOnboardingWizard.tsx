@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -170,7 +170,7 @@ export default function GitHubOnboardingWizard({
               <div>
                 <h3 className="text-white font-semibold text-base">Conecta tu GitHub</h3>
                 <p className="text-[#6b6d75] text-sm mt-1.5 leading-5 max-w-xs">
-                  AURUM guarda todos tus entregables en tu propio repositorio.
+                  Reason guarda todos tus entregables en tu propio repositorio.
                   Cada documento que generes aparecerá ahí en tiempo real.
                 </p>
               </div>

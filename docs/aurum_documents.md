@@ -1,6 +1,6 @@
-# AURUM Document System
+﻿# Reason Document System
 
-AURUM generates structured venture documentation and build artifacts across three layers:
+Reason generates structured venture documentation and build artifacts across three layers:
 
 - Business
 - Product
@@ -203,7 +203,7 @@ Defines:
 
 ## Summary
 
-AURUM currently recognizes 15 canonical documents and artifacts:
+Reason currently recognizes 15 canonical documents and artifacts:
 
 ### Business (5)
 - Value Proposition

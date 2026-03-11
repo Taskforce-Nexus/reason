@@ -1,8 +1,8 @@
-# AURUM — System Brain
+﻿# Reason — System Brain
 
 ## Vision
 
-AURUM es un sistema de toma de decisiones estratégicas asistido por consejo IA.
+Reason es un sistema de toma de decisiones estratégicas asistido por consejo IA.
 Transforma cualquier decisión compleja en documentos estructurados y accionables.
 
 El ICP puede ser cualquier persona que necesite estructurar una decisión estratégica
@@ -24,7 +24,7 @@ La mayoría de las decisiones estratégicas se estancan porque:
 - el conocimiento existe pero no está estructurado
 - no hay un proceso para convertir conversación en documentos accionables
 
-AURUM captura el momento de claridad y lo estructura inmediatamente.
+Reason captura el momento de claridad y lo estructura inmediatamente.
 
 La experiencia debe sentirse como:
 "Mi decisión se está convirtiendo en un plan ejecutable frente a mis ojos."
@@ -51,8 +51,8 @@ EXPORT CENTER — presentación interactiva + PDF / PPTX
 
 ## AVA Suite
 
-AURUM es Producto 1 de la AVA Suite:
-- AURUM — estrategia de negocio + consejo IA
+Reason es Producto 1 de la AVA Suite:
+- Reason — estrategia de negocio + consejo IA
 - Branding — identidad de marca (Producto 2)
 - Agile Bot — backlog estructurado (Producto 3)
 
@@ -105,5 +105,5 @@ MVP: PDF + PPTX. v2: Google Slides.
 ## Visión a largo plazo
 
 AVA se convierte en el sistema operativo para la creación y gestión de ventures.
-AURUM es el módulo de estrategia. Cada módulo AVA reduce el costo y complejidad
+Reason es el módulo de estrategia. Cada módulo AVA reduce el costo y complejidad
 de construir empresas por dos órdenes de magnitud.

@@ -1,4 +1,4 @@
-# AURUM Prompt Library
+﻿# Reason Prompt Library
 
 Este archivo documenta los prompts validados para uso en Claude Code / VS Code.
 Incluye aprendizajes sobre estructura y control de agentes.
@@ -21,12 +21,12 @@ Reglas aprendidas para evitar que el agente improvise o se vaya por ramas:
 
 ## Prompt: Iterar frame en Pencil.dev MCP
 
-**Uso:** Iterar cualquier frame de AURUM en Claude Code usando Pencil.dev MCP.
+**Uso:** Iterar cualquier frame de Reason en Claude Code usando Pencil.dev MCP.
 **Etapa:** ITERATE (antes de FREEZE)
 
 ```
 Contexto del proyecto:
-Estoy trabajando en AURUM, un sistema de creación de ventures guiado por IA.
+Estoy trabajando en Reason, un sistema de creación de ventures guiado por IA.
 El stack de diseño UI usa Pencil.dev MCP.
 Estamos en la etapa ITERATE del workflow: default → iterate → freeze → expand → scaffold.
 No generar estados (loading, error, empty) todavía.
@@ -81,7 +81,7 @@ Usa Pencil.dev MCP para iterar el frame [NOMBRE_DEL_FRAME] aplicando estos cambi
 
 ```
 Contexto del proyecto:
-Estoy trabajando en AURUM, un sistema de creación de ventures guiado por IA.
+Estoy trabajando en Reason, un sistema de creación de ventures guiado por IA.
 El stack de diseño UI usa Pencil.dev MCP.
 Estamos en la etapa ITERATE del workflow: default → iterate → freeze → expand → scaffold.
 No generar estados (loading, error, empty) todavía.

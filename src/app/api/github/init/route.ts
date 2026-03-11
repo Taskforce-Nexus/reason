@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
 const GITHUB_API = 'https://api.github.com'
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         name,
-        description: `Venture creado con AURUM — ${project.name}`,
+        description: `Venture creado con Reason — ${project.name}`,
         private: true,
         auto_init: false,
       }),
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Push custom README as initial commit
-    const readmeContent = `# ${project.name}\n\nGenerado por AURUM — venture creation system\n`
+    const readmeContent = `# ${project.name}\n\nGenerado por Reason — venture creation system\n`
     await fetch(`${GITHUB_API}/repos/${fullRepo}/contents/README.md`, {
       method: 'PUT',
       headers: {

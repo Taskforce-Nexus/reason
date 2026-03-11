@@ -1,4 +1,4 @@
-# AURUM — STATUS
+﻿# Reason — STATUS
 
 Este archivo es la fuente de verdad del estado actual del proyecto.
 Faber lo actualiza después de cada sesión de trabajo.
@@ -7,8 +7,8 @@ Faber lo actualiza después de cada sesión de trabajo.
 
 ## Estado general
 
-Fecha última actualización: 2026-03-10
-Etapa actual: Desarrollo activo — SeedSession 7 variantes en iteración
+Fecha última actualización: 2026-03-11
+Etapa actual: Rebrand completo AURUM → Reason — SeedSession 7 variantes pendiente freeze
 
 ---
 

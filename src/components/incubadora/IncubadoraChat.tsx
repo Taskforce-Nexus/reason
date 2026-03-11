@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
@@ -305,7 +305,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
       {/* Header */}
       <header className="border-b border-[#2a2b30] px-6 py-3 flex items-center justify-between shrink-0">
         <Link href={`/project/${project.id}`} className="text-base font-bold tracking-widest text-[#C9A84C] hover:opacity-80 transition-opacity">
-          AURUM
+          Reason
         </Link>
         <div className="flex items-center gap-3 text-sm text-[#6b6d75]">
           <span>{project.name} — {currentPhase === 'value_proposition' ? 'Propuesta de Valor' : 'Fase Semilla'}</span>
@@ -467,17 +467,17 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
             )}
           </div>
 
-          {/* Generar documentos AURUM */}
+          {/* Generar documentos Reason */}
           {userMsgCount >= 5 && (
             <div>
-              <p className="text-xs text-[#6b6d75] uppercase tracking-wider mb-2">Documentos AURUM</p>
+              <p className="text-xs text-[#6b6d75] uppercase tracking-wider mb-2">Documentos Reason</p>
               {extractState === 'idle' && (
                 <button
                   type="button"
                   onClick={runExtract}
                   className="w-full bg-[#C9A84C] hover:bg-[#b8963f] text-[#0F0F11] font-semibold text-xs px-3 py-2.5 rounded-lg transition-colors"
                 >
-                  Generar documentos AURUM
+                  Generar documentos Reason
                 </button>
               )}
               {extractState === 'running' && (

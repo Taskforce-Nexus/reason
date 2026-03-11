@@ -1,11 +1,11 @@
-# AURUM — Claude Agent Context
+﻿# Reason — Claude Agent Context
 
 Este archivo es el punto de entrada para cualquier agente de Claude Code trabajando en este proyecto.
 Léelo completo antes de hacer cualquier cosa.
 
 ---
 
-## Qué es AURUM
+## Qué es Reason
 
 Sistema de creación de ventures guiado por IA que transforma una idea en negocio estructurado, arquitectura de producto, diseño UX, sistema de ingeniería y repositorio listo para construir.
 

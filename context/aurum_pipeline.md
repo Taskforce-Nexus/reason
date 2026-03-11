@@ -1,6 +1,6 @@
-# AURUM Venture Creation Pipeline
+﻿# Reason Venture Creation Pipeline
 
-AURUM convierte una decisión estratégica compleja en documentos estructurados
+Reason convierte una decisión estratégica compleja en documentos estructurados
 y accionables a través de consejo IA especializado.
 
 ---

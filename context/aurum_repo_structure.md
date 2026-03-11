@@ -1,6 +1,6 @@
-# AURUM Repository Structure
+﻿# Reason Repository Structure
 
-/aurum
+/Reason
 │
 ├── CLAUDE.md         ← punto de entrada para agentes
 ├── context/          ← archivos de contexto para agentes

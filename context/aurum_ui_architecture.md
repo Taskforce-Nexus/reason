@@ -1,4 +1,4 @@
-# AURUM UI Architecture
+﻿# Reason UI Architecture
 
 El sistema debe sentirse como un sistema operativo para la toma de decisiones estratégicas,
 no como un dashboard de SaaS tradicional.

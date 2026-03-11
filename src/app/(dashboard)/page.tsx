@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+﻿export const dynamic = 'force-dynamic'
 
 import { createClient } from '@/lib/supabase/server'
 import NewProjectButton from '@/components/dashboard/NewProjectButton'
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-[#0F0F11]">
       {/* Header */}
       <header className="border-b border-[#2a2b30] px-6 py-4 flex items-center justify-between">
-        <span className="text-lg font-bold tracking-widest text-[#C9A84C]">AURUM</span>
+        <span className="text-lg font-bold tracking-widest text-[#C9A84C]">Reason</span>
         <div className="flex items-center gap-3">
           <span className="text-sm text-[#6b6d75]">{user?.email}</span>
           <div className="w-8 h-8 rounded-full bg-[#C9A84C] flex items-center justify-center text-[#0F0F11] text-xs font-bold">
