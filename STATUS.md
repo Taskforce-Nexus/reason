@@ -124,6 +124,8 @@ Definir siguiente frame del pipeline con Juan
 
 | Hash | Descripción |
 | --- | --- |
+| e5da846 | docs: FREEZE Settings__Team / Plans / Notifications / Connections |
+| 7a8058b | feat: Settings — 6 frames completos (Account, Billing, Team, Plans, Notifications, Connections) |
 | 2c78c3f | feat: sistema personalidad consejeros + fixes visuales — 8 tareas |
 | a56a531 | fix: AdvisorSelector + ConsejoPrincipalPropuesta + MyBoard — 7 correcciones |
 | f002b67 | fix: ConsejoPrincipalPropuesta + MyBoard + AdvisorSelector — 6 correcciones |
