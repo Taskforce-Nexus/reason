@@ -202,6 +202,13 @@ Etapa actual: IMPLEMENTATION — Epic 1 en progreso. Stories 1.1-1.4 COMPLETAS +
 - IncubadoraChat.tsx → step indicator "Fase X de 13" → "Paso X de 7"
 - incubadora/page.tsx → movido fuera de (dashboard) a `src/app/project/[id]/incubadora/` para evitar header duplicado
 
+### Fix Incubadora — logo + voice mode (2026-03-12) ✓
+
+- src/lib/logo.ts: LOGO_DATA_URL base64 extraído a archivo compartido
+- AuthBrandPanel.tsx: import desde lib/logo (elimina ~33k chars inline)
+- IncubadoraChat.tsx: header texto "Reason" → img con LOGO_DATA_URL
+- voiceMode: arranca en false, VoiceModePanel solo renderiza on demand (ya correcto)
+
 ## Siguiente paso
 
 Story 2.2 — TBD por Kira
