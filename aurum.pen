@@ -50155,34 +50155,6 @@
                   "fontFamily": "Open Sans",
                   "fontSize": 20,
                   "fontWeight": "700"
-                },
-                {
-                  "type": "frame",
-                  "id": "mCMoC",
-                  "name": "closeBtn",
-                  "width": 32,
-                  "height": 32,
-                  "fill": "#00000000",
-                  "cornerRadius": 6,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#27282B"
-                  },
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "kDhAy",
-                      "name": "icon",
-                      "fill": "#F8F8F8",
-                      "content": "✕",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 16,
-                      "fontWeight": "normal"
-                    }
-                  ]
                 }
               ]
             },
@@ -50472,34 +50444,6 @@
                   "fontFamily": "Open Sans",
                   "fontSize": 20,
                   "fontWeight": "700"
-                },
-                {
-                  "type": "frame",
-                  "id": "SI86Y",
-                  "name": "closeBtn",
-                  "width": 32,
-                  "height": 32,
-                  "fill": "#00000000",
-                  "cornerRadius": 6,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#27282B"
-                  },
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "kOylY",
-                      "name": "icon",
-                      "fill": "#F8F8F8",
-                      "content": "✕",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 16,
-                      "fontWeight": "normal"
-                    }
-                  ]
                 }
               ]
             },

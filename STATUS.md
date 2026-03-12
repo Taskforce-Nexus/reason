@@ -83,10 +83,11 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Projects__Consultoria__Default — FREEZE ✓ (aprobado por Juan)
 - aurum_default_frames.md — inventario completo reestructurado y limpio ✓
 
-- CreateProject__Modal — pills renombrados (lenguaje humano), overlay navy, X blanco 60% ✓
-- InviteCollaborator__Modal — descripción de rol bajo pills, overlay navy, X blanco 60% ✓
+- CreateProject__Modal — pills renombrados (lenguaje humano), overlay navy, sin X (solo Cancelar) ✓
+- InviteCollaborator__Modal — descripción de rol bajo pills, overlay navy, sin X (solo Cancelar) ✓
 - ConfirmAction__Modal — título/desc/botón contextuales (eliminar proyecto), overlay navy ✓
 - 3 modales — padding:24 añadido a modalCard (RCoeo, X4DQq, gzOh8) ✓
+- 3 modales — X close removido de todos: cierre unificado vía Cancelar ✓
 
 ## Siguiente paso
 
