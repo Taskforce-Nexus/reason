@@ -18,13 +18,13 @@ Projects__Dashboard__Default — FREEZE
 Projects__ProjectView__Default — FREEZE
 Projects__SeedSession__Default — Paso 1 de 7 — FREEZE
 Projects__SeedSession__EntregablesPropuesta — Paso 2 de 7 — FREEZE
-Projects__SeedSession__ConsejoPrincipalPropuesta — Paso 3 de 7
+Projects__SeedSession__ConsejoPrincipalPropuesta — Paso 3 de 7 — FREEZE
 Projects__SeedSession__CofoundersPropuesta — Paso 4 de 7 — FREEZE
 Projects__SeedSession__EspecialistasPropuesta — Paso 5 de 7
 Projects__SeedSession__ICPsPropuesta — Paso 6 de 7
 Projects__SeedSession__ConsejoListo — Paso 7 de 7
 Projects__Incubator__Default
-AdvisoryBoard__MyBoard
+AdvisoryBoard__MyBoard — FREEZE
 
 ---
 
@@ -45,7 +45,7 @@ Export__Center__Default
 Projects__CreateProject__Modal
 Projects__InviteCollaborator__Modal
 SeedSession__CofounderSelector__Drawer — FREEZE
-SeedSession__AdvisorSelector__Drawer
+SeedSession__AdvisorSelector__Drawer — FREEZE
 Projects__AdvisoryBoard__InvitedAdvisorModal
 Projects__AdvisoryBoard__BuyerPersonaModal
 Shared__ConfirmAction__Modal

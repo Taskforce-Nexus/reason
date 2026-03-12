@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-11
-Etapa actual: ITERATE — MyBoard fixes aplicados. Siguiente: Freeze ConsejoPrincipalPropuesta → avanzar a Incubator
+Etapa actual: ITERATE — 3 frames freezados. Siguiente: EspecialistasPropuesta, ICPsPropuesta, ConsejoListo → avanzar a Incubator
 
 ---
 
@@ -40,10 +40,13 @@ Etapa actual: ITERATE — MyBoard fixes aplicados. Siguiente: Freeze ConsejoPrin
 - InvitedAdvisorModal — CRUD: "+ Invitar" header, ✏ 🗑 detalle, ⋯ filas ✓
 - BuyerPersonaModal — CRUD: "+ Nueva Persona" header, ✏ 🗑 detalle, ⋯ filas ✓
 - AdvisoryBoard__MyBoard — leyenda sombreros 11px + comm style 7 cards ✓ (confirmado)
+- ConsejoPrincipalPropuesta — FREEZE ✓
+- SeedSession__AdvisorSelector__Drawer — FREEZE ✓
+- AdvisoryBoard__MyBoard — FREEZE ✓
 
 ## Siguiente paso
 
-Freeze ConsejoPrincipalPropuesta → continuar EspecialistasPropuesta, ICPsPropuesta, ConsejoListo → avanzar a Incubator
+Diseñar EspecialistasPropuesta (Paso 5), ICPsPropuesta (Paso 6), ConsejoListo (Paso 7) → Incubator
 
 ---
 
