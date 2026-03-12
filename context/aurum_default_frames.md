@@ -35,6 +35,11 @@ Documents__Viewer__Identidad — FREEZE
 
 ---
 
+# Marketing
+Marketing__Landing__Default — FREEZE
+
+---
+
 # Export
 Export__Center__Default — FREEZE
 

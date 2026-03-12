@@ -72,6 +72,7 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Marketing__Landing__Default — copies rescatados: 5 headlines/subtítulos reemplazados con versión original de mayor fuerza ✓
 - Marketing__Landing__Default — hero mockup activo (3 cols: consejo, debate, turno activo) + textGrowth fixed en 30 nodos (ICP, docs, steps, consejo, AVA, stats) ✓
 - Marketing__Landing__Default — hero mockup rediseñado: dots 4 colores, pregunta bold 14px, bloques wireframe gold/rojo, altura 360px ✓
+- Marketing__Landing__Default — FREEZE ✓ (aprobado por Juan)
 - aurum_decisions.md — decisiones 45 (mascota pulpo Nexo), 46 (ambient music Sesión de Consejo) y 47 (consultoría activa post-sesión) registradas ✓
 
 ## Siguiente paso
