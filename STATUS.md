@@ -83,6 +83,10 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Projects__Consultoria__Default — FREEZE ✓ (aprobado por Juan)
 - aurum_default_frames.md — inventario completo reestructurado y limpio ✓
 
+- CreateProject__Modal — pills renombrados (lenguaje humano), overlay navy, X blanco 60% ✓
+- InviteCollaborator__Modal — descripción de rol bajo pills, overlay navy, X blanco 60% ✓
+- ConfirmAction__Modal — título/desc/botón contextuales (eliminar proyecto), overlay navy ✓
+
 ## Siguiente paso
 
 Definir siguiente frame del pipeline con Juan
