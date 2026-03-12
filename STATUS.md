@@ -104,6 +104,8 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Settings__Notifications__Default — FREEZE ✓ (aprobado por Juan)
 - Settings__Connections__Default — FREEZE ✓ (aprobado por Juan)
 
+- context/reason_entities.md — creado: 26 entidades, relaciones y mapa de datos por pantalla ✓
+
 ## Siguiente paso
 
 Definir siguiente frame del pipeline con Juan

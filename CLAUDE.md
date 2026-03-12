@@ -67,6 +67,7 @@ Lee estos archivos en este orden:
 - /context/aurum_tech_stack.md — stack técnico, rutas API, esquema de BD, convenciones
 - /context/aurum_incubadora.md — modelo de incubación, consejo asesor, fases, roles
 - /context/reason_brand.md — identidad de marca, colores, tipografía, tono de voz
+- /context/reason_entities.md — entidades, relaciones, mapa de datos por pantalla
 
 ## Prompts validados
 
