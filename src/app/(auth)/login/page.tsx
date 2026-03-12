@@ -28,6 +28,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
@@ -77,14 +78,15 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-8 lg:p-20 border-l border-[#27282B]">
         <div className="w-full max-w-md">
           <h2 className="font-outfit text-3xl font-bold text-white mb-2">Iniciar Sesión</h2>
-          <p className="text-sm text-[#8892A4] mb-8">Ingresa tus datos para entrar y empezar.</p>
+          <p className="text-sm text-[#8892A4] mb-8">Ingresa tus credenciales para continuar.</p>
 
           {/* Mode toggle */}
-          <div className="flex gap-1 bg-[#0D1535] p-1 rounded-lg mb-7">
+          <p className="text-xs text-[#8892A4] mb-2">Selecciona el tipo de acceso</p>
+          <div className="flex gap-1 bg-[#0D1535] border border-[#1E2A4A] p-1 rounded-full mb-7">
             <button
               type="button"
               onClick={() => { setMode('password'); setError(''); setSuccess('') }}
-              className={`flex-1 text-sm py-2 rounded-md font-medium transition-colors ${
+              className={`flex-1 text-xs py-1.5 rounded-full font-medium transition-colors ${
                 mode === 'password'
                   ? 'bg-[#B8860B] text-white'
                   : 'text-[#8892A4] hover:text-white'
@@ -95,7 +97,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => { setMode('magic'); setError(''); setSuccess('') }}
-              className={`flex-1 text-sm py-2 rounded-md font-medium transition-colors ${
+              className={`flex-1 text-xs py-1.5 rounded-full font-medium transition-colors ${
                 mode === 'magic'
                   ? 'bg-[#B8860B] text-white'
                   : 'text-[#8892A4] hover:text-white'
@@ -122,11 +124,32 @@ export default function LoginPage() {
                     ¿Olvidaste tu contraseña?
                   </Link>
                 </div>
-                <input
-                  type="password" value={password} onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••" required
-                  className="w-full bg-[#0D1535] border border-[#1E2A4A] rounded-lg px-4 h-12 text-sm text-white placeholder-[#4A5568] focus:outline-none focus:border-[#B8860B] transition-colors"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
+                    placeholder="••••••••" required
+                    className="w-full bg-[#0D1535] border border-[#1E2A4A] rounded-lg px-4 pr-11 h-12 text-sm text-white placeholder-[#4A5568] focus:outline-none focus:border-[#B8860B] transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(v => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8892A4] hover:text-white transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                      </svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
               {error && <ErrorMsg msg={error} />}
               <button type="submit" disabled={loading}
