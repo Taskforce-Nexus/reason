@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-11
-Etapa actual: ITERATE — EntregablesPropuesta (detail expandible, reorden Paso X de 7)
+Etapa actual: FREEZE — EntregablesPropuesta aprobado
 
 ---
 
@@ -26,7 +26,7 @@ Etapa actual: ITERATE — EntregablesPropuesta (detail expandible, reorden Paso 
 
 - CofoundersPropuesta — FREEZE ✓
 - SeedSession__CofounderSelector__Drawer — FREEZE ✓
-- EntregablesPropuesta — detail expandible + botón renombrado ✓
+- EntregablesPropuesta — FREEZE ✓
 - Paso X de 7 actualizado en los 7 frames SeedSession ✓
 
 ## Siguiente paso

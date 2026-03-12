@@ -17,7 +17,7 @@ Auth__ForgotPasswordSent__Default — FREEZE
 Projects__Dashboard__Default — FREEZE
 Projects__ProjectView__Default — FREEZE
 Projects__SeedSession__Default — Paso 1 de 7 — FREEZE
-Projects__SeedSession__EntregablesPropuesta — Paso 2 de 7
+Projects__SeedSession__EntregablesPropuesta — Paso 2 de 7 — FREEZE
 Projects__SeedSession__ConsejoPrincipalPropuesta — Paso 3 de 7
 Projects__SeedSession__CofoundersPropuesta — Paso 4 de 7 — FREEZE
 Projects__SeedSession__EspecialistasPropuesta — Paso 5 de 7
