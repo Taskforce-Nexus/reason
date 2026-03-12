@@ -86,6 +86,7 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - CreateProject__Modal — pills renombrados (lenguaje humano), overlay navy, X blanco 60% ✓
 - InviteCollaborator__Modal — descripción de rol bajo pills, overlay navy, X blanco 60% ✓
 - ConfirmAction__Modal — título/desc/botón contextuales (eliminar proyecto), overlay navy ✓
+- 3 modales — padding:24 añadido a modalCard (RCoeo, X4DQq, gzOh8) ✓
 
 ## Siguiente paso
 
