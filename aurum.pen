@@ -17782,7 +17782,7 @@
                                     {
                                       "type": "text",
                                       "id": "fTrJN",
-                                      "fill": "$text-secondary",
+                                      "fill": "#b8860bff",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
                                       "content": "📊 Investigación de Mercado",
@@ -17898,7 +17898,7 @@
                                     {
                                       "type": "text",
                                       "id": "mz2A2",
-                                      "fill": "$text-secondary",
+                                      "fill": "#0d1535ff",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
                                       "content": "🎨 UX & Producto",
@@ -18023,7 +18023,7 @@
                                     {
                                       "type": "text",
                                       "id": "EEdzA",
-                                      "fill": "$text-secondary",
+                                      "fill": "#b8860bff",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
                                       "content": "📋 Negocio & Ejecución",
@@ -18139,7 +18139,7 @@
                                     {
                                       "type": "text",
                                       "id": "zALgt",
-                                      "fill": "$text-secondary",
+                                      "fill": "#b8860bff",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
                                       "content": "🔧 Tecnología",
@@ -18255,7 +18255,7 @@
                                     {
                                       "type": "text",
                                       "id": "7uMhN",
-                                      "fill": "$text-secondary",
+                                      "fill": "#b8860bff",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
                                       "content": "🎯 Estrategia",
@@ -20666,7 +20666,7 @@
                           "type": "text",
                           "id": "ikNsQ",
                           "name": "bioText",
-                          "fill": "$text-secondary",
+                          "fill": "#8b9db7",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "Médica especialista en telemedicina con 15 años de experiencia en transformación digital de servicios de salud. Asesora de 3 startups HealthTech en LATAM.",
@@ -20716,7 +20716,7 @@
                                 {
                                   "type": "text",
                                   "id": "utAc1",
-                                  "fill": "$text-secondary",
+                                  "fill": "#000000ff",
                                   "content": "Telemedicina",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
@@ -20907,7 +20907,7 @@
                           "type": "text",
                           "id": "iv3ck",
                           "name": "xpText",
-                          "fill": "$text-secondary",
+                          "fill": "#8b9db7ff",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "• Directora de innovación en Hospital Nacional (2018-2023)\n• Asesora regulatoria para 3 startups HealthTech\n• Ponente en Digital Health Summit LATAM",
@@ -21456,27 +21456,120 @@
                       "height": 40,
                       "fill": "$gold",
                       "cornerRadius": 6,
-                      "gap": 6,
+                      "gap": 8,
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "icon_font",
-                          "id": "oM1Xb",
-                          "width": 14,
-                          "height": 14,
-                          "iconFontName": "check",
-                          "iconFontFamily": "lucide",
-                          "fill": "#0A1128"
+                          "type": "frame",
+                          "id": "MaPa2",
+                          "name": "delBtnI",
+                          "height": 40,
+                          "cornerRadius": 6,
+                          "gap": 4,
+                          "padding": [
+                            0,
+                            6
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "1OC6H",
+                              "width": 12,
+                              "height": 12,
+                              "iconFontName": "trash-2",
+                              "iconFontFamily": "lucide",
+                              "fill": "#E57373"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ZYwWa",
+                              "fill": "#E57373",
+                              "content": "Eliminar",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
-                          "type": "text",
-                          "id": "ImUP5",
-                          "fill": "#0A1128",
-                          "content": "Confirmar Invitado",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 13,
-                          "fontWeight": "600"
+                          "type": "frame",
+                          "id": "czfYw",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "t0gyA",
+                          "name": "editBtnI",
+                          "height": 40,
+                          "fill": "#0F1A3D",
+                          "cornerRadius": 6,
+                          "stroke": {
+                            "thickness": 1,
+                            "fill": "#27282B"
+                          },
+                          "gap": 4,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "B99wH",
+                              "width": 12,
+                              "height": 12,
+                              "iconFontName": "pencil",
+                              "iconFontFamily": "lucide",
+                              "fill": "#8B9DB7"
+                            },
+                            {
+                              "type": "text",
+                              "id": "X7OKu",
+                              "fill": "#8B9DB7",
+                              "content": "Editar",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "VNWNU",
+                          "name": "confBtnI",
+                          "height": 40,
+                          "fill": "#B8860B",
+                          "cornerRadius": 6,
+                          "gap": 6,
+                          "padding": [
+                            0,
+                            14
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "TBBfW",
+                              "width": 12,
+                              "height": 12,
+                              "iconFontName": "check",
+                              "iconFontFamily": "lucide",
+                              "fill": "#F8F8F8"
+                            },
+                            {
+                              "type": "text",
+                              "id": "zPT1w",
+                              "fill": "#F8F8F8",
+                              "content": "Confirmar Invitado",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -22951,33 +23044,123 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "wVYrc",
-                      "name": "btnConfirm",
-                      "width": "fill_container",
+                      "id": "3FcsR",
+                      "name": "footerBP",
+                      "width": 352,
                       "height": 40,
-                      "fill": "$gold",
-                      "cornerRadius": 6,
-                      "gap": 6,
-                      "justifyContent": "center",
+                      "gap": 8,
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "icon_font",
-                          "id": "271ig",
-                          "width": 14,
-                          "height": 14,
-                          "iconFontName": "check",
-                          "iconFontFamily": "lucide",
-                          "fill": "#0A1128"
+                          "type": "frame",
+                          "id": "kyWSM",
+                          "name": "delBtnBP",
+                          "height": 40,
+                          "cornerRadius": 6,
+                          "gap": 4,
+                          "padding": [
+                            0,
+                            6
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "lLUyN",
+                              "width": 12,
+                              "height": 12,
+                              "iconFontName": "trash-2",
+                              "iconFontFamily": "lucide",
+                              "fill": "#E57373"
+                            },
+                            {
+                              "type": "text",
+                              "id": "tCxSK",
+                              "fill": "#E57373",
+                              "content": "Eliminar",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
-                          "type": "text",
-                          "id": "Ne0G5",
-                          "fill": "#0A1128",
-                          "content": "Confirmar Perfil",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 13,
-                          "fontWeight": "600"
+                          "type": "frame",
+                          "id": "KoOnv",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pkg64",
+                          "name": "editBtnBP",
+                          "height": 40,
+                          "fill": "#0F1A3D",
+                          "cornerRadius": 6,
+                          "stroke": {
+                            "thickness": 1,
+                            "fill": "#27282B"
+                          },
+                          "gap": 4,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "aDww4",
+                              "width": 12,
+                              "height": 12,
+                              "iconFontName": "pencil",
+                              "iconFontFamily": "lucide",
+                              "fill": "#8B9DB7"
+                            },
+                            {
+                              "type": "text",
+                              "id": "xVSr2",
+                              "fill": "#8B9DB7",
+                              "content": "Editar",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "2D7ST",
+                          "name": "confBtnBP",
+                          "height": 40,
+                          "fill": "#B8860B",
+                          "cornerRadius": 6,
+                          "gap": 6,
+                          "padding": [
+                            0,
+                            14
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "epsYn",
+                              "width": 12,
+                              "height": 12,
+                              "iconFontName": "check",
+                              "iconFontFamily": "lucide",
+                              "fill": "#F8F8F8"
+                            },
+                            {
+                              "type": "text",
+                              "id": "QwFoD",
+                              "fill": "#F8F8F8",
+                              "content": "Confirmar Perfil",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
                         }
                       ]
                     }
