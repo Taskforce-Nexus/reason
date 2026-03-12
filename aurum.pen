@@ -21432,86 +21432,74 @@
                     "fill": "$border"
                   },
                   "layout": "vertical",
+                  "gap": 8,
                   "padding": [
                     12,
-                    24,
+                    16,
                     20,
-                    24
+                    16
                   ],
                   "children": [
                     {
                       "type": "frame",
-                      "id": "xlnaT",
+                      "id": "1qg56",
                       "name": "btnConfirm",
                       "width": "fill_container",
                       "height": 40,
-                      "fill": "$gold",
+                      "fill": "#B8860B",
                       "cornerRadius": 6,
-                      "gap": 8,
+                      "gap": 6,
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "frame",
-                          "id": "MaPa2",
-                          "name": "delBtnI",
-                          "height": 40,
-                          "fill": "#8B0000",
-                          "cornerRadius": 6,
-                          "gap": 4,
-                          "padding": [
-                            0,
-                            6
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon_font",
-                              "id": "1OC6H",
-                              "width": 12,
-                              "height": 12,
-                              "iconFontName": "trash-2",
-                              "iconFontFamily": "lucide",
-                              "fill": "#E57373"
-                            },
-                            {
-                              "type": "text",
-                              "id": "ZYwWa",
-                              "fill": "#E57373",
-                              "content": "¿Confirmar eliminación?",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "500"
-                            }
-                          ]
+                          "type": "icon_font",
+                          "id": "lgivb",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "#0A1128"
                         },
                         {
+                          "type": "text",
+                          "id": "e4m9H",
+                          "fill": "#0A1128",
+                          "content": "Confirmar Invitado",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pA5Lu",
+                      "name": "actionsRow",
+                      "width": "fill_container",
+                      "height": 36,
+                      "gap": 8,
+                      "children": [
+                        {
                           "type": "frame",
-                          "id": "czfYw",
+                          "id": "mIXGD",
+                          "name": "editBtn",
                           "width": "fill_container",
-                          "height": 1
-                        },
-                        {
-                          "type": "frame",
-                          "id": "t0gyA",
-                          "name": "editBtnI",
-                          "height": 40,
-                          "fill": "#0F1A3D",
+                          "height": 36,
+                          "fill": "#00000000",
                           "cornerRadius": 6,
                           "stroke": {
+                            "align": "inside",
                             "thickness": 1,
                             "fill": "#27282B"
                           },
-                          "gap": 4,
-                          "padding": [
-                            0,
-                            10
-                          ],
+                          "gap": 6,
+                          "justifyContent": "center",
                           "alignItems": "center",
                           "children": [
                             {
                               "type": "icon_font",
-                              "id": "B99wH",
+                              "id": "qeKva",
                               "width": 12,
                               "height": 12,
                               "iconFontName": "pencil",
@@ -21520,7 +21508,7 @@
                             },
                             {
                               "type": "text",
-                              "id": "X7OKu",
+                              "id": "oLaue",
                               "fill": "#8B9DB7",
                               "content": "Editar",
                               "fontFamily": "Inter",
@@ -21531,35 +21519,38 @@
                         },
                         {
                           "type": "frame",
-                          "id": "VNWNU",
-                          "name": "confBtnI",
-                          "height": 40,
-                          "fill": "#B8860B",
+                          "id": "wLa8T",
+                          "name": "delBtn",
+                          "width": "fill_container",
+                          "height": 36,
+                          "fill": "#00000000",
                           "cornerRadius": 6,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#8B0000"
+                          },
                           "gap": 6,
-                          "padding": [
-                            0,
-                            14
-                          ],
+                          "justifyContent": "center",
                           "alignItems": "center",
                           "children": [
                             {
                               "type": "icon_font",
-                              "id": "TBBfW",
+                              "id": "HmSJa",
                               "width": 12,
                               "height": 12,
-                              "iconFontName": "check",
+                              "iconFontName": "trash-2",
                               "iconFontFamily": "lucide",
-                              "fill": "#F8F8F8"
+                              "fill": "#E57373"
                             },
                             {
                               "type": "text",
-                              "id": "zPT1w",
-                              "fill": "#F8F8F8",
-                              "content": "Confirmar Invitado",
+                              "id": "HIE7q",
+                              "fill": "#E57373",
+                              "content": "Eliminar",
                               "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "600"
+                              "fontSize": 12,
+                              "fontWeight": "500"
                             }
                           ]
                         }
