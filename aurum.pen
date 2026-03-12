@@ -50162,8 +50162,13 @@
                   "name": "closeBtn",
                   "width": 32,
                   "height": 32,
-                  "fill": "#1E1E1E",
+                  "fill": "#00000000",
                   "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#27282B"
+                  },
                   "justifyContent": "center",
                   "alignItems": "center",
                   "children": [
@@ -50171,7 +50176,7 @@
                       "type": "text",
                       "id": "kDhAy",
                       "name": "icon",
-                      "fill": "#FFFFFF99",
+                      "fill": "#F8F8F8",
                       "content": "✕",
                       "fontFamily": "Open Sans",
                       "fontSize": 16,
@@ -50474,8 +50479,13 @@
                   "name": "closeBtn",
                   "width": 32,
                   "height": 32,
-                  "fill": "#1E1E1E",
+                  "fill": "#00000000",
                   "cornerRadius": 6,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#27282B"
+                  },
                   "justifyContent": "center",
                   "alignItems": "center",
                   "children": [
@@ -50483,7 +50493,7 @@
                       "type": "text",
                       "id": "kOylY",
                       "name": "icon",
-                      "fill": "#FFFFFF99",
+                      "fill": "#F8F8F8",
                       "content": "✕",
                       "fontFamily": "Open Sans",
                       "fontSize": 16,
