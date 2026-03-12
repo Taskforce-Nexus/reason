@@ -51,6 +51,8 @@ Etapa actual: ITERATE — 3 frames freezados. Siguiente: EspecialistasPropuesta,
 - ICPsPropuesta — Paso 6 de 7 visible, 3 personas, Aceptar/Descartar, citas itálicas, Agregar perspectiva ✓
 - SeedSession__BuyerPersonaSelector__Drawer — ALTERNATIVAS ACTUALES + JOURNEY DE COMPRA + confirmación eliminación ✓
 - Projects__AdvisoryBoard__BuyerPersonaModal → renombrado SeedSession__BuyerPersonaSelector__Drawer ✓
+- ICPsPropuesta — FREEZE ✓
+- SeedSession__BuyerPersonaSelector__Drawer — FREEZE ✓
 
 ## Siguiente paso
 
