@@ -100,9 +100,14 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#6b6d75] uppercase tracking-wider mb-1.5">
-                  Contraseña
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs text-[#6b6d75] uppercase tracking-wider">
+                    Contraseña
+                  </label>
+                  <Link href="/forgot-password" className="text-xs text-[#6b6d75] hover:text-[#C9A84C] transition-colors">
+                    ¿Olvidaste tu contraseña?
+                  </Link>
+                </div>
                 <input
                   type="password" value={password} onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••" required
@@ -151,7 +156,7 @@ export default function LoginPage() {
                     </svg>
                     Enviando...
                   </span>
-                ) : 'Enviar enlace mágico'}
+                ) : 'Enviar enlace'}
               </button>
             </form>
           )}

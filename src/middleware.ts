@@ -29,6 +29,9 @@ export async function middleware(request: NextRequest) {
 
   const isAuthPage = request.nextUrl.pathname.startsWith('/login') ||
     request.nextUrl.pathname.startsWith('/register') ||
+    request.nextUrl.pathname.startsWith('/verify-email') ||
+    request.nextUrl.pathname.startsWith('/forgot-password') ||
+    request.nextUrl.pathname.startsWith('/forgot-password-sent') ||
     request.nextUrl.pathname.startsWith('/auth/confirm')
 
   if (!user && !isAuthPage) {

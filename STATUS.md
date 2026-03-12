@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-12
-Etapa actual: IMPLEMENTATION — Epic 1 en progreso. Story 1.1 COMPLETO. Siguiente: Story 1.2 Auth
+Etapa actual: IMPLEMENTATION — Epic 1 en progreso. Story 1.1 ✓ Story 1.2 COMPLETO. Siguiente: Story 1.3
 
 ---
 
@@ -117,9 +117,19 @@ Etapa actual: IMPLEMENTATION — Epic 1 en progreso. Story 1.1 COMPLETO. Siguien
 - Migraciones aplicadas en Supabase: 005 + 006 ✓
 - Verificado: 16 advisors (7 Reason nativos), 4 cofounders, 4 document_specs ✓
 
+## Story 1.2 — Auth completo (COMPLETO ✓)
+
+- login/page.tsx — forgot password link + "Enviar enlace" button ✓
+- register/page.tsx — confirm-password + redirect /verify-email + /api/auth/setup call ✓
+- middleware.ts — verify-email, forgot-password, forgot-password-sent añadidos a isAuthPage ✓
+- verify-email/page.tsx — nuevo: resend con supabase.auth.resend, email por query param ✓
+- forgot-password/page.tsx — nuevo: resetPasswordForEmail → redirect /forgot-password-sent ✓
+- forgot-password-sent/page.tsx — nuevo: mensaje confirmación + link login ✓
+- api/auth/setup/route.ts — nuevo: crea profiles + token_balances + subscriptions (service role) ✓
+
 ## Siguiente paso
 
-Story 1.2 — Auth completo: login, registro, verificación de email, forgot password
+Story 1.3 — Dashboard: listar proyectos, crear proyecto, estado del proyecto
 
 ---
 

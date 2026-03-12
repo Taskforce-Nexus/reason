@@ -1,6 +1,7 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
@@ -8,16 +9,22 @@ export default function RegisterPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
-  const [done, setDone] = useState(false)
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault()
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.')
+      return
+    }
     setLoading(true)
     setError('')
-    const { error } = await supabase.auth.signUp({
+
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -25,39 +32,22 @@ export default function RegisterPage() {
         emailRedirectTo: `${window.location.origin}/auth/confirm`,
       },
     })
+
     if (error) {
       setError(error.message)
       setLoading(false)
-    } else {
-      setDone(true)
-      setLoading(false)
+      return
     }
-  }
 
-  if (done) {
-    return (
-      <div className="min-h-screen bg-[#0F0F11] flex items-center justify-center p-4">
-        <div className="w-full max-w-md text-center">
-          <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-8">Reason</h1>
-          <div className="bg-[#1A1B1E] border border-[#2a2b30] rounded-xl p-8">
-            <div className="w-12 h-12 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center mx-auto mb-4">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
-              </svg>
-            </div>
-            <h2 className="text-lg font-semibold mb-2">Revisa tu correo</h2>
-            <p className="text-sm text-[#6b6d75] mb-6">
-              Te enviamos un enlace de confirmación a <span className="text-white">{email}</span>.
-              Haz clic en él para activar tu cuenta.
-            </p>
-            <Link href="/login" className="text-sm text-[#C9A84C] hover:underline">
-              Volver al inicio de sesión
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+    if (data.user) {
+      await fetch('/api/auth/setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: data.user.id, full_name: name }),
+      })
+    }
+
+    router.push(`/verify-email?email=${encodeURIComponent(email)}`)
   }
 
   return (
@@ -71,9 +61,9 @@ export default function RegisterPage() {
           <h2 className="text-lg font-semibold mb-6">Crear cuenta</h2>
           <form onSubmit={handleRegister} className="space-y-4">
             <div>
-              <label className="block text-xs text-[#6b6d75] uppercase tracking-wider mb-1.5">Nombre</label>
+              <label className="block text-xs text-[#6b6d75] uppercase tracking-wider mb-1.5">Nombre completo</label>
               <input type="text" value={name} onChange={e => setName(e.target.value)}
-                placeholder="Tu nombre" required
+                placeholder="Tu nombre completo" required
                 className="w-full bg-[#0F0F11] border border-[#2a2b30] rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#3a3b40] focus:outline-none focus:border-[#C9A84C] transition-colors" />
             </div>
             <div>
@@ -85,6 +75,12 @@ export default function RegisterPage() {
             <div>
               <label className="block text-xs text-[#6b6d75] uppercase tracking-wider mb-1.5">Contraseña</label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••" required minLength={6}
+                className="w-full bg-[#0F0F11] border border-[#2a2b30] rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#3a3b40] focus:outline-none focus:border-[#C9A84C] transition-colors" />
+            </div>
+            <div>
+              <label className="block text-xs text-[#6b6d75] uppercase tracking-wider mb-1.5">Confirmar contraseña</label>
+              <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
                 placeholder="••••••••" required minLength={6}
                 className="w-full bg-[#0F0F11] border border-[#2a2b30] rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#3a3b40] focus:outline-none focus:border-[#C9A84C] transition-colors" />
             </div>
