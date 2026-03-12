@@ -66,7 +66,7 @@ Etapa actual: ITERATE — Export__Center__Default rebuild v2 (tabla escalable CR
 
 - Export__Center__Default — rediseño completo v1: breadcrumb, subtítulo, barra progreso, cards Listo/Pendiente, PDF completo, Estrategia de Comunicación ✓
 - Export__Center__Default — rebuild v2: tabla escalable CRUD con header acciones globales, 5 filas, estados Listo/Pendiente, acciones por fila, paginación ✓
-- Export__Center__Default — FREEZE ✓
+- Export__Center__Default — FREEZE ✓ (aprobado por Juan)
 
 ## Siguiente paso
 
