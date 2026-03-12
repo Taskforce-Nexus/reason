@@ -70,6 +70,7 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 
 - Marketing__Landing__Default — rebuild completo desde cero: 10 secciones (Hero, Problema, Para Quién, Cómo Funciona, Consejo IA, Documentos, Nexo Dual, Suite AVA, CTA Final, Footer) ✓
 - Marketing__Landing__Default — copies rescatados: 5 headlines/subtítulos reemplazados con versión original de mayor fuerza ✓
+- Marketing__Landing__Default — hero mockup activo (3 cols: consejo, debate, turno activo) + textGrowth fixed en 30 nodos (ICP, docs, steps, consejo, AVA, stats) ✓
 - aurum_decisions.md — decisiones 45 (mascota pulpo Nexo), 46 (ambient music Sesión de Consejo) y 47 (consultoría activa post-sesión) registradas ✓
 
 ## Siguiente paso
