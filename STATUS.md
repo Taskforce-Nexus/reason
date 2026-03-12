@@ -99,6 +99,10 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Settings__Plans__Default — nuevo frame: TU PLAN ACTUAL + COMPARA PLANES (3 cards) + ALERTAS ✓
 - Settings__Notifications__Default — nuevo frame: RECIENTES (5 items) + CONFIGURACIÓN (4 grupos toggles) ✓
 - Settings__Connections__Default — nuevo frame: REPOSITORIOS (GitHub conectado) + EXPORTACIÓN (Slides, Notion) + COMUNICACIÓN (Slack) + GESTIÓN (Jira, Linear) ✓
+- Settings__Team__Default — FREEZE ✓ (aprobado por Juan)
+- Settings__Plans__Default — FREEZE ✓ (aprobado por Juan)
+- Settings__Notifications__Default — FREEZE ✓ (aprobado por Juan)
+- Settings__Connections__Default — FREEZE ✓ (aprobado por Juan)
 
 ## Siguiente paso
 

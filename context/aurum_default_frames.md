@@ -84,10 +84,10 @@ Marketing__Landing__Default — FREEZE
 
 Settings__Account__Default
 Settings__Billing__Default
-Settings__Team__Default
-Settings__Plans__Default
-Settings__Notifications__Default
-Settings__Connections__Default
+Settings__Team__Default — FREEZE
+Settings__Plans__Default — FREEZE
+Settings__Notifications__Default — FREEZE
+Settings__Connections__Default — FREEZE
 
 ---
 
