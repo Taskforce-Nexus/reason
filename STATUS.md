@@ -60,6 +60,7 @@ Etapa actual: ITERATE — Documents__Viewer__Ajustes/Contenido/Identidad iterado
 - Projects__Incubator__Default — 12 fixes: header Reason, breadcrumb multi-color, FinTrack, toggle Normal, remove Sí/No, remove Etapa redundante, remove Semilla, Experto UX 0%, Experto en Producto En espera, PREVIEW sobre PROGRESO, remove thumbs replies, Responder yo ✓
 
 - Documents__Viewer__Ajustes/Contenido/Identidad — AURUM→FinTrack (31 refs), secciones spec (Hipótesis, Encaje, Customer Personas), chips sugerencias, rename frames ✓
+- Documents__Viewer — header contraste (#141F3C + border azul), textos blancos, "Sesión de Consejo" en 3 frames ✓
 
 ## Siguiente paso
 

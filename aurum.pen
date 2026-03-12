@@ -22951,11 +22951,13 @@
           "name": "headerBar",
           "width": "fill_container",
           "height": 48,
-          "fill": "$bg-secondary",
+          "fill": "#141F3C",
           "stroke": {
             "align": "inside",
-            "thickness": 1,
-            "fill": "$border"
+            "thickness": {
+              "bottom": 2
+            },
+            "fill": "#2A3A60"
           },
           "padding": [
             0,
@@ -22975,7 +22977,7 @@
                   "type": "text",
                   "id": "s7V8R",
                   "name": "hdrBack",
-                  "fill": "$text-secondary",
+                  "fill": "#8B9DB7",
                   "content": "← FinTrack",
                   "fontFamily": "Open Sans",
                   "fontSize": 13,
@@ -23163,7 +23165,7 @@
                     {
                       "type": "text",
                       "id": "6rhkW",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ PDF",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -23194,7 +23196,7 @@
                     {
                       "type": "text",
                       "id": "1bXOI",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ PPT",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -23225,7 +23227,7 @@
                     {
                       "type": "text",
                       "id": "ZBtFI",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ Google Slides",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -23263,8 +23265,8 @@
                       "type": "text",
                       "id": "Wh4nR",
                       "name": "label",
-                      "fill": "$text-secondary",
-                      "content": "Abrir Incubadora",
+                      "fill": "#F8F8F8",
+                      "content": "Sesión de Consejo",
                       "fontFamily": "Open Sans",
                       "fontSize": 12,
                       "fontWeight": "500"
@@ -23293,7 +23295,7 @@
                       "type": "text",
                       "id": "L44Og",
                       "name": "label",
-                      "fill": "$text-secondary",
+                      "fill": "#F8F8F8",
                       "content": "Mi Consejo",
                       "fontFamily": "Open Sans",
                       "fontSize": 12,
@@ -23399,7 +23401,7 @@
                             {
                               "type": "text",
                               "id": "DnUqo",
-                              "fill": "$text-tertiary",
+                              "fill": "#B0C4DE",
                               "content": "✏️ Contenido",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
@@ -23425,7 +23427,7 @@
                               "type": "text",
                               "id": "uaTCi",
                               "name": "t2txt",
-                              "fill": "$text-tertiary",
+                              "fill": "#B0C4DE",
                               "content": "🎨 Identidad",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
@@ -31271,11 +31273,13 @@
           "name": "headerBar",
           "width": "fill_container",
           "height": 48,
-          "fill": "$bg-secondary",
+          "fill": "#141F3C",
           "stroke": {
             "align": "inside",
-            "thickness": 1,
-            "fill": "$border"
+            "thickness": {
+              "bottom": 2
+            },
+            "fill": "#2A3A60"
           },
           "padding": [
             0,
@@ -31295,7 +31299,7 @@
                   "type": "text",
                   "id": "QJJew",
                   "name": "hdrBack",
-                  "fill": "$text-secondary",
+                  "fill": "#8B9DB7",
                   "content": "← FinTrack",
                   "fontFamily": "Open Sans",
                   "fontSize": 13,
@@ -31483,7 +31487,7 @@
                     {
                       "type": "text",
                       "id": "fdZXS",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ PDF",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -31514,7 +31518,7 @@
                     {
                       "type": "text",
                       "id": "x1apM",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ PPT",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -31545,7 +31549,7 @@
                     {
                       "type": "text",
                       "id": "AiSn0",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ Google Slides",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -31583,8 +31587,8 @@
                       "type": "text",
                       "id": "Xb44S",
                       "name": "label",
-                      "fill": "$text-secondary",
-                      "content": "Abrir Incubadora",
+                      "fill": "#F8F8F8",
+                      "content": "Sesión de Consejo",
                       "fontFamily": "Open Sans",
                       "fontSize": 12,
                       "fontWeight": "500"
@@ -31613,7 +31617,7 @@
                       "type": "text",
                       "id": "anB5K",
                       "name": "label",
-                      "fill": "$text-secondary",
+                      "fill": "#F8F8F8",
                       "content": "Mi Consejo",
                       "fontFamily": "Open Sans",
                       "fontSize": 12,
@@ -31687,7 +31691,7 @@
                               "type": "text",
                               "id": "En0bv",
                               "name": "t1txt",
-                              "fill": "$text-tertiary",
+                              "fill": "#B0C4DE",
                               "content": "💬 Ajustar",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
@@ -31745,7 +31749,7 @@
                               "type": "text",
                               "id": "2dI57",
                               "name": "t2txt",
-                              "fill": "$text-tertiary",
+                              "fill": "#B0C4DE",
                               "content": "🎨 Identidad",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
@@ -39981,11 +39985,13 @@
           "name": "headerBar",
           "width": "fill_container",
           "height": 48,
-          "fill": "$bg-secondary",
+          "fill": "#141F3C",
           "stroke": {
             "align": "inside",
-            "thickness": 1,
-            "fill": "$border"
+            "thickness": {
+              "bottom": 2
+            },
+            "fill": "#2A3A60"
           },
           "padding": [
             0,
@@ -40005,7 +40011,7 @@
                   "type": "text",
                   "id": "dXolx",
                   "name": "hdrBack",
-                  "fill": "$text-secondary",
+                  "fill": "#8B9DB7",
                   "content": "← FinTrack",
                   "fontFamily": "Open Sans",
                   "fontSize": 13,
@@ -40193,7 +40199,7 @@
                     {
                       "type": "text",
                       "id": "fUNw5",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ PDF",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -40224,7 +40230,7 @@
                     {
                       "type": "text",
                       "id": "1u2Zf",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ PPT",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -40255,7 +40261,7 @@
                     {
                       "type": "text",
                       "id": "gYRdX",
-                      "fill": "$text-secondary",
+                      "fill": "#B0C4DE",
                       "content": "↓ Google Slides",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
@@ -40293,8 +40299,8 @@
                       "type": "text",
                       "id": "RlpDy",
                       "name": "label",
-                      "fill": "$text-secondary",
-                      "content": "Abrir Incubadora",
+                      "fill": "#F8F8F8",
+                      "content": "Sesión de Consejo",
                       "fontFamily": "Open Sans",
                       "fontSize": 12,
                       "fontWeight": "500"
@@ -40323,7 +40329,7 @@
                       "type": "text",
                       "id": "JvbSx",
                       "name": "label",
-                      "fill": "$text-secondary",
+                      "fill": "#F8F8F8",
                       "content": "Mi Consejo",
                       "fontFamily": "Open Sans",
                       "fontSize": 12,
@@ -40397,7 +40403,7 @@
                               "type": "text",
                               "id": "ssn9p",
                               "name": "t1txt",
-                              "fill": "$text-tertiary",
+                              "fill": "#B0C4DE",
                               "content": "💬 Ajustar",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
@@ -40422,7 +40428,7 @@
                             {
                               "type": "text",
                               "id": "nzy48",
-                              "fill": "$text-tertiary",
+                              "fill": "#B0C4DE",
                               "content": "✏️ Contenido",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
