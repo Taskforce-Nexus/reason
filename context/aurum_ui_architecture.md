@@ -45,3 +45,14 @@ Mecanismo Nexo Dual operando en cada fase.
 Interfaz de presentación interactiva de los resultados de la Sesión de Consejo.
 El usuario navega los documentos generados en formato visual.
 Exporta a PDF, PPTX o JSON.
+
+## Consultoría Activa
+Chat post-sesión entre el usuario y su consejo IA configurado.
+Disponible una vez completada la Sesión de Consejo. Principal driver de retención y consumo recurrente.
+Layout de 3 columnas:
+
+- Sidebar izquierdo (280px): lista de consejeros disponibles, cofounders, historial de consultas anteriores.
+- Área central (fill): chat con Nexo como moderador, burbujas de asesores con nombre y especialidad, burbuja del founder diferenciada, input con botón enviar gold.
+- Sidebar derecho (300px): documentos de referencia citables, contexto acumulado (nº consultas, temas, consejeros activos), chips de acciones rápidas.
+
+El consejo acumula inteligencia sesión a sesión. Abandonar Reason = perder esa memoria.

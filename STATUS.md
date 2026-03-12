@@ -75,6 +75,9 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Marketing__Landing__Default — FREEZE ✓ (aprobado por Juan)
 - aurum_decisions.md — decisiones 45 (mascota pulpo Nexo), 46 (ambient music Sesión de Consejo) y 47 (consultoría activa post-sesión) registradas ✓
 
+- Projects__ProjectView__Default — card CONSULTORÍA ACTIVA añadida (gold border top, 2 consultas badge, cita itálica, CTA gold); tiles reestructurados en 2 filas (3+2) ✓
+- Projects__Consultoria__Default — nuevo frame: nav + 3 cols (sidebar consejo, chat Nexo+asesores, sidebar docs/contexto/acciones) ✓
+
 ## Siguiente paso
 
 Definir siguiente frame del pipeline con Juan

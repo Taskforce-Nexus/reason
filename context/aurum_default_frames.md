@@ -16,6 +16,7 @@ Auth__ForgotPasswordSent__Default — FREEZE
 # Core Product
 Projects__Dashboard__Default — FREEZE
 Projects__ProjectView__Default — FREEZE
+Projects__Consultoria__Default
 Projects__SeedSession__Default — Paso 1 de 7 — FREEZE
 Projects__SeedSession__EntregablesPropuesta — Paso 2 de 7 — FREEZE
 Projects__SeedSession__ConsejoPrincipalPropuesta — Paso 3 de 7 — FREEZE
