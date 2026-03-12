@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-11
-Etapa actual: ITERATE — Modales consistentes. Siguiente: CRUD en modales de asesores/ICPs
+Etapa actual: ITERATE — MyBoard fixes aplicados. Siguiente: Freeze ConsejoPrincipalPropuesta → avanzar a Incubator
 
 ---
 
@@ -39,6 +39,7 @@ Etapa actual: ITERATE — Modales consistentes. Siguiente: CRUD en modales de as
 - Todos los modales — estilos consistentes (variables → hex explícitos) ✓
 - InvitedAdvisorModal — CRUD: "+ Invitar" header, ✏ 🗑 detalle, ⋯ filas ✓
 - BuyerPersonaModal — CRUD: "+ Nueva Persona" header, ✏ 🗑 detalle, ⋯ filas ✓
+- AdvisoryBoard__MyBoard — leyenda sombreros 11px + comm style 7 cards ✓ (confirmado)
 
 ## Siguiente paso
 

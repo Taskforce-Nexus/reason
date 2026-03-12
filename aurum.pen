@@ -12438,7 +12438,7 @@
                                   "fill": "#8B9DB7",
                                   "content": "datos",
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 10,
+                                  "fontSize": 11,
                                   "fontWeight": "normal"
                                 },
                                 {
@@ -12461,7 +12461,7 @@
                                   "fill": "#8B9DB7",
                                   "content": "cautela",
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 10,
+                                  "fontSize": 11,
                                   "fontWeight": "normal"
                                 },
                                 {
@@ -12479,7 +12479,7 @@
                                   "fill": "#8B9DB7",
                                   "content": "emociones",
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 10,
+                                  "fontSize": 11,
                                   "fontWeight": "normal"
                                 },
                                 {
@@ -12497,7 +12497,7 @@
                                   "fill": "#8B9DB7",
                                   "content": "optimismo",
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 10,
+                                  "fontSize": 11,
                                   "fontWeight": "normal"
                                 },
                                 {
@@ -12515,7 +12515,7 @@
                                   "fill": "#8B9DB7",
                                   "content": "creatividad",
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 10,
+                                  "fontSize": 11,
                                   "fontWeight": "normal"
                                 },
                                 {
@@ -12533,7 +12533,7 @@
                                   "fill": "#8B9DB7",
                                   "content": "proceso",
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 10,
+                                  "fontSize": 11,
                                   "fontWeight": "normal"
                                 }
                               ]
@@ -20716,7 +20716,7 @@
                                 {
                                   "type": "text",
                                   "id": "utAc1",
-                                  "fill": "#000000ff",
+                                  "fill": "#8b9db7",
                                   "content": "Telemedicina",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
@@ -20737,7 +20737,7 @@
                                 {
                                   "type": "text",
                                   "id": "RqyNn",
-                                  "fill": "$text-secondary",
+                                  "fill": "#8b9db7ff",
                                   "content": "Regulación",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
@@ -20758,7 +20758,7 @@
                                 {
                                   "type": "text",
                                   "id": "3UFWW",
-                                  "fill": "$text-secondary",
+                                  "fill": "#8b9db7ff",
                                   "content": "HealthTech",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
@@ -20779,7 +20779,7 @@
                                 {
                                   "type": "text",
                                   "id": "ZMymw",
-                                  "fill": "$text-secondary",
+                                  "fill": "#8b9db7ff",
                                   "content": "Ética Médica",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
@@ -20830,7 +20830,7 @@
                                 {
                                   "type": "text",
                                   "id": "VegW8",
-                                  "fill": "$text-secondary",
+                                  "fill": "#8b9db7ff",
                                   "content": "Salud",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
@@ -20841,7 +20841,7 @@
                             {
                               "type": "frame",
                               "id": "CNuGb",
-                              "fill": "$bg-tertiary",
+                              "fill": "#0f1a3dff",
                               "cornerRadius": 6,
                               "padding": [
                                 4,
@@ -20851,7 +20851,7 @@
                                 {
                                   "type": "text",
                                   "id": "uBvKq",
-                                  "fill": "$text-secondary",
+                                  "fill": "#8b9db7ff",
                                   "content": "Biotecnología",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
@@ -20872,7 +20872,7 @@
                                 {
                                   "type": "text",
                                   "id": "c3YQh",
-                                  "fill": "$text-secondary",
+                                  "fill": "#8b9db7ff",
                                   "content": "Seguros",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
