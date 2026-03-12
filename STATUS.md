@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-11
-Etapa actual: FREEZE — EntregablesPropuesta aprobado
+Etapa actual: ITERATE — ConsejoPrincipalPropuesta + MyBoard + AdvisorSelector en progreso
 
 ---
 
@@ -28,10 +28,13 @@ Etapa actual: FREEZE — EntregablesPropuesta aprobado
 - SeedSession__CofounderSelector__Drawer — FREEZE ✓
 - EntregablesPropuesta — FREEZE ✓
 - Paso X de 7 actualizado en los 7 frames SeedSession ✓
+- ConsejoPrincipalPropuesta — hat dots + Cambiar button en 7 cards ✓
+- AdvisoryBoard__MyBoard — leyenda de hat colors ✓ (renombrado desde Projects__AdvisoryBoard__MyBoard)
+- SeedSession__AdvisorSelector__Drawer — pencil icon eliminado ✓ (renombrado desde Projects__AdvisoryBoard__AdvisorCatalogModal)
 
 ## Siguiente paso
 
-Freeze frames restantes SeedSession (ConsejoPrincipal, Especialistas, ICPs, ConsejoListo) → avanzar a Incubator
+Freeze ConsejoPrincipalPropuesta → continuar EspecialistasPropuesta, ICPsPropuesta, ConsejoListo → avanzar a Incubator
 
 ---
 
@@ -49,6 +52,7 @@ Freeze frames restantes SeedSession (ConsejoPrincipal, Especialistas, ICPs, Cons
 
 | Hash | Descripción |
 | --- | --- |
+| (pending) | fix: ConsejoPrincipalPropuesta + MyBoard + AdvisorSelector — 6 correcciones |
 | 3e65985 | fix: EntregablesPropuesta — secciones reales, paginación restaurada, textos spec |
 | 31461c0 | fix: EntregablesPropuesta — detail expandible, botón renombrado, Paso X de 7 |
 | ea96e7c | refactor: renombrar CatalogDrawerModal → CofounderSelector__Drawer + eliminar modal redundante |

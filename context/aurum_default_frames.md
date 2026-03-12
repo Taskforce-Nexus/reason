@@ -24,7 +24,7 @@ Projects__SeedSession__EspecialistasPropuesta — Paso 5 de 7
 Projects__SeedSession__ICPsPropuesta — Paso 6 de 7
 Projects__SeedSession__ConsejoListo — Paso 7 de 7
 Projects__Incubator__Default
-Projects__AdvisoryBoard__MyBoard
+AdvisoryBoard__MyBoard
 
 ---
 
@@ -45,7 +45,7 @@ Export__Center__Default
 Projects__CreateProject__Modal
 Projects__InviteCollaborator__Modal
 SeedSession__CofounderSelector__Drawer — FREEZE
-Projects__AdvisoryBoard__AdvisorCatalogModal
+SeedSession__AdvisorSelector__Drawer
 Projects__AdvisoryBoard__InvitedAdvisorModal
 Projects__AdvisoryBoard__BuyerPersonaModal
 Shared__ConfirmAction__Modal
