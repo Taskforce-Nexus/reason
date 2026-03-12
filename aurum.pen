@@ -22398,8 +22398,12 @@
                       "name": "closeBtn",
                       "width": 28,
                       "height": 28,
-                      "fill": "$bg-tertiary",
-                      "cornerRadius": 14,
+                      "fill": "#0F1A3D",
+                      "cornerRadius": 6,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      },
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
