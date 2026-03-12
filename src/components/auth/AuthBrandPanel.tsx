@@ -1,4 +1,6 @@
+'use client'
 
+import { LOGO_DATA_URL } from '@/lib/logo'
 
 const FEATURES = [
   {
