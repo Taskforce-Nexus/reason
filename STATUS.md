@@ -62,9 +62,11 @@ Etapa actual: ITERATE — Documents__Viewer__Ajustes/Contenido/Identidad iterado
 - Documents__Viewer__Ajustes/Contenido/Identidad — AURUM→FinTrack (31 refs), secciones spec (Hipótesis, Encaje, Customer Personas), chips sugerencias, rename frames ✓
 - Documents__Viewer — header contraste (#141F3C + border azul), textos blancos, "Sesión de Consejo" en 3 frames ✓
 
+- Documents__Viewer__Ajustes/Contenido/Identidad — FREEZE ✓
+
 ## Siguiente paso
 
-FREEZE Documents__Viewer o diseñar siguiente frame
+Diseñar siguiente frame del pipeline (Documents__Branding__Default o Export__Center__Default)
 
 ---
 

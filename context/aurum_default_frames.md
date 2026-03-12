@@ -29,9 +29,9 @@ AdvisoryBoard__MyBoard — FREEZE
 ---
 
 # Documents
-Documents__Viewer__Ajustes
-Documents__Viewer__Contenido
-Documents__Viewer__Identidad
+Documents__Viewer__Ajustes — FREEZE
+Documents__Viewer__Contenido — FREEZE
+Documents__Viewer__Identidad — FREEZE
 Documents__Branding__Default
 
 ---
