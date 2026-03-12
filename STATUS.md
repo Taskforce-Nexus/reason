@@ -79,6 +79,9 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Projects__Consultoria__Default — nuevo frame: nav + 3 cols (sidebar consejo, chat Nexo+asesores, sidebar docs/contexto/acciones) ✓
 - Projects__ProjectView__Default — fix tile_export: "Marca" → "Comunicación" en pendientes ✓
 - Projects__Consultoria__Default — fix input: íconos 📎 🎙 añadidos antes del botón enviar ✓
+- Projects__ProjectView__Default — FREEZE ✓ (aprobado por Juan)
+- Projects__Consultoria__Default — FREEZE ✓ (aprobado por Juan)
+- aurum_default_frames.md — inventario completo reestructurado y limpio ✓
 
 ## Siguiente paso
 
