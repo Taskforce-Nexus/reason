@@ -195,9 +195,16 @@ Etapa actual: IMPLEMENTATION — Epic 1 en progreso. Stories 1.1-1.4 COMPLETAS +
 - page.tsx: Exportación 4 docs correctos (sin Marca, con Plan de Negocio)
 - page.tsx: sidebar stats gold + Último Insight con borde gold
 
+## Story 2.1 — SeedSession routing + visual (COMPLETO ✓)
+
+- semilla/page.tsx → redirect a `/project/[id]/incubadora`
+- IncubadoraChat.tsx → tokens actualizados (#C9A84C→#B8860B, #1A1B1E→#0D1535, #2a2b30→#1E2A4A, #6b6d75/#9a9ba5/#3a3b40→#8892A4/#1E2A4A, #0F0F11→#0A1128)
+- IncubadoraChat.tsx → step indicator "Fase X de 13" → "Paso X de 7"
+- incubadora/page.tsx → movido fuera de (dashboard) a `src/app/project/[id]/incubadora/` para evitar header duplicado
+
 ## Siguiente paso
 
-Story 1.6 — TBD por Kira
+Story 2.2 — TBD por Kira
 
 ---
 
