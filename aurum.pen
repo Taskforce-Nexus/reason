@@ -22053,8 +22053,10 @@
                           "id": "gAYc9",
                           "name": "info3",
                           "width": "fill_container",
+                          "height": 48,
                           "layout": "vertical",
                           "gap": 3,
+                          "justifyContent": "center",
                           "children": [
                             {
                               "type": "frame",
@@ -58650,7 +58652,7 @@
                   "id": "0RsQ3",
                   "name": "phaseText",
                   "fill": "#8B9DB7",
-                  "content": "Paso 3 de 7",
+                  "content": "Paso 4 de 7",
                   "fontFamily": "Open Sans",
                   "fontSize": 13,
                   "fontWeight": "500"
@@ -63784,13 +63786,98 @@
                               "letterSpacing": 1.2
                             },
                             {
-                              "type": "text",
-                              "id": "LQWv4",
-                              "fill": "#8B9DB7",
-                              "content": "Nexo · Cofounder Constructivo · Cofounder Crítico",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
+                              "type": "frame",
+                              "id": "ox7gj",
+                              "name": "cofoundersGroup",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "pysqC",
+                                  "name": "nx",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 2,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "SRZ3X",
+                                      "fill": "#F8F8F8",
+                                      "content": "Nexo",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 14,
+                                      "fontWeight": "600"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "TBftS",
+                                      "fill": "#B8860B",
+                                      "content": "Moderador",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "h4lBd",
+                                  "name": "ca",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 2,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "nZzvY",
+                                      "fill": "#F8F8F8",
+                                      "content": "Camila Reyes",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 14,
+                                      "fontWeight": "600"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "3m1Y6",
+                                      "fill": "#B8860B",
+                                      "content": "Cofundadora Constructiva · Bootstrapping & Marca",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "X4mSW",
+                                  "name": "an",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 2,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "tQrix",
+                                      "fill": "#F8F8F8",
+                                      "content": "Andrés Quiroga",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 14,
+                                      "fontWeight": "600"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "Qjdpc",
+                                      "fill": "#B8860B",
+                                      "content": "Cofundador Crítico · Diseño & Producto",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         },
@@ -63822,17 +63909,137 @@
                               "letterSpacing": 1.2
                             },
                             {
-                              "type": "text",
-                              "id": "oXIZL",
-                              "name": "saTxt",
-                              "fill": "#8B9DB7",
-                              "textGrowth": "fixed-width",
+                              "type": "frame",
+                              "id": "yXUUl",
+                              "name": "asesorGroups",
                               "width": "fill_container",
-                              "content": "Dr. Maya Singh — Lidera\nAlex Reeves — Lidera\nPriya Chen — Lidera\nMarcus Rivera — Apoya\nLena Fischer — Apoya\nOwen Park — Observa\nNadia Osei — Observa",
-                              "lineHeight": 1.8,
-                              "fontFamily": "Open Sans",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
+                              "layout": "vertical",
+                              "gap": 10,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "9woHX",
+                                  "name": "lideraGroup",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 6,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "L7Gkt",
+                                      "fill": "#B8860B",
+                                      "content": "LIDERA",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 10,
+                                      "fontWeight": "600",
+                                      "letterSpacing": 1
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "oW5zf",
+                                      "fill": "#8B9DB7",
+                                      "content": "Dr. Maya Singh · Investigación de Mercado",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "mLO2u",
+                                      "fill": "#8B9DB7",
+                                      "content": "Alex Reeves · Experto UX",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "Fq0Q6",
+                                      "fill": "#8B9DB7",
+                                      "content": "Priya Chen · Experto en Producto",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "3hFWm",
+                                  "name": "apoyaGroup",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 6,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "gLVg3",
+                                      "fill": "#B8860B",
+                                      "content": "APOYA",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 10,
+                                      "fontWeight": "600",
+                                      "letterSpacing": 1
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "CQnm8",
+                                      "fill": "#8B9DB7",
+                                      "content": "Marcus Rivera · Estratega de Negocio",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "2tg7o",
+                                      "fill": "#8B9DB7",
+                                      "content": "Lena Fischer · Analista de Negocio",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "eou3z",
+                                  "name": "observaGroup",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 6,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "hKpNe",
+                                      "fill": "#6E8EAD",
+                                      "content": "OBSERVA",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 10,
+                                      "fontWeight": "600",
+                                      "letterSpacing": 1
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "oRjgC",
+                                      "fill": "#8B9DB7",
+                                      "content": "Owen Park · Líder Técnico",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "akxP9",
+                                      "fill": "#8B9DB7",
+                                      "content": "Nadia Osei · Líder de Precios",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         },
@@ -63863,15 +64070,104 @@
                               "letterSpacing": 1.2
                             },
                             {
-                              "type": "text",
-                              "id": "dJY8i",
-                              "fill": "#8B9DB7",
-                              "textGrowth": "fixed-width",
+                              "type": "frame",
+                              "id": "vRTsL",
+                              "name": "especialistasGroup",
                               "width": "fill_container",
-                              "content": "Fintech LATAM · Banca Digital · Legal Financiero · Comportamiento Consumidor · Mercados Emergentes",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
+                              "layout": "vertical",
+                              "gap": 6,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "L2N7x",
+                                  "fill": "#F8F8F8",
+                                  "content": "Dr. Rafael Mora",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "ZUSzZ",
+                                  "fill": "#8B9DB7",
+                                  "content": "Especialista en Fintech LATAM",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "B0b7K",
+                                  "fill": "#F8F8F8",
+                                  "content": "Ing. Patricia Solano",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Rxzsf",
+                                  "fill": "#8B9DB7",
+                                  "content": "Experta en Banca Digital",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "QhUfB",
+                                  "fill": "#F8F8F8",
+                                  "content": "Dr. Carlos Venegas",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "HO7am",
+                                  "fill": "#8B9DB7",
+                                  "content": "Especialista Legal Financiero",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "OfdEu",
+                                  "fill": "#F8F8F8",
+                                  "content": "Mtra. Sofía Méndez",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "vVwi9",
+                                  "fill": "#8B9DB7",
+                                  "content": "Experta en Comportamiento del Consumidor",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "orCbK",
+                                  "fill": "#F8F8F8",
+                                  "content": "Ing. Roberto Kim",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "PDig1",
+                                  "fill": "#8B9DB7",
+                                  "content": "Especialista en Mercados Emergentes",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
                             }
                           ]
                         },
@@ -63907,7 +64203,117 @@
                               "fill": "#8B9DB7",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "Millennial Urbano · Estudiante Universitario · Freelancer · Pareja Joven · Profesional en Transición",
+                              "content": "Millennial Urbano · Estudiante Universitario · Freelancer Independiente",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "vOkXq",
+                          "name": "entregablesSection",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "GBeJJ",
+                              "fill": "#B8860B",
+                              "content": "ENTREGABLES",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 11,
+                              "fontWeight": "600",
+                              "letterSpacing": 1.2
+                            },
+                            {
+                              "type": "text",
+                              "id": "PaufY",
+                              "fill": "#F8F8F8",
+                              "content": "Value Proposition Canvas",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "QdOpA",
+                              "fill": "#8B9DB7",
+                              "content": "¿A quién le resuelvo qué problema?",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "EisFk",
+                              "fill": "#F8F8F8",
+                              "content": "Business Model",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "HducJ",
+                              "fill": "#8B9DB7",
+                              "content": "¿Cómo genero dinero y es viable?",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "vQXmS",
+                              "fill": "#F8F8F8",
+                              "content": "Customer Journey",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "jrlz3",
+                              "fill": "#8B9DB7",
+                              "content": "¿Cómo llego al cliente y cómo lo retengo?",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "eQTFa",
+                              "fill": "#F8F8F8",
+                              "content": "Business Plan",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ikhK4",
+                              "fill": "#8B9DB7",
+                              "content": "¿Debo ir o no ir, y por dónde empiezo?",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "nDQuY",
+                              "fill": "#F8F8F8",
+                              "content": "Estrategia de Comunicación",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "9n4qs",
+                              "fill": "#8B9DB7",
+                              "content": "¿Cómo le hablo a mi cliente ideal?",
                               "fontFamily": "Open Sans",
                               "fontSize": 12,
                               "fontWeight": "normal"
@@ -63928,6 +64334,7 @@
                           "id": "RWup6",
                           "name": "clbrow",
                           "width": "fill_container",
+                          "layout": "vertical",
                           "gap": 12,
                           "children": [
                             {
@@ -63984,6 +64391,15 @@
                                   "fontWeight": "500"
                                 }
                               ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "OFZ3A",
+                              "fill": "#4A5568",
+                              "content": "Abre tu Consejo Asesor completo",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -64201,7 +64617,7 @@
                   "id": "ipk9j",
                   "name": "phaseText",
                   "fill": "#8B9DB7",
-                  "content": "Paso 4 de 7",
+                  "content": "Paso 3 de 7",
                   "fontFamily": "Open Sans",
                   "fontSize": 13,
                   "fontWeight": "500"
