@@ -75,7 +75,7 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 
 ## Siguiente paso
 
-Diseñar siguiente frame del pipeline (Documents__Branding__Default)
+Definir siguiente frame del pipeline con Juan
 
 ---
 

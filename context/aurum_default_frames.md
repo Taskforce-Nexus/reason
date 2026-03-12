@@ -32,7 +32,6 @@ AdvisoryBoard__MyBoard — FREEZE
 Documents__Viewer__Ajustes — FREEZE
 Documents__Viewer__Contenido — FREEZE
 Documents__Viewer__Identidad — FREEZE
-Documents__Branding__Default
 
 ---
 
