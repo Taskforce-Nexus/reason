@@ -7716,7 +7716,7 @@
                   "id": "waaV3",
                   "name": "hProj",
                   "fill": "#2C3E50",
-                  "content": "AURUM",
+                  "content": "Reason",
                   "fontFamily": "Open Sans",
                   "fontSize": 13,
                   "fontWeight": "500"
@@ -7745,14 +7745,63 @@
                   }
                 },
                 {
-                  "type": "text",
-                  "id": "P4p49",
-                  "name": "hPhase",
-                  "fill": "#F8F8F8",
-                  "content": "Fase 3 de 13 — Modelo de Negocio · Pregunta 3 de 12",
-                  "fontFamily": "Open Sans",
-                  "fontSize": 12,
-                  "fontWeight": "600"
+                  "type": "frame",
+                  "id": "lYsRj",
+                  "name": "hPhaseFlex",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PkILt",
+                      "name": "ph1",
+                      "fill": "#F8F8F8",
+                      "content": "Documento 2 de 5",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "LKM3h",
+                      "name": "phSep1",
+                      "fill": "#6E8EAD",
+                      "content": "·",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "RrAA3",
+                      "name": "ph3",
+                      "fill": "#B8860B",
+                      "content": "Modelo de Negocio",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "roypG",
+                      "name": "phSep2",
+                      "fill": "#6E8EAD",
+                      "content": "·",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "uQJfx",
+                      "name": "ph5",
+                      "fill": "#F8F8F8",
+                      "content": "Pregunta 3 de 12",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
                 }
               ]
             },
@@ -7777,7 +7826,7 @@
                   "type": "ellipse",
                   "id": "rh1oF",
                   "name": "hRdot",
-                  "fill": "#B8860B",
+                  "fill": "#30A46C",
                   "width": 6,
                   "height": 6
                 },
@@ -7785,8 +7834,8 @@
                   "type": "text",
                   "id": "cnhNy",
                   "name": "hRtxt",
-                  "fill": "#2C3E50",
-                  "content": "Autopilot off · Tú apruebas cada respuesta",
+                  "fill": "#F8F8F8",
+                  "content": "Normal · Nexo debate, tú decides",
                   "fontFamily": "Open Sans",
                   "fontSize": 11,
                   "fontWeight": "normal"
@@ -7837,7 +7886,7 @@
                       "id": "gJ0Q8",
                       "name": "projTitle",
                       "fill": "$text-primary",
-                      "content": "Proyecto AURUM",
+                      "content": "FinTrack",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
                       "fontWeight": "600"
@@ -7862,16 +7911,6 @@
                   "layout": "vertical",
                   "gap": 4,
                   "children": [
-                    {
-                      "type": "text",
-                      "id": "7Jatx",
-                      "name": "projName",
-                      "fill": "$text-tertiary",
-                      "content": "Plataforma de incubación\nde negocios guiada por IA",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 9,
-                      "fontWeight": "normal"
-                    },
                     {
                       "type": "frame",
                       "id": "npFL3",
@@ -8029,8 +8068,8 @@
                       "type": "text",
                       "id": "bbVP7",
                       "name": "lR2pct",
-                      "fill": "$gold",
-                      "content": "—",
+                      "fill": "#4A6080",
+                      "content": "0%",
                       "fontFamily": "Open Sans",
                       "fontSize": 9,
                       "fontWeight": "500"
@@ -8047,6 +8086,7 @@
                     4,
                     0
                   ],
+                  "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
                     {
@@ -8067,6 +8107,16 @@
                       "content": "🧪 Experto en Producto",
                       "fontFamily": "Open Sans",
                       "fontSize": 10,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "GHAbY",
+                      "name": "lR3pct",
+                      "fill": "#4A6080",
+                      "content": "En espera",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
                       "fontWeight": "normal"
                     }
                   ]
@@ -8719,35 +8769,6 @@
                                       "fontFamily": "Open Sans",
                                       "fontSize": 11,
                                       "fontWeight": "600"
-                                    },
-                                    {
-                                      "type": "frame",
-                                      "id": "jRS91",
-                                      "name": "r1thumbs",
-                                      "gap": 6,
-                                      "alignItems": "center",
-                                      "children": [
-                                        {
-                                          "type": "icon_font",
-                                          "id": "Ito9x",
-                                          "name": "r1up",
-                                          "width": 14,
-                                          "height": 14,
-                                          "iconFontName": "thumbs-up",
-                                          "iconFontFamily": "lucide",
-                                          "fill": "$text-tertiary"
-                                        },
-                                        {
-                                          "type": "icon_font",
-                                          "id": "F4GGp",
-                                          "name": "r1down",
-                                          "width": 14,
-                                          "height": 14,
-                                          "iconFontName": "thumbs-down",
-                                          "iconFontFamily": "lucide",
-                                          "fill": "$text-tertiary"
-                                        }
-                                      ]
                                     }
                                   ]
                                 },
@@ -8828,35 +8849,6 @@
                                       "fontFamily": "Open Sans",
                                       "fontSize": 11,
                                       "fontWeight": "600"
-                                    },
-                                    {
-                                      "type": "frame",
-                                      "id": "inruO",
-                                      "name": "r2thumbs",
-                                      "gap": 6,
-                                      "alignItems": "center",
-                                      "children": [
-                                        {
-                                          "type": "icon_font",
-                                          "id": "LWEvW",
-                                          "name": "r2up",
-                                          "width": 14,
-                                          "height": 14,
-                                          "iconFontName": "thumbs-up",
-                                          "iconFontFamily": "lucide",
-                                          "fill": "$text-tertiary"
-                                        },
-                                        {
-                                          "type": "icon_font",
-                                          "id": "PS8B6",
-                                          "name": "r2down",
-                                          "width": 14,
-                                          "height": 14,
-                                          "iconFontName": "thumbs-down",
-                                          "iconFontFamily": "lucide",
-                                          "fill": "$text-tertiary"
-                                        }
-                                      ]
                                     }
                                   ]
                                 },
@@ -8937,35 +8929,6 @@
                                       "fontFamily": "Open Sans",
                                       "fontSize": 11,
                                       "fontWeight": "600"
-                                    },
-                                    {
-                                      "type": "frame",
-                                      "id": "ywaDY",
-                                      "name": "r3thumbs",
-                                      "gap": 6,
-                                      "alignItems": "center",
-                                      "children": [
-                                        {
-                                          "type": "icon_font",
-                                          "id": "Ks0vf",
-                                          "name": "r3up",
-                                          "width": 14,
-                                          "height": 14,
-                                          "iconFontName": "thumbs-up",
-                                          "iconFontFamily": "lucide",
-                                          "fill": "$success"
-                                        },
-                                        {
-                                          "type": "icon_font",
-                                          "id": "g89Uo",
-                                          "name": "r3down",
-                                          "width": 14,
-                                          "height": 14,
-                                          "iconFontName": "thumbs-down",
-                                          "iconFontFamily": "lucide",
-                                          "fill": "$text-tertiary"
-                                        }
-                                      ]
                                     }
                                   ]
                                 },
@@ -9432,7 +9395,7 @@
                                   "id": "NUHM7",
                                   "name": "btnCtxt",
                                   "fill": "#6E8EAD",
-                                  "content": "Hablar directo",
+                                  "content": "Responder yo",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 12,
                                   "fontWeight": "normal"
@@ -10089,115 +10052,6 @@
                       "fontSize": 10,
                       "fontWeight": "normal",
                       "fontStyle": "italic"
-                    },
-                    {
-                      "type": "frame",
-                      "id": "idZiZ",
-                      "name": "rateRow",
-                      "width": "fill_container",
-                      "justifyContent": "space_between",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "gJm3F",
-                          "name": "rateLabel",
-                          "fill": "#6E8EAD",
-                          "content": "¿Útil?",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 9,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "o8eUL",
-                          "name": "rateBtns",
-                          "gap": 6,
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "qC2g6",
-                              "name": "thumbUp",
-                              "fill": "#1A2E1A",
-                              "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#30A46C"
-                              },
-                              "gap": 3,
-                              "padding": [
-                                3,
-                                6
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "rWmHo",
-                                  "name": "thumbUpIco",
-                                  "width": 10,
-                                  "height": 10,
-                                  "iconFontName": "thumbs-up",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "#30A46C"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "Dm3PM",
-                                  "name": "thumbUpTxt",
-                                  "fill": "#30A46C",
-                                  "content": "Sí",
-                                  "fontFamily": "Open Sans",
-                                  "fontSize": 8,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "Zx0Ps",
-                              "name": "thumbDn",
-                              "fill": "#2E1A1A",
-                              "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#E5484D"
-                              },
-                              "gap": 3,
-                              "padding": [
-                                3,
-                                6
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "icon_font",
-                                  "id": "qfFL8",
-                                  "name": "thumbDnIco",
-                                  "width": 10,
-                                  "height": 10,
-                                  "iconFontName": "thumbs-down",
-                                  "iconFontFamily": "lucide",
-                                  "fill": "#E5484D"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "QU31K",
-                                  "name": "thumbDnTxt",
-                                  "fill": "#E5484D",
-                                  "content": "No",
-                                  "fontFamily": "Open Sans",
-                                  "fontSize": 8,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
                     }
                   ]
                 },
@@ -10513,47 +10367,111 @@
                 },
                 {
                   "type": "frame",
-                  "id": "iBZYO",
-                  "name": "rpHeader",
+                  "id": "LTeQt",
+                  "name": "rpPreview",
                   "width": "fill_container",
-                  "gap": 6,
-                  "padding": [
-                    0,
-                    0,
-                    4,
-                    0
-                  ],
-                  "alignItems": "center",
+                  "layout": "vertical",
+                  "gap": 8,
                   "children": [
                     {
-                      "type": "icon_font",
-                      "id": "diJ1p",
-                      "name": "rpIcon",
-                      "width": 12,
-                      "height": 12,
-                      "iconFontName": "chart-bar",
-                      "iconFontFamily": "lucide",
-                      "fill": "$gold"
+                      "type": "text",
+                      "id": "OyJ3s",
+                      "name": "rpS5label",
+                      "fill": "$gold",
+                      "content": "PREVIEW EN VIVO",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 1.5
                     },
                     {
-                      "type": "text",
-                      "id": "cjgWu",
-                      "name": "rpTitle",
-                      "fill": "$text-primary",
-                      "content": "Etapa: Modelo de Negocio",
-                      "fontFamily": "Outfit",
-                      "fontSize": 14,
-                      "fontWeight": "600"
+                      "type": "frame",
+                      "id": "tN1uI",
+                      "name": "previewCard",
+                      "clip": true,
+                      "width": "fill_container",
+                      "fill": "#0F1A3D",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "cr5KL",
+                          "name": "previewThumb",
+                          "width": "fill_container",
+                          "height": 100,
+                          "fill": "$bg-primary",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BKuNF",
+                              "name": "previewSlideTitle",
+                              "fill": "$gold",
+                              "content": "Propuesta de Valor",
+                              "textAlign": "center",
+                              "fontFamily": "Outfit",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "BeCBR",
+                              "name": "previewSlideSub",
+                              "fill": "$text-tertiary",
+                              "content": "Canvas de Propuesta de Valor",
+                              "textAlign": "center",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 8,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "BLGTt",
+                          "name": "previewInfo",
+                          "width": "fill_container",
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "Dmt2T",
+                              "name": "previewNum",
+                              "fill": "#2C3E50",
+                              "content": "Diapositiva 3 de 12",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 9,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dpnfa",
+                              "name": "previewStatus",
+                              "fill": "$gold",
+                              "content": "Generando...",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 9,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
-                },
-                {
-                  "type": "rectangle",
-                  "id": "eDCw4",
-                  "name": "rpDiv",
-                  "fill": "$border",
-                  "width": "fill_container",
-                  "height": 1
                 },
                 {
                   "type": "frame",
@@ -10582,49 +10500,6 @@
                       "layout": "vertical",
                       "gap": 6,
                       "children": [
-                        {
-                          "type": "frame",
-                          "id": "yJrvK",
-                          "name": "tl1",
-                          "width": "fill_container",
-                          "gap": 8,
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "CU8ql",
-                              "name": "tl1dot",
-                              "fill": "#30A46C",
-                              "content": "✓",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 10,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "LvMPT",
-                              "name": "tl1txt",
-                              "fill": "#6E8EAD",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Semilla",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 11,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "Mn20j",
-                              "name": "tl1pct",
-                              "fill": "#30A46C",
-                              "content": "92%",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 9,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        },
                         {
                           "type": "frame",
                           "id": "FXm4p",
@@ -11019,114 +10894,6 @@
                   "fill": "#1A2644",
                   "width": "fill_container",
                   "height": 1
-                },
-                {
-                  "type": "frame",
-                  "id": "LTeQt",
-                  "name": "rpPreview",
-                  "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 8,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "OyJ3s",
-                      "name": "rpS5label",
-                      "fill": "$gold",
-                      "content": "PREVIEW EN VIVO",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 9,
-                      "fontWeight": "600",
-                      "letterSpacing": 1.5
-                    },
-                    {
-                      "type": "frame",
-                      "id": "tN1uI",
-                      "name": "previewCard",
-                      "clip": true,
-                      "width": "fill_container",
-                      "fill": "#0F1A3D",
-                      "cornerRadius": 8,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#27282B"
-                      },
-                      "layout": "vertical",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "cr5KL",
-                          "name": "previewThumb",
-                          "width": "fill_container",
-                          "height": 100,
-                          "fill": "$bg-primary",
-                          "layout": "vertical",
-                          "gap": 4,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "BKuNF",
-                              "name": "previewSlideTitle",
-                              "fill": "$gold",
-                              "content": "Propuesta de Valor",
-                              "textAlign": "center",
-                              "fontFamily": "Outfit",
-                              "fontSize": 14,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "BeCBR",
-                              "name": "previewSlideSub",
-                              "fill": "$text-tertiary",
-                              "content": "Canvas de Propuesta de Valor",
-                              "textAlign": "center",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 8,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "BLGTt",
-                          "name": "previewInfo",
-                          "width": "fill_container",
-                          "padding": [
-                            8,
-                            10
-                          ],
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "Dmt2T",
-                              "name": "previewNum",
-                              "fill": "#2C3E50",
-                              "content": "Diapositiva 3 de 12",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 9,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "dpnfa",
-                              "name": "previewStatus",
-                              "fill": "$gold",
-                              "content": "Generando...",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 9,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
                 }
               ]
             }

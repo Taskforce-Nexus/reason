@@ -7,8 +7,8 @@ Faber lo actualiza después de cada sesión de trabajo.
 
 ## Estado general
 
-Fecha última actualización: 2026-03-11
-Etapa actual: ITERATE — 3 frames freezados. Siguiente: EspecialistasPropuesta, ICPsPropuesta, ConsejoListo → avanzar a Incubator
+Fecha última actualización: 2026-03-12
+Etapa actual: ITERATE — Projects__Incubator__Default iterado (12 fixes aplicados). Pendiente: FREEZE Incubator
 
 ---
 
@@ -57,9 +57,11 @@ Etapa actual: ITERATE — 3 frames freezados. Siguiente: EspecialistasPropuesta,
 - ConsejoListo — 6 fixes: ICPs 3 personas, asesores LIDERA/APOYA/OBSERVA, cofounders con nombres, especialistas con nombres, ENTREGABLES, nota Revisar consejo ✓
 - ConsejoListo — FREEZE ✓
 
+- Projects__Incubator__Default — 12 fixes: header Reason, breadcrumb multi-color, FinTrack, toggle Normal, remove Sí/No, remove Etapa redundante, remove Semilla, Experto UX 0%, Experto en Producto En espera, PREVIEW sobre PROGRESO, remove thumbs replies, Responder yo ✓
+
 ## Siguiente paso
 
-Diseñar Incubator → completar pipeline Seed
+FREEZE Projects__Incubator__Default → siguiente frame
 
 ---
 
