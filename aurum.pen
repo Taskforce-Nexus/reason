@@ -122,7 +122,7 @@
               "fill": "#F8F8F8",
               "textGrowth": "fixed-width",
               "width": 900,
-              "content": "Las decisiones estratégicas no se improvisan. Se estructuran.",
+              "content": "Los negocios no mueren en el campo de batalla. Mueren en la imaginación.",
               "lineHeight": 1.2,
               "textAlign": "center",
               "fontFamily": "Outfit",
@@ -212,7 +212,7 @@
               "id": "rhqsJ",
               "name": "productMockup",
               "width": 900,
-              "height": 320,
+              "height": 360,
               "fill": "#0D1535",
               "cornerRadius": 12,
               "stroke": {
@@ -261,6 +261,275 @@
                       "fontWeight": "normal"
                     }
                   ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Q40cY",
+                  "name": "newMock",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "36Raq",
+                      "name": "lCol",
+                      "width": 160,
+                      "height": "fill_container",
+                      "fill": "#070E20",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "right": 1
+                        },
+                        "fill": "#1A2540"
+                      },
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": [
+                        16,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Ik0mN",
+                          "name": "lLabel",
+                          "fill": "#B8860B",
+                          "content": "EL CONSEJO",
+                          "fontFamily": "Outfit",
+                          "fontSize": 9,
+                          "fontWeight": "600",
+                          "letterSpacing": 2
+                        },
+                        {
+                          "type": "text",
+                          "id": "od1at",
+                          "name": "d1",
+                          "fill": "#B8860B",
+                          "content": "● CFO",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ODkXf",
+                          "name": "d2",
+                          "fill": "#4A9DF8",
+                          "content": "● CMO",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "5d3mn",
+                          "name": "d3",
+                          "fill": "#48BB78",
+                          "content": "● Legal",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "TMWza",
+                          "name": "d4",
+                          "fill": "#FC8181",
+                          "content": "● Growth",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PUwRG",
+                      "name": "cCol",
+                      "width": "fill_container",
+                      "height": "fill_container",
+                      "fill": "#0D1535",
+                      "layout": "vertical",
+                      "gap": 16,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "DVt4Y",
+                          "name": "question",
+                          "fill": "#F8F8F8",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "¿Cuál es la arquitectura de oferta más viable?",
+                          "lineHeight": 1.3,
+                          "fontFamily": "Outfit",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Gbzk7",
+                          "name": "resp1",
+                          "width": "fill_container",
+                          "fill": "#0A1128",
+                          "cornerRadius": 4,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#B8860B"
+                          },
+                          "layout": "vertical",
+                          "gap": 5,
+                          "padding": [
+                            10,
+                            12
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "nrA6F",
+                              "name": "r1l1",
+                              "width": "fill_container",
+                              "height": 5,
+                              "fill": "#2A3550",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "fPgeN",
+                              "name": "r1l2",
+                              "width": "fill_container",
+                              "height": 5,
+                              "fill": "#2A3550",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "y9Sgi",
+                              "name": "r1l3",
+                              "width": 100,
+                              "height": 5,
+                              "fill": "#1E2842",
+                              "cornerRadius": 2
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "gfP8b",
+                          "name": "resp2",
+                          "width": "fill_container",
+                          "fill": "#0A1128",
+                          "cornerRadius": 4,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#FC8181"
+                          },
+                          "layout": "vertical",
+                          "gap": 5,
+                          "padding": [
+                            10,
+                            12
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "h7uyJ",
+                              "name": "r2l1",
+                              "width": "fill_container",
+                              "height": 5,
+                              "fill": "#2A3550",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "6AsMM",
+                              "name": "r2l2",
+                              "width": "fill_container",
+                              "height": 5,
+                              "fill": "#2A3550",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Tcxzi",
+                              "name": "r2l3",
+                              "width": 80,
+                              "height": 5,
+                              "fill": "#1E2842",
+                              "cornerRadius": 2
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "NISME",
+                      "name": "rCol",
+                      "width": 150,
+                      "height": "fill_container",
+                      "fill": "#070E20",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "left": 1
+                        },
+                        "fill": "#1A2540"
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": [
+                        16,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "RuJP3",
+                          "name": "rLabel",
+                          "fill": "#B8860B",
+                          "content": "TURNO ACTIVO",
+                          "fontFamily": "Outfit",
+                          "fontSize": 9,
+                          "fontWeight": "600",
+                          "letterSpacing": 2
+                        },
+                        {
+                          "type": "text",
+                          "id": "5ZueY",
+                          "name": "rAdv",
+                          "fill": "#F8F8F8",
+                          "content": "CFO Asesor",
+                          "fontFamily": "Outfit",
+                          "fontSize": 12,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "LH16P",
+                          "name": "rPBg",
+                          "width": "fill_container",
+                          "height": 4,
+                          "fill": "#1A2540",
+                          "cornerRadius": 2,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "N26Gk",
+                              "name": "rPFill",
+                              "width": 80,
+                              "height": 4,
+                              "fill": "#B8860B",
+                              "cornerRadius": 2
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -296,7 +565,7 @@
               "fill": "#F8F8F8",
               "textGrowth": "fixed-width",
               "width": 800,
-              "content": "No es falta de ideas. Es falta de estructura para decidir.",
+              "content": "No es falta de ideas. Es la ansiedad de construir sin tener nada claro.",
               "lineHeight": 1.3,
               "textAlign": "center",
               "fontFamily": "Outfit",
@@ -315,6 +584,22 @@
               "fontFamily": "Open Sans",
               "fontSize": 16,
               "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "CFlU0",
+              "name": "problemaExtraText",
+              "opacity": 0.7,
+              "fill": "#8B9DB7",
+              "textGrowth": "fixed-width",
+              "width": 720,
+              "content": "¿Cuántas veces refactorizaste el proyecto porque empezaste sin tener nada claro?",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Open Sans",
+              "fontSize": 16,
+              "fontWeight": "normal",
+              "fontStyle": "italic"
             },
             {
               "type": "frame",
@@ -357,6 +642,8 @@
                       "type": "text",
                       "id": "oAcG1",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "de startups fallan por falta de estrategia clara",
                       "textAlign": "center",
                       "fontFamily": "Open Sans",
@@ -398,6 +685,8 @@
                       "type": "text",
                       "id": "7fsFq",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "toma un plan de negocio tradicional",
                       "textAlign": "center",
                       "fontFamily": "Open Sans",
@@ -439,6 +728,8 @@
                       "type": "text",
                       "id": "pAlz3",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "costo promedio de consultoría estratégica",
                       "textAlign": "center",
                       "fontFamily": "Open Sans",
@@ -528,6 +819,8 @@
                       "type": "text",
                       "id": "TFNu9",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Founder",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -537,6 +830,8 @@
                       "type": "text",
                       "id": "oob6y",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Validar mi idea de negocio y saber si debo ir o no ir.",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -577,6 +872,8 @@
                       "type": "text",
                       "id": "hjIck",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Dueño de empresa",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -586,6 +883,8 @@
                       "type": "text",
                       "id": "wcEla",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Diseñar la estrategia de crecimiento para el siguiente año.",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -626,6 +925,8 @@
                       "type": "text",
                       "id": "2JTfK",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Director de innovación",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -635,6 +936,8 @@
                       "type": "text",
                       "id": "Q2IP2",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Lanzar un producto interno con business case sólido.",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -675,6 +978,8 @@
                       "type": "text",
                       "id": "F1mFh",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Estratega / Consultor",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -684,6 +989,8 @@
                       "type": "text",
                       "id": "HZOUb",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Estructurar recomendaciones para mi cliente con evidencia.",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -726,7 +1033,7 @@
               "fill": "#F8F8F8",
               "textGrowth": "fixed-width",
               "width": 800,
-              "content": "5 pasos. Un consejo completo. Documentos listos para actuar.",
+              "content": "5 fases. Una mesa. Nadie se levanta hasta resolver.",
               "lineHeight": 1.3,
               "textAlign": "center",
               "fontFamily": "Outfit",
@@ -784,6 +1091,8 @@
                       "type": "text",
                       "id": "RtT1M",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Cuéntale a Nexo tu situación. Él extrae todo el contexto.",
                       "lineHeight": 1.5,
                       "textAlign": "center",
@@ -836,6 +1145,8 @@
                       "type": "text",
                       "id": "GP7xZ",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Nexo arma consejeros, cofounders y perspectivas de cliente.",
                       "lineHeight": 1.5,
                       "textAlign": "center",
@@ -888,6 +1199,8 @@
                       "type": "text",
                       "id": "tvxg9",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Define qué documentos necesitas producir.",
                       "lineHeight": 1.5,
                       "textAlign": "center",
@@ -940,6 +1253,8 @@
                       "type": "text",
                       "id": "72vLs",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Tu consejo debate, analiza y produce cada documento.",
                       "lineHeight": 1.5,
                       "textAlign": "center",
@@ -992,6 +1307,8 @@
                       "type": "text",
                       "id": "UBuXk",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Exporta en PDF, slides o paquete inversionista.",
                       "lineHeight": 1.5,
                       "textAlign": "center",
@@ -1056,6 +1373,21 @@
               "fontWeight": "normal"
             },
             {
+              "type": "text",
+              "id": "BzJUi",
+              "name": "consejoExtraText",
+              "opacity": 0.8,
+              "fill": "#FFFFFF",
+              "textGrowth": "fixed-width",
+              "width": 720,
+              "content": "Antes levantabas capital para contratar a este talento. Hoy los tienes a todos — solo necesitas configurar bien sus skills, su contexto y tu plan.",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Open Sans",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
               "type": "frame",
               "id": "BN50s",
               "name": "tcCols",
@@ -1083,6 +1415,8 @@
                       "type": "text",
                       "id": "IvQw3",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Nexo (moderador)\nCofounders IA (constructivo + crítico)\nAsesores especializados (7 roles)\nEspecialistas de industria\nPerspectivas de cliente",
                       "lineHeight": 2,
                       "fontFamily": "Open Sans",
@@ -1112,6 +1446,8 @@
                       "type": "text",
                       "id": "Urrpd",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "🔥  Directo y orientado a la acción\n💧  Empático y colaborativo\n🌍  Analítico y basado en datos\n💨  Visionario y explorador",
                       "lineHeight": 2,
                       "fontFamily": "Open Sans",
@@ -1141,6 +1477,8 @@
                       "type": "text",
                       "id": "NEoCf",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "● datos   ● cautela\n● emociones   ● optimismo\n● creatividad   ● proceso",
                       "lineHeight": 2,
                       "fontFamily": "Open Sans",
@@ -1234,6 +1572,8 @@
                       "type": "text",
                       "id": "GLOQJ",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Value Proposition Canvas",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -1243,6 +1583,8 @@
                       "type": "text",
                       "id": "1MZlW",
                       "fill": "#B8860B",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "¿A quién le resuelvo qué problema y por qué me van a elegir?",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1275,6 +1617,8 @@
                       "type": "text",
                       "id": "lo9as",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Business Model",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -1284,6 +1628,8 @@
                       "type": "text",
                       "id": "JpeH2",
                       "fill": "#B8860B",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "¿Cómo genero dinero y es viable económicamente?",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1316,6 +1662,8 @@
                       "type": "text",
                       "id": "iN2EW",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Customer Journey",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -1325,6 +1673,8 @@
                       "type": "text",
                       "id": "6qiuk",
                       "fill": "#B8860B",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "¿Cómo llego al cliente y cómo lo retengo?",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1357,6 +1707,8 @@
                       "type": "text",
                       "id": "nUu7S",
                       "fill": "#F8F8F8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Business Plan",
                       "fontFamily": "Outfit",
                       "fontSize": 16,
@@ -1366,6 +1718,8 @@
                       "type": "text",
                       "id": "SGBkg",
                       "fill": "#B8860B",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "¿Debo ir o no ir, y por dónde empiezo?",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1409,7 +1763,7 @@
               "fill": "#F8F8F8",
               "textGrowth": "fixed-width",
               "width": 800,
-              "content": "Cada respuesta se debate antes de llegar a ti.",
+              "content": "La diferencia entre una idea y un negocio es quién se sienta contigo a resolverlo.",
               "lineHeight": 1.3,
               "textAlign": "center",
               "fontFamily": "Outfit",
@@ -1456,6 +1810,8 @@
                       "type": "text",
                       "id": "4Od2W",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": 281,
                       "content": "«La oportunidad es real. Aquí está mi plan de acción.»",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1517,6 +1873,8 @@
                       "type": "text",
                       "id": "RdxAo",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": 281,
                       "content": "«El mercado está saturado. Aquí están los riesgos reales.»",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1680,6 +2038,8 @@
                       "type": "text",
                       "id": "rWZ1q",
                       "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Transforma decisiones en documentos accionables.",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1729,6 +2089,8 @@
                       "type": "text",
                       "id": "bGiCQ",
                       "fill": "#4A5568",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "De la estrategia a la identidad visual.",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -1778,6 +2140,8 @@
                       "type": "text",
                       "id": "mUe82",
                       "fill": "#4A5568",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
                       "content": "Del plan al repositorio listo.",
                       "lineHeight": 1.5,
                       "fontFamily": "Open Sans",
@@ -3578,144 +3942,42 @@
                       "id": "PU3al",
                       "name": "controlTiles",
                       "width": "fill_container",
+                      "layout": "vertical",
                       "gap": 16,
                       "children": [
                         {
                           "type": "frame",
-                          "id": "xCmAy",
-                          "name": "tile_semilla",
+                          "id": "vL0SV",
+                          "name": "row1",
                           "width": "fill_container",
-                          "height": 216,
-                          "fill": "#0D1535",
-                          "cornerRadius": 10,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": {
-                              "top": 3
-                            },
-                            "fill": "#30A46C"
-                          },
-                          "layout": "vertical",
-                          "gap": 12,
-                          "padding": 20,
-                          "justifyContent": "space_between",
+                          "gap": 16,
                           "children": [
                             {
-                              "type": "text",
-                              "id": "9tZnu",
-                              "name": "semLabel",
-                              "fill": "#30A46C",
-                              "content": "SEMILLA",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 10,
-                              "fontWeight": "600",
-                              "letterSpacing": 2
-                            },
-                            {
                               "type": "frame",
-                              "id": "5iynh",
-                              "name": "semBadge",
-                              "fill": "#1A2A1C",
-                              "cornerRadius": 999,
-                              "padding": [
-                                3,
-                                8
-                              ],
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "Zr5dA",
-                                  "name": "semBadgeTxt",
-                                  "fill": "#30A46C",
-                                  "content": "● Completada",
-                                  "fontFamily": "Open Sans",
-                                  "fontSize": 11,
-                                  "fontWeight": "500"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "1obwR",
-                              "name": "semSummary",
-                              "fill": "#2C3E50",
-                              "textGrowth": "fixed-width",
+                              "id": "xCmAy",
+                              "name": "tile_semilla",
                               "width": "fill_container",
-                              "content": "FinTrack es una app de finanzas personales dirigida a millennials en LATAM que buscan controlar sus gastos sin complejidad.",
-                              "lineHeight": 1.5,
-                              "fontFamily": "Open Sans",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "yXkL2",
-                              "name": "semBtn",
-                              "width": "fill_container",
+                              "height": 216,
                               "fill": "#0D1535",
-                              "cornerRadius": 6,
+                              "cornerRadius": 10,
                               "stroke": {
                                 "align": "inside",
-                                "thickness": 1,
-                                "fill": "#FFFFFF33"
+                                "thickness": {
+                                  "top": 3
+                                },
+                                "fill": "#30A46C"
                               },
                               "layout": "vertical",
-                              "padding": [
-                                8,
-                                16
-                              ],
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "h3Gs5",
-                                  "name": "semBtnLbl",
-                                  "fill": "#F8F8F8",
-                                  "content": "Ver sesión completa →",
-                                  "fontFamily": "Open Sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "2VHqC",
-                          "name": "tile_incubadora",
-                          "width": "fill_container",
-                          "height": 216,
-                          "fill": "#0D1535",
-                          "cornerRadius": 10,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": {
-                              "top": 3
-                            },
-                            "fill": "#C5A55A"
-                          },
-                          "layout": "vertical",
-                          "gap": 12,
-                          "padding": 20,
-                          "justifyContent": "space_between",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "wj1i5",
-                              "name": "t1head",
-                              "width": "fill_container",
+                              "gap": 12,
+                              "padding": 20,
                               "justifyContent": "space_between",
-                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "YkDAr",
-                                  "name": "label",
-                                  "fill": "#B8860B",
-                                  "content": "SESIÓN DE CONSEJO",
+                                  "id": "9tZnu",
+                                  "name": "semLabel",
+                                  "fill": "#30A46C",
+                                  "content": "SEMILLA",
                                   "fontFamily": "Open Sans",
                                   "fontSize": 10,
                                   "fontWeight": "600",
@@ -3723,11 +3985,10 @@
                                 },
                                 {
                                   "type": "frame",
-                                  "id": "goL8F",
-                                  "name": "badge",
-                                  "fill": "#1C2A1C",
+                                  "id": "5iynh",
+                                  "name": "semBadge",
+                                  "fill": "#1A2A1C",
                                   "cornerRadius": 999,
-                                  "gap": 5,
                                   "padding": [
                                     3,
                                     8
@@ -3735,341 +3996,58 @@
                                   "alignItems": "center",
                                   "children": [
                                     {
-                                      "type": "ellipse",
-                                      "id": "G1t3I",
-                                      "name": "dot",
-                                      "fill": "#16A34A",
-                                      "width": 5,
-                                      "height": 5
-                                    },
-                                    {
                                       "type": "text",
-                                      "id": "iMsHq",
-                                      "name": "text",
-                                      "fill": "#16A34A",
-                                      "content": "Activa",
+                                      "id": "Zr5dA",
+                                      "name": "semBadgeTxt",
+                                      "fill": "#30A46C",
+                                      "content": "● Completada",
                                       "fontFamily": "Open Sans",
                                       "fontSize": 11,
                                       "fontWeight": "500"
                                     }
                                   ]
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "sOJfT",
-                              "name": "phase",
-                              "fill": "#F8F8F8",
-                              "content": "Modelo de Negocio",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 16,
-                              "fontWeight": "700"
-                            },
-                            {
-                              "type": "text",
-                              "id": "ptqNX",
-                              "name": "meta",
-                              "fill": "#6E8EAD",
-                              "textGrowth": "fixed-width-height",
-                              "width": 152,
-                              "height": 50,
-                              "content": "hace 2 horas · 47 mensajes",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "KFkgr",
-                              "name": "btn",
-                              "width": "fill_container",
-                              "fill": "#B8860B",
-                              "cornerRadius": 6,
-                              "padding": [
-                                8,
-                                16
-                              ],
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
+                                },
                                 {
                                   "type": "text",
-                                  "id": "xA1IP",
-                                  "name": "label",
-                                  "fill": "#0A1128",
-                                  "content": "Continuar sesión →",
+                                  "id": "1obwR",
+                                  "name": "semSummary",
+                                  "fill": "#2C3E50",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "FinTrack es una app de finanzas personales dirigida a millennials en LATAM que buscan controlar sus gastos sin complejidad.",
+                                  "lineHeight": 1.5,
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "700"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "yIQae",
-                          "name": "tile_advisory",
-                          "width": "fill_container",
-                          "height": 216,
-                          "fill": "#0D1535",
-                          "cornerRadius": 10,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": {
-                              "top": 3
-                            },
-                            "fill": "#3B82F6"
-                          },
-                          "layout": "vertical",
-                          "gap": 12,
-                          "padding": 20,
-                          "justifyContent": "space_between",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "oYpIB",
-                              "name": "label",
-                              "fill": "#007BFF",
-                              "content": "CONSEJO ASESOR",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 10,
-                              "fontWeight": "600",
-                              "letterSpacing": 2
-                            },
-                            {
-                              "type": "text",
-                              "id": "YDFM6",
-                              "name": "count",
-                              "fill": "#F8F8F8",
-                              "content": "9 asesores configurados",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 15,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "zUnBu",
-                              "name": "avatarRow",
-                              "gap": -6,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "frame",
-                                  "id": "Ahn6Q",
-                                  "name": "a1",
-                                  "width": 28,
-                                  "height": 28,
-                                  "fill": "#1C2A3A",
-                                  "cornerRadius": 999,
-                                  "stroke": {
-                                    "align": "inside",
-                                    "thickness": 2,
-                                    "fill": "#111113"
-                                  },
-                                  "justifyContent": "center",
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "id": "LFlQC",
-                                      "name": "t",
-                                      "fill": "#B8860B",
-                                      "content": "M",
-                                      "fontFamily": "Open Sans",
-                                      "fontSize": 11,
-                                      "fontWeight": "700"
-                                    }
-                                  ]
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
                                 },
                                 {
                                   "type": "frame",
-                                  "id": "s6ayr",
-                                  "name": "a2",
-                                  "width": 28,
-                                  "height": 28,
-                                  "fill": "#2A1C3A",
-                                  "cornerRadius": 999,
+                                  "id": "yXkL2",
+                                  "name": "semBtn",
+                                  "width": "fill_container",
+                                  "fill": "#0D1535",
+                                  "cornerRadius": 6,
                                   "stroke": {
                                     "align": "inside",
-                                    "thickness": 2,
-                                    "fill": "#111113"
+                                    "thickness": 1,
+                                    "fill": "#FFFFFF33"
                                   },
-                                  "justifyContent": "center",
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "id": "9Z9FL",
-                                      "name": "t",
-                                      "fill": "#A855F7",
-                                      "content": "V",
-                                      "fontFamily": "Open Sans",
-                                      "fontSize": 11,
-                                      "fontWeight": "700"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "frame",
-                                  "id": "VyOiB",
-                                  "name": "a3",
-                                  "width": 28,
-                                  "height": 28,
-                                  "fill": "#1C3A24",
-                                  "cornerRadius": 999,
-                                  "stroke": {
-                                    "align": "inside",
-                                    "thickness": 2,
-                                    "fill": "#111113"
-                                  },
-                                  "justifyContent": "center",
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "id": "kQM6n",
-                                      "name": "t",
-                                      "fill": "#16A34A",
-                                      "content": "R",
-                                      "fontFamily": "Open Sans",
-                                      "fontSize": 11,
-                                      "fontWeight": "700"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "frame",
-                                  "id": "rESjv",
-                                  "name": "a4",
-                                  "width": 28,
-                                  "height": 28,
-                                  "fill": "#3A2A1C",
-                                  "cornerRadius": 999,
-                                  "stroke": {
-                                    "align": "inside",
-                                    "thickness": 2,
-                                    "fill": "#111113"
-                                  },
-                                  "justifyContent": "center",
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "id": "gCAtz",
-                                      "name": "t",
-                                      "fill": "#F59E0B",
-                                      "content": "F",
-                                      "fontFamily": "Open Sans",
-                                      "fontSize": 11,
-                                      "fontWeight": "700"
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "jQIWP",
-                              "name": "meta",
-                              "fill": "#6E8EAD",
-                              "content": "Última actividad hace 2 horas",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "JWNbQ",
-                              "name": "btn",
-                              "width": "fill_container",
-                              "fill": "#0D1829",
-                              "cornerRadius": 6,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#3B82F640"
-                              },
-                              "padding": [
-                                8,
-                                16
-                              ],
-                              "justifyContent": "center",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "csKss",
-                                  "name": "label",
-                                  "fill": "#007BFF",
-                                  "content": "Ver Board →",
-                                  "fontFamily": "Open Sans",
-                                  "fontSize": 13,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "V8eTS",
-                          "name": "tile_export",
-                          "width": "fill_container",
-                          "height": 216,
-                          "fill": "#0D1535",
-                          "cornerRadius": 10,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": {
-                              "top": 3
-                            },
-                            "fill": "#4A5568"
-                          },
-                          "layout": "vertical",
-                          "gap": 12,
-                          "padding": 20,
-                          "justifyContent": "space_between",
-                          "children": [
-                            {
-                              "type": "frame",
-                              "id": "c1xj4",
-                              "name": "exportTopRow",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "7sImx",
-                                  "name": "label",
-                                  "fill": "#6E8EAD",
-                                  "content": "EXPORTACIÓN",
-                                  "fontFamily": "Open Sans",
-                                  "fontSize": 10,
-                                  "fontWeight": "600",
-                                  "letterSpacing": 2
-                                },
-                                {
-                                  "type": "frame",
-                                  "id": "9ySi0",
-                                  "name": "badge",
-                                  "fill": "#C9A84C20",
-                                  "cornerRadius": 999,
+                                  "layout": "vertical",
                                   "padding": [
-                                    3,
-                                    8
+                                    8,
+                                    16
                                   ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
                                   "children": [
                                     {
                                       "type": "text",
-                                      "id": "4Pyt2",
-                                      "name": "text",
-                                      "fill": "#B8860B",
-                                      "content": "40%",
+                                      "id": "h3Gs5",
+                                      "name": "semBtnLbl",
+                                      "fill": "#F8F8F8",
+                                      "content": "Ver sesión completa →",
                                       "fontFamily": "Open Sans",
-                                      "fontSize": 11,
+                                      "fontSize": 13,
                                       "fontWeight": "600"
                                     }
                                   ]
@@ -4077,76 +4055,594 @@
                               ]
                             },
                             {
-                              "type": "text",
-                              "id": "IIbuz",
-                              "name": "text",
-                              "fill": "#F8F8F8",
-                              "content": "2 de 4 documentos listos",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 15,
-                              "fontWeight": "600"
-                            },
-                            {
                               "type": "frame",
-                              "id": "fb8Qh",
-                              "name": "progressTrack",
+                              "id": "2VHqC",
+                              "name": "tile_incubadora",
                               "width": "fill_container",
-                              "height": 4,
-                              "fill": "#152050",
-                              "cornerRadius": 2,
+                              "height": 216,
+                              "fill": "#0D1535",
+                              "cornerRadius": 10,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": {
+                                  "top": 3
+                                },
+                                "fill": "#C5A55A"
+                              },
+                              "layout": "vertical",
+                              "gap": 12,
+                              "padding": 20,
+                              "justifyContent": "space_between",
                               "children": [
                                 {
-                                  "type": "rectangle",
-                                  "cornerRadius": 2,
-                                  "id": "Sdi2F",
-                                  "name": "fill",
+                                  "type": "frame",
+                                  "id": "wj1i5",
+                                  "name": "t1head",
+                                  "width": "fill_container",
+                                  "justifyContent": "space_between",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "YkDAr",
+                                      "name": "label",
+                                      "fill": "#B8860B",
+                                      "content": "SESIÓN DE CONSEJO",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 10,
+                                      "fontWeight": "600",
+                                      "letterSpacing": 2
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "goL8F",
+                                      "name": "badge",
+                                      "fill": "#1C2A1C",
+                                      "cornerRadius": 999,
+                                      "gap": 5,
+                                      "padding": [
+                                        3,
+                                        8
+                                      ],
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "ellipse",
+                                          "id": "G1t3I",
+                                          "name": "dot",
+                                          "fill": "#16A34A",
+                                          "width": 5,
+                                          "height": 5
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "iMsHq",
+                                          "name": "text",
+                                          "fill": "#16A34A",
+                                          "content": "Activa",
+                                          "fontFamily": "Open Sans",
+                                          "fontSize": 11,
+                                          "fontWeight": "500"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "sOJfT",
+                                  "name": "phase",
+                                  "fill": "#F8F8F8",
+                                  "content": "Modelo de Negocio",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 16,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "ptqNX",
+                                  "name": "meta",
+                                  "fill": "#6E8EAD",
+                                  "textGrowth": "fixed-width-height",
+                                  "width": 152,
+                                  "height": 50,
+                                  "content": "hace 2 horas · 47 mensajes",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "KFkgr",
+                                  "name": "btn",
+                                  "width": "fill_container",
                                   "fill": "#B8860B",
-                                  "width": 200,
-                                  "height": "fill_container"
+                                  "cornerRadius": 6,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "xA1IP",
+                                      "name": "label",
+                                      "fill": "#0A1128",
+                                      "content": "Continuar sesión →",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 13,
+                                      "fontWeight": "700"
+                                    }
+                                  ]
                                 }
                               ]
                             },
                             {
-                              "type": "text",
-                              "id": "x0AQC",
-                              "name": "desc",
-                              "fill": "#6E8EAD",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Propuesta de Valor · Modelo de Negocio listos. Marca, Recorrido y Plan pendientes.",
-                              "lineHeight": 1.5,
-                              "fontFamily": "Open Sans",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            },
-                            {
                               "type": "frame",
-                              "id": "7f9Ct",
-                              "name": "btn",
+                              "id": "e45Tm",
+                              "name": "tile_consultoria",
                               "width": "fill_container",
-                              "fill": "#C9A84C15",
-                              "cornerRadius": 6,
+                              "height": 216,
+                              "fill": "#0D1535",
+                              "cornerRadius": 10,
                               "stroke": {
                                 "align": "inside",
-                                "thickness": 1,
-                                "fill": "#C9A84C40"
+                                "thickness": {
+                                  "top": 3
+                                },
+                                "fill": "#B8860B"
                               },
-                              "padding": [
-                                8,
-                                16
-                              ],
-                              "justifyContent": "center",
-                              "alignItems": "center",
+                              "layout": "vertical",
+                              "gap": 12,
+                              "padding": 20,
+                              "justifyContent": "space_between",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "wnRls",
+                                  "name": "cHead",
+                                  "width": "fill_container",
+                                  "justifyContent": "space_between",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "hHtHZ",
+                                      "name": "cLabel",
+                                      "fill": "#B8860B",
+                                      "content": "CONSULTORÍA ACTIVA",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 10,
+                                      "fontWeight": "600",
+                                      "letterSpacing": 2
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "6xHaT",
+                                      "name": "cBadge",
+                                      "fill": "#B8860B",
+                                      "content": "● 3 consultas",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "AGojW",
+                                  "name": "cMeta",
+                                  "fill": "#6E8EAD",
+                                  "content": "Última consulta hace 4 días",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "f8tns",
+                                  "name": "cQuote",
+                                  "fill": "#F8F8F8",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "\"¿Cómo ajusto el pricing si mi CAC subió 30%?\"",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal",
+                                  "fontStyle": "italic"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "7PVpn",
+                                  "name": "cBy",
+                                  "fill": "#8B9DB7",
+                                  "content": "— Respondido por: Estratega de Negocio",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "jGV1V",
+                                  "name": "cBtn",
+                                  "width": "fill_container",
+                                  "fill": "#B8860B",
+                                  "cornerRadius": 6,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "UVYkt",
+                                      "name": "cBtnLbl",
+                                      "fill": "#0A1128",
+                                      "content": "Abrir consultoría →",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 13,
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ck2fS",
+                          "name": "row2",
+                          "width": "fill_container",
+                          "gap": 16,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "yIQae",
+                              "name": "tile_advisory",
+                              "width": "fill_container",
+                              "height": 216,
+                              "fill": "#0D1535",
+                              "cornerRadius": 10,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": {
+                                  "top": 3
+                                },
+                                "fill": "#3B82F6"
+                              },
+                              "layout": "vertical",
+                              "gap": 12,
+                              "padding": 20,
+                              "justifyContent": "space_between",
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "yFGsm",
+                                  "id": "oYpIB",
                                   "name": "label",
-                                  "fill": "#B8860B",
-                                  "content": "Ir al Export Center →",
+                                  "fill": "#007BFF",
+                                  "content": "CONSEJO ASESOR",
                                   "fontFamily": "Open Sans",
-                                  "fontSize": 13,
+                                  "fontSize": 10,
+                                  "fontWeight": "600",
+                                  "letterSpacing": 2
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "YDFM6",
+                                  "name": "count",
+                                  "fill": "#F8F8F8",
+                                  "content": "9 asesores configurados",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 15,
                                   "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "zUnBu",
+                                  "name": "avatarRow",
+                                  "gap": -6,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "frame",
+                                      "id": "Ahn6Q",
+                                      "name": "a1",
+                                      "width": 28,
+                                      "height": 28,
+                                      "fill": "#1C2A3A",
+                                      "cornerRadius": 999,
+                                      "stroke": {
+                                        "align": "inside",
+                                        "thickness": 2,
+                                        "fill": "#111113"
+                                      },
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "LFlQC",
+                                          "name": "t",
+                                          "fill": "#B8860B",
+                                          "content": "M",
+                                          "fontFamily": "Open Sans",
+                                          "fontSize": 11,
+                                          "fontWeight": "700"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "s6ayr",
+                                      "name": "a2",
+                                      "width": 28,
+                                      "height": 28,
+                                      "fill": "#2A1C3A",
+                                      "cornerRadius": 999,
+                                      "stroke": {
+                                        "align": "inside",
+                                        "thickness": 2,
+                                        "fill": "#111113"
+                                      },
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "9Z9FL",
+                                          "name": "t",
+                                          "fill": "#A855F7",
+                                          "content": "V",
+                                          "fontFamily": "Open Sans",
+                                          "fontSize": 11,
+                                          "fontWeight": "700"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "VyOiB",
+                                      "name": "a3",
+                                      "width": 28,
+                                      "height": 28,
+                                      "fill": "#1C3A24",
+                                      "cornerRadius": 999,
+                                      "stroke": {
+                                        "align": "inside",
+                                        "thickness": 2,
+                                        "fill": "#111113"
+                                      },
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "kQM6n",
+                                          "name": "t",
+                                          "fill": "#16A34A",
+                                          "content": "R",
+                                          "fontFamily": "Open Sans",
+                                          "fontSize": 11,
+                                          "fontWeight": "700"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "rESjv",
+                                      "name": "a4",
+                                      "width": 28,
+                                      "height": 28,
+                                      "fill": "#3A2A1C",
+                                      "cornerRadius": 999,
+                                      "stroke": {
+                                        "align": "inside",
+                                        "thickness": 2,
+                                        "fill": "#111113"
+                                      },
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "gCAtz",
+                                          "name": "t",
+                                          "fill": "#F59E0B",
+                                          "content": "F",
+                                          "fontFamily": "Open Sans",
+                                          "fontSize": 11,
+                                          "fontWeight": "700"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "jQIWP",
+                                  "name": "meta",
+                                  "fill": "#6E8EAD",
+                                  "content": "Última actividad hace 2 horas",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "JWNbQ",
+                                  "name": "btn",
+                                  "width": "fill_container",
+                                  "fill": "#0D1829",
+                                  "cornerRadius": 6,
+                                  "stroke": {
+                                    "align": "inside",
+                                    "thickness": 1,
+                                    "fill": "#3B82F640"
+                                  },
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "csKss",
+                                      "name": "label",
+                                      "fill": "#007BFF",
+                                      "content": "Ver Board →",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 13,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "V8eTS",
+                              "name": "tile_export",
+                              "width": "fill_container",
+                              "height": 216,
+                              "fill": "#0D1535",
+                              "cornerRadius": 10,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": {
+                                  "top": 3
+                                },
+                                "fill": "#4A5568"
+                              },
+                              "layout": "vertical",
+                              "gap": 12,
+                              "padding": 20,
+                              "justifyContent": "space_between",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "c1xj4",
+                                  "name": "exportTopRow",
+                                  "width": "fill_container",
+                                  "justifyContent": "space_between",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "7sImx",
+                                      "name": "label",
+                                      "fill": "#6E8EAD",
+                                      "content": "EXPORTACIÓN",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 10,
+                                      "fontWeight": "600",
+                                      "letterSpacing": 2
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "9ySi0",
+                                      "name": "badge",
+                                      "fill": "#C9A84C20",
+                                      "cornerRadius": 999,
+                                      "padding": [
+                                        3,
+                                        8
+                                      ],
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "4Pyt2",
+                                          "name": "text",
+                                          "fill": "#B8860B",
+                                          "content": "40%",
+                                          "fontFamily": "Open Sans",
+                                          "fontSize": 11,
+                                          "fontWeight": "600"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "IIbuz",
+                                  "name": "text",
+                                  "fill": "#F8F8F8",
+                                  "content": "2 de 4 documentos listos",
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 15,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "fb8Qh",
+                                  "name": "progressTrack",
+                                  "width": "fill_container",
+                                  "height": 4,
+                                  "fill": "#152050",
+                                  "cornerRadius": 2,
+                                  "children": [
+                                    {
+                                      "type": "rectangle",
+                                      "cornerRadius": 2,
+                                      "id": "Sdi2F",
+                                      "name": "fill",
+                                      "fill": "#B8860B",
+                                      "width": 200,
+                                      "height": "fill_container"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "x0AQC",
+                                  "name": "desc",
+                                  "fill": "#6E8EAD",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Propuesta de Valor · Modelo de Negocio listos. Recorrido, Plan y Comunicación pendientes.",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "Open Sans",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "7f9Ct",
+                                  "name": "btn",
+                                  "width": "fill_container",
+                                  "fill": "#C9A84C15",
+                                  "cornerRadius": 6,
+                                  "stroke": {
+                                    "align": "inside",
+                                    "thickness": 1,
+                                    "fill": "#C9A84C40"
+                                  },
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "yFGsm",
+                                      "name": "label",
+                                      "fill": "#B8860B",
+                                      "content": "Ir al Export Center →",
+                                      "fontFamily": "Open Sans",
+                                      "fontSize": 13,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
                                 }
                               ]
                             }
@@ -48483,8 +48979,8 @@
     {
       "type": "frame",
       "id": "aXs5x",
-      "x": 3074,
-      "y": -2974,
+      "x": 3080,
+      "y": -2972,
       "name": "Export__Center__Default",
       "width": 1440,
       "fill": "#0A1128",
@@ -49612,12 +50108,12 @@
     {
       "type": "frame",
       "id": "kWlfu",
-      "x": -14488,
+      "x": -14486,
       "y": 2400,
       "name": "Projects__CreateProject__Modal",
       "width": 1440,
       "height": 900,
-      "fill": "#05050680",
+      "fill": "#0A112899",
       "layout": "vertical",
       "padding": [
         40,
@@ -49640,6 +50136,7 @@
           },
           "layout": "vertical",
           "gap": 24,
+          "padding": 24,
           "children": [
             {
               "type": "frame",
@@ -49674,10 +50171,10 @@
                       "type": "text",
                       "id": "kDhAy",
                       "name": "icon",
-                      "fill": "#8B9DB7",
+                      "fill": "#FFFFFF99",
                       "content": "✕",
                       "fontFamily": "Open Sans",
-                      "fontSize": 14,
+                      "fontSize": 16,
                       "fontWeight": "normal"
                     }
                   ]
@@ -49756,7 +50253,7 @@
                       "id": "d7Dlc",
                       "name": "label",
                       "fill": "#8B9DB7",
-                      "content": "Nivel de entrada",
+                      "content": "¿Dónde estás con tu proyecto?",
                       "fontFamily": "Open Sans",
                       "fontSize": 13,
                       "fontWeight": "500"
@@ -49789,7 +50286,7 @@
                               "id": "357sx",
                               "name": "label",
                               "fill": "#B8860B",
-                              "content": "Idea cruda",
+                              "content": "Solo tengo la idea",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
                               "fontWeight": "500"
@@ -49816,7 +50313,7 @@
                               "id": "e1GJM",
                               "name": "label",
                               "fill": "#8B9DB7",
-                              "content": "Tengo algo parcial",
+                              "content": "Ya tengo algo avanzado",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
                               "fontWeight": "normal"
@@ -49843,7 +50340,7 @@
                               "id": "G8ikC",
                               "name": "label",
                               "fill": "#8B9DB7",
-                              "content": "Tengo PRD",
+                              "content": "Tengo documentación lista",
                               "fontFamily": "Open Sans",
                               "fontSize": 13,
                               "fontWeight": "normal"
@@ -49928,7 +50425,7 @@
       "name": "Projects__InviteCollaborator__Modal",
       "width": 1440,
       "height": 900,
-      "fill": "#05050680",
+      "fill": "#0A112899",
       "layout": "vertical",
       "padding": [
         40,
@@ -49951,6 +50448,7 @@
           },
           "layout": "vertical",
           "gap": 24,
+          "padding": 24,
           "children": [
             {
               "type": "frame",
@@ -49985,10 +50483,10 @@
                       "type": "text",
                       "id": "kOylY",
                       "name": "icon",
-                      "fill": "#8B9DB7",
+                      "fill": "#FFFFFF99",
                       "content": "✕",
                       "fontFamily": "Open Sans",
-                      "fontSize": 14,
+                      "fontSize": 16,
                       "fontWeight": "normal"
                     }
                   ]
@@ -50161,6 +50659,18 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "YO18o",
+                      "name": "roleDesc",
+                      "fill": "#FFFFFF80",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Acceso completo al proyecto. Participa en decisiones y edita documentos.",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -50238,7 +50748,7 @@
       "name": "Shared__ConfirmAction__Modal",
       "width": 1440,
       "height": 900,
-      "fill": "#05050680",
+      "fill": "#0A112899",
       "layout": "vertical",
       "padding": [
         40,
@@ -50261,6 +50771,7 @@
           },
           "layout": "vertical",
           "gap": 24,
+          "padding": 24,
           "children": [
             {
               "type": "frame",
@@ -50298,7 +50809,7 @@
                   "id": "ox0fA",
                   "name": "title",
                   "fill": "#F8F8F8",
-                  "content": "¿Confirmar acción?",
+                  "content": "¿Eliminar proyecto?",
                   "fontFamily": "Open Sans",
                   "fontSize": 18,
                   "fontWeight": "700"
@@ -50308,7 +50819,9 @@
                   "id": "MJD7m",
                   "name": "message",
                   "fill": "#8B9DB7",
-                  "content": "Esta acción no se puede deshacer. ¿Estás seguro de que quieres continuar?",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Esta acción eliminará FinTrack y todos sus documentos. No se puede deshacer.",
                   "lineHeight": 1.6,
                   "fontFamily": "Open Sans",
                   "fontSize": 14,
@@ -50372,7 +50885,7 @@
                       "id": "JeRM6",
                       "name": "label",
                       "fill": "#F8F8F8",
-                      "content": "Sí, continuar",
+                      "content": "Eliminar proyecto",
                       "fontFamily": "Open Sans",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -62662,6 +63175,892 @@
       },
       "width": 500,
       "height": 150
+    },
+    {
+      "type": "frame",
+      "id": "8Ebq5",
+      "x": 6160,
+      "y": -2974,
+      "name": "Projects__Consultoria__Default",
+      "width": 1440,
+      "height": 1050,
+      "fill": "#0A1128",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "0sIPZ",
+          "name": "consultNav",
+          "width": "fill_container",
+          "height": 60,
+          "fill": "#0A1128",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "#27282B"
+          },
+          "padding": [
+            16,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "WFyCz",
+              "name": "qNavLeft",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "M4zia",
+                  "name": "qNavLogo",
+                  "fill": "#B8860B",
+                  "content": "Reason",
+                  "fontFamily": "Outfit",
+                  "fontSize": 18,
+                  "fontWeight": "700",
+                  "letterSpacing": 2
+                },
+                {
+                  "type": "text",
+                  "id": "EOSsJ",
+                  "name": "qNavSep",
+                  "fill": "#4A6080",
+                  "content": "·",
+                  "fontFamily": "Open Sans",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "eaem5",
+                  "name": "qNavTitle",
+                  "fill": "#F8F8F8",
+                  "content": "FinTrack · Consultoría Activa",
+                  "fontFamily": "Open Sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "XT41K",
+              "name": "qNavBack",
+              "fill": "#6E8EAD",
+              "content": "← Proyecto",
+              "fontFamily": "Open Sans",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "KL5bn",
+          "name": "consultMain",
+          "width": "fill_container",
+          "height": "fill_container",
+          "children": [
+            {
+              "type": "frame",
+              "id": "zAmDJ",
+              "name": "consultLeft",
+              "width": 280,
+              "height": "fill_container",
+              "fill": "#070E20",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "right": 1
+                },
+                "fill": "#27282B"
+              },
+              "layout": "vertical",
+              "gap": 20,
+              "padding": [
+                24,
+                20
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "QUVQX",
+                  "name": "lHeader",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fDpdM",
+                      "name": "lTitle",
+                      "fill": "#F8F8F8",
+                      "content": "Tu Consejo",
+                      "fontFamily": "Outfit",
+                      "fontSize": 16,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "op15z",
+                      "name": "lProj",
+                      "fill": "#6E8EAD",
+                      "content": "FinTrack",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "WTrrw",
+                  "name": "lAdvisorsSection",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ohcfA",
+                      "name": "lAdvisorsLabel",
+                      "fill": "#B8860B",
+                      "content": "CONSEJEROS DISPONIBLES",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "cneTl",
+                      "name": "lAdvisorsList",
+                      "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "● Dr. Maya Singh — Investigación de Mercado\n● Alex Reeves — Experto UX\n● Priya Chen — Experto en Producto\n● Marcus Rivera — Estratega de Negocio\n● Lena Fischer — Analista de Negocio\n● Owen Park — Líder Técnico\n● Nadia Osei — Líder de Precios",
+                      "lineHeight": 1.8,
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "FitWz",
+                  "name": "lCoSection",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "54gSU",
+                      "name": "lCoLabel",
+                      "fill": "#B8860B",
+                      "content": "COFOUNDERS",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "7JIHZ",
+                      "name": "lCoList",
+                      "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "● Camila Reyes — Constructiva\n● Andrés Quiroga — Crítico",
+                      "lineHeight": 1.8,
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "H1ZqF",
+                  "name": "lHistSection",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "9qbxZ",
+                      "name": "lHistLabel",
+                      "fill": "#B8860B",
+                      "content": "CONSULTAS ANTERIORES",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "2qx6S",
+                      "name": "lHist1",
+                      "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "\"Ajuste de pricing post-launch\" — hace 4 días",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "5cbFj",
+                      "name": "lHist2",
+                      "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "\"Viabilidad de segundo vertical\" — hace 2 semanas",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "dD1nS",
+                      "name": "lNewConsulta",
+                      "fill": "#B8860B",
+                      "content": "+ Nueva consulta",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "OcoKf",
+              "name": "consultCenter",
+              "width": "fill_container",
+              "height": "fill_container",
+              "fill": "#0D1535",
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "tsyyh",
+                  "name": "cChatHeader",
+                  "width": "fill_container",
+                  "height": 56,
+                  "fill": "#0A1128",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#27282B"
+                  },
+                  "padding": [
+                    0,
+                    24
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OEolQ",
+                      "name": "cChatTitle",
+                      "fill": "#F8F8F8",
+                      "content": "Consultoría Activa · FinTrack",
+                      "fontFamily": "Outfit",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "C2Y8V",
+                      "name": "cChatMod",
+                      "fill": "#4A9DF8",
+                      "content": "Nexo modera",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "aQmjP",
+                  "name": "cChatArea",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ARNA0",
+                      "name": "cB1",
+                      "width": 500,
+                      "fill": "#0A1128",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#4A9DF8"
+                      },
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        14,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "EjbJu",
+                          "name": "cB1name",
+                          "fill": "#4A9DF8",
+                          "content": "Nexo",
+                          "fontFamily": "Outfit",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "1ypXc",
+                          "name": "cB1text",
+                          "fill": "#F8F8F8",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "¿En qué puedo ayudarte hoy? Tu consejo tiene contexto completo de tu Sesión de Consejo. Puedes preguntarles cualquier cosa sobre tu negocio.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tvO5y",
+                      "name": "cB2wrap",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "8Ce6Y",
+                          "name": "cB2spacer",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "7atfv",
+                          "name": "cB2",
+                          "width": 420,
+                          "fill": "#1A2540",
+                          "cornerRadius": 12,
+                          "layout": "vertical",
+                          "gap": 4,
+                          "padding": [
+                            14,
+                            16
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "Uxhek",
+                              "name": "cB2text",
+                              "fill": "#F8F8F8",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Mi CAC subió 30% desde que lanzamos. ¿Debo ajustar el pricing o buscar canales más baratos?",
+                              "lineHeight": 1.5,
+                              "fontFamily": "Open Sans",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "8vjLo",
+                      "name": "cB3",
+                      "width": 500,
+                      "fill": "#0A1128",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#4A9DF8"
+                      },
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        14,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jeq3n",
+                          "name": "cB3name",
+                          "fill": "#4A9DF8",
+                          "content": "Nexo",
+                          "fontFamily": "Outfit",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Zyjrc",
+                          "name": "cB3text",
+                          "fill": "#F8F8F8",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Buena pregunta. Voy a consultar a Estratega de Negocio y Analista de Negocio — son los más relevantes para esto.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "OToWq",
+                      "name": "cB4",
+                      "width": 540,
+                      "fill": "#0D1535",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#B8860B"
+                      },
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        14,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "FY4N3",
+                          "name": "cB4name",
+                          "fill": "#B8860B",
+                          "content": "Marcus Rivera — Estratega de Negocio",
+                          "fontFamily": "Outfit",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Nq26d",
+                          "name": "cB4text",
+                          "fill": "#F8F8F8",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Con un CAC 30% arriba, primero hay que entender si es un problema de canal o de mensaje. Si el producto convierte bien post-adquisición, el problema no es el precio...",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Woh4O",
+                      "name": "cB5",
+                      "width": 540,
+                      "fill": "#0D1535",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#B8860B"
+                      },
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        14,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "IcRGI",
+                          "name": "cB5name",
+                          "fill": "#B8860B",
+                          "content": "Lena Fischer — Analista de Negocio",
+                          "fontFamily": "Outfit",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "3WYdZ",
+                          "name": "cB5text",
+                          "fill": "#F8F8F8",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Los números dicen que tu LTV sigue en $45. Con CAC a $9.10, tu ratio LTV/CAC bajó de 6.4x a 4.9x. Todavía es saludable...",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "yZ0kV",
+                  "name": "cInput",
+                  "width": "fill_container",
+                  "height": 60,
+                  "fill": "#0A1128",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "top": 1
+                    },
+                    "fill": "#27282B"
+                  },
+                  "gap": 12,
+                  "padding": [
+                    0,
+                    24
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "SJ97o",
+                      "name": "cInputField",
+                      "width": "fill_container",
+                      "height": 38,
+                      "fill": "#0D1535",
+                      "cornerRadius": 6,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      },
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        14
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "YGGwz",
+                          "name": "cInputText",
+                          "fill": "#4A6080",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Escribe tu consulta...",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "TMLtr",
+                      "name": "attachIcon",
+                      "fill": "#4A6080",
+                      "content": "📎",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 18,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "zmeoX",
+                      "name": "micIcon",
+                      "fill": "#4A6080",
+                      "content": "🎙",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 18,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "m0mN4",
+                      "name": "cSendBtn",
+                      "width": 38,
+                      "height": 38,
+                      "fill": "#B8860B",
+                      "cornerRadius": 6,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "4EOiq",
+                          "name": "cSendLbl",
+                          "fill": "#0A1128",
+                          "content": "→",
+                          "fontFamily": "Outfit",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tywPB",
+              "name": "consultRight",
+              "width": 300,
+              "height": "fill_container",
+              "fill": "#070E20",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "left": 1
+                },
+                "fill": "#27282B"
+              },
+              "layout": "vertical",
+              "gap": 20,
+              "padding": [
+                24,
+                20
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "S6IJP",
+                  "name": "rDocsSection",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "o3huu",
+                      "name": "rDocsLabel",
+                      "fill": "#B8860B",
+                      "content": "DOCUMENTOS DE REFERENCIA",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "EfnYX",
+                      "name": "rDocsList",
+                      "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "✓ Value Proposition Canvas\n✓ Business Model\n✓ Customer Journey\n✓ Business Plan\n✓ Estrategia de Comunicación",
+                      "lineHeight": 1.9,
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "imXo9",
+                  "name": "rCtxSection",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yCySO",
+                      "name": "rCtxLabel",
+                      "fill": "#B8860B",
+                      "content": "CONTEXTO ACUMULADO",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "text",
+                      "id": "HJNEK",
+                      "name": "rCtxText",
+                      "fill": "#8B9DB7",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "12 consultas realizadas\nÚltimo tema: pricing y CAC\nConsejeros más activos: Estratega, Analista",
+                      "lineHeight": 1.9,
+                      "fontFamily": "Open Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "uRLns",
+                  "name": "rActSection",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "TGbAf",
+                      "name": "rActLabel",
+                      "fill": "#B8860B",
+                      "content": "ACCIONES RÁPIDAS",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "XjFWn",
+                      "name": "rChip1",
+                      "width": "fill_container",
+                      "fill": "#0D1535",
+                      "cornerRadius": 4,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      },
+                      "padding": [
+                        6,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "L5Vkb",
+                          "name": "rChip1t",
+                          "fill": "#F8F8F8",
+                          "content": "Actualizar Business Model",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CBLYl",
+                      "name": "rChip2",
+                      "width": "fill_container",
+                      "fill": "#0D1535",
+                      "cornerRadius": 4,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      },
+                      "padding": [
+                        6,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wWx4g",
+                          "name": "rChip2t",
+                          "fill": "#F8F8F8",
+                          "content": "Revisar Customer Journey",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ME1pm",
+                      "name": "rChip3",
+                      "width": "fill_container",
+                      "fill": "#0D1535",
+                      "cornerRadius": 4,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      },
+                      "padding": [
+                        6,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "61Odx",
+                          "name": "rChip3t",
+                          "fill": "#F8F8F8",
+                          "content": "Simular escenario",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VZAvE",
+                      "name": "rChip4",
+                      "width": "fill_container",
+                      "fill": "#0D1535",
+                      "cornerRadius": 4,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      },
+                      "padding": [
+                        6,
+                        12
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "GR8uM",
+                          "name": "rChip4t",
+                          "fill": "#F8F8F8",
+                          "content": "Pedir opinión del consejo completo",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "variables": {
