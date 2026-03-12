@@ -1,4 +1,4 @@
-# AURUM Default UI Frames
+# Reason Default UI Frames
 
 Generated using Pencil.dev MCP.
 
@@ -18,7 +18,6 @@ Auth__ForgotPasswordSent__Default — FREEZE
 
 Projects__Dashboard__Default — FREEZE
 Projects__ProjectView__Default — FREEZE
-Projects__Incubator__Default — FREEZE
 
 ---
 
@@ -34,6 +33,18 @@ Projects__SeedSession__ConsejoListo — Paso 7 — FREEZE
 
 ---
 
+## Sesión de Consejo — FREEZE
+
+Projects__SesionConsejo__Default — FREEZE
+
+---
+
+## Consultoría Activa — FREEZE
+
+Projects__Consultoria__Default — FREEZE
+
+---
+
 ## SeedSession Drawers/Selectors — FREEZE
 
 SeedSession__CofounderSelector__Drawer — FREEZE
@@ -46,12 +57,6 @@ SeedSession__BuyerPersonaSelector__Drawer — FREEZE
 ## Advisory Board — FREEZE
 
 AdvisoryBoard__MyBoard — FREEZE
-
----
-
-## Consultoría Activa — FREEZE
-
-Projects__Consultoria__Default — FREEZE
 
 ---
 
@@ -75,10 +80,10 @@ Marketing__Landing__Default — FREEZE
 
 ---
 
-## Settings
+## Settings — FREEZE
 
-Settings__Account__Default
-Settings__Billing__Default
+Settings__Account__Default — FREEZE
+Settings__Billing__Default — FREEZE
 Settings__Team__Default — FREEZE
 Settings__Plans__Default — FREEZE
 Settings__Notifications__Default — FREEZE
@@ -94,10 +99,17 @@ Shared__ConfirmAction__Modal — FREEZE
 
 ---
 
+## Eliminados
+
+Documents__Branding__Default — eliminado (módulo AVA separado)
+SeedSession__CambiarCofounder__Modal — eliminado (redundante)
+
+---
+
 ## Inventory Summary
 
 Total frames: 35
-FREEZE: 33
-Pending approval: 2 (Settings__Account__Default, Settings__Billing__Default)
+FREEZE: 35
+Pending: 0
 
-Current stage: FREEZE
+Current stage: FREEZE — All frames approved. Ready for implementation.

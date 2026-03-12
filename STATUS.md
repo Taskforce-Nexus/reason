@@ -105,10 +105,13 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 - Settings__Connections__Default — FREEZE ✓ (aprobado por Juan)
 
 - context/reason_entities.md — creado: 26 entidades, relaciones y mapa de datos por pantalla ✓
+- context/reason_backlog.md — creado: 9 epics, 38 stories, backlog ordenado por dependencias ✓
+- context/aurum_default_frames.md — sincronizado: 35 frames FREEZE, 0 pendientes ✓
+- CLAUDE.md — referencias reason_entities + reason_backlog añadidas ✓
 
 ## Siguiente paso
 
-Definir siguiente frame del pipeline con Juan
+Iniciar Epic 1 — Fundación (Story 1.1: Schema de Supabase)
 
 ---
 
