@@ -184,9 +184,20 @@ Etapa actual: IMPLEMENTATION — Epic 1 en progreso. Stories 1.1-1.4 COMPLETAS +
 - Design tokens correctos: #0D1535 cards, #1E2A4A borders, #B8860B gold
 - Rutas placeholder existentes: semilla, sesion-consejo, consejo, consultoria, export, documento/[docId]
 
+### Fix ProjectView — delta vs frame (2026-03-12) ✓
+
+- layout.tsx: balance stacked + badge notif rojo
+- UserMenu.tsx: avatar gold #B8860B, nombre blanco, dropdown tokens correctos
+- page.tsx: last_active_at relativo + sección PROPÓSITO DEL CONSEJO
+- page.tsx: barra progreso continua + etapas ✓/●/○
+- page.tsx: bordes color por estado, labels por estado, CTAs gold/ghost
+- page.tsx: Consultoría tile con última pregunta + advisor
+- page.tsx: Exportación 4 docs correctos (sin Marca, con Plan de Negocio)
+- page.tsx: sidebar stats gold + Último Insight con borde gold
+
 ## Siguiente paso
 
-Story 1.6 — ProjectView detalle (TBD por Kira)
+Story 1.6 — TBD por Kira
 
 ---
 
