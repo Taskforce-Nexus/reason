@@ -32,6 +32,10 @@ Etapa actual: ITERATE — ConsejoPrincipalPropuesta + MyBoard + AdvisorSelector 
 - ConsejoPrincipalPropuesta — leyenda sombreros + dots activos/inactivos por asesor ✓
 - AdvisoryBoard__MyBoard — leyenda de hat colors 11px ✓ (renombrado desde Projects__AdvisoryBoard__MyBoard)
 - SeedSession__AdvisorSelector__Drawer — 4 fixes (pills, cards, badges, banner) ✓
+- ConsejoPrincipalPropuesta — dots 10px, outline inactivos, comm style por asesor ✓
+- AdvisoryBoard__MyBoard — leyenda inline con labels, comm style por asesor ✓
+- SeedSession__AdvisorSelector__Drawer — sección ESTILO DE COMUNICACIÓN en detail panel ✓
+- SeedSession__CofounderSelector__Drawer — Tomás Herrera estilo actualizado ✓
 
 ## Siguiente paso
 
@@ -53,6 +57,7 @@ Freeze ConsejoPrincipalPropuesta → continuar EspecialistasPropuesta, ICPsPropu
 
 | Hash | Descripción |
 | --- | --- |
+| (pending) | feat: sistema personalidad consejeros + fixes visuales — 8 tareas |
 | a56a531 | fix: AdvisorSelector + ConsejoPrincipalPropuesta + MyBoard — 7 correcciones |
 | f002b67 | fix: ConsejoPrincipalPropuesta + MyBoard + AdvisorSelector — 6 correcciones |
 | 3e65985 | fix: EntregablesPropuesta — secciones reales, paginación restaurada, textos spec |

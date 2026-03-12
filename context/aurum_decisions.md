@@ -812,6 +812,15 @@ No más cambios de scope hasta terminar Reason.
 
 **Fecha:** 2026-03-11
 
+## 44. Sistema de personalidad de consejeros — elementos de comunicación
+
+Cada consejero tiene dos ejes: sombreros (cómo piensa) y elemento de comunicación (cómo interactúa).
+Los elementos son internos — el usuario nunca ve el nombre del elemento.
+4 elementos: Fuego (directo), Agua (empático), Tierra (analítico), Aire (visionario).
+El estilo se refleja en el perfil como descriptor de comunicación y en los prompts de la Sesión de Consejo.
+
+---
+
 ## 22. SeedSession Step Order Decision
 
 La secuencia canónica de pasos dentro de la Sesión Semilla es:

@@ -48,6 +48,29 @@ Nexo decide cuáles son relevantes según el contexto de cada fase.
 
 ---
 
+## Sistema de personalidad de consejeros
+
+Cada consejero tiene dos ejes de personalidad:
+
+### Eje 1 — Sombreros (Six Thinking Hats)
+Define CÓMO piensa el consejero. Cada consejero cubre 2-3 sombreros.
+Visible al usuario como dots de colores en su perfil.
+
+### Eje 2 — Elemento de comunicación (interno)
+Define CÓMO se siente interactuar con el consejero. Nunca visible al usuario como nombre de elemento.
+El usuario lo percibe como estilo de comunicación en el perfil del consejero.
+
+| Elemento | Estilo visible | Comportamiento en sesión |
+|---|---|---|
+| Fuego | Directo y orientado a la acción | Confronta, empuja decisiones, no tolera ambigüedad |
+| Agua | Empático y colaborativo | Busca consenso, valida emociones, propone alternativas suaves |
+| Tierra | Analítico y basado en datos | Ancla en números, pide evidencia, pragmático |
+| Aire | Visionario y explorador | Conecta ideas, piensa en grande, desafía supuestos |
+
+Nexo usa el elemento para calibrar los prompts de cada consejero en la Sesión de Consejo.
+
+---
+
 ## Buyer Persona Agents
 Rol: Simular clientes potenciales del venture.
 Responsabilidades: evaluar ideas, reaccionar a propuesta de valor, validar mensajes, simular objeciones.
