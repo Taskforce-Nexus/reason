@@ -94,6 +94,11 @@ Etapa actual: ITERATE — Marketing__Landing__Default rebuild completo (10 secci
 
 - Settings__Account__Default — nuevo frame: nav + sidebar (Cuenta activo) + 4 secciones (Perfil, Preferencias, Seguridad, Zona de Peligro) ✓
 - Settings__Billing__Default — nuevo frame: nav + sidebar (Facturación activo) + 5 secciones (Saldo, Plan, Historial, Método de Pago, Facturas) ✓
+- Settings sidebar actualizado a 6 tabs en Account y Billing (Equipo, Planes, Notificaciones, Conexiones añadidos) ✓
+- Settings__Team__Default — nuevo frame: tabla MIEMBROS + INVITACIONES + CTA INVITAR ✓
+- Settings__Plans__Default — nuevo frame: TU PLAN ACTUAL + COMPARA PLANES (3 cards) + ALERTAS ✓
+- Settings__Notifications__Default — nuevo frame: RECIENTES (5 items) + CONFIGURACIÓN (4 grupos toggles) ✓
+- Settings__Connections__Default — nuevo frame: REPOSITORIOS (GitHub conectado) + EXPORTACIÓN (Slides, Notion) + COMUNICACIÓN (Slack) + GESTIÓN (Jira, Linear) ✓
 
 ## Siguiente paso
 
