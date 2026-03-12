@@ -50475,6 +50475,7 @@
           "id": "FFdii",
           "name": "expContent",
           "width": "fill_container",
+          "height": 838,
           "layout": "vertical",
           "gap": 32,
           "padding": [
@@ -50501,14 +50502,88 @@
                   "fontWeight": "normal"
                 },
                 {
-                  "type": "text",
-                  "id": "0I4ox",
-                  "name": "title",
-                  "fill": "#F8F8F8",
-                  "content": "Centro de Exportación",
-                  "fontFamily": "Open Sans",
-                  "fontSize": 28,
-                  "fontWeight": "700"
+                  "type": "frame",
+                  "id": "0lYY7",
+                  "name": "titleRow",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "87ciz",
+                      "name": "titleText",
+                      "fill": "#F8F8F8",
+                      "content": "Centro de Exportación",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "vskAR",
+                      "name": "headerActions",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "EXB7Q",
+                          "name": "dlAllBtn",
+                          "fill": "#B8860B",
+                          "cornerRadius": 6,
+                          "padding": [
+                            10,
+                            20
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "Bmtft",
+                              "name": "dlAllLbl",
+                              "fill": "#0A1128",
+                              "content": "Descargar todo (PDF)",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "L2Z0k",
+                          "name": "expPkgBtn",
+                          "fill": "#00000000",
+                          "cornerRadius": 6,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#27282B"
+                          },
+                          "padding": [
+                            10,
+                            20
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "7WhNh",
+                              "name": "pkgLbl",
+                              "fill": "#F8F8F8",
+                              "content": "Exportar paquete ↓",
+                              "fontFamily": "Open Sans",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "type": "text",
@@ -50518,37 +50593,6 @@
                   "content": "Exporta, empaqueta y entrega tus documentos Reason. Desde PDFs individuales hasta paquetes listos para repositorio, pitch o inversionistas.",
                   "fontFamily": "Open Sans",
                   "fontSize": 15,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "mSQqI",
-              "name": "docsSectionHeader",
-              "width": "fill_container",
-              "justifyContent": "space_between",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "xAWMe",
-                  "name": "label",
-                  "fill": "#6E8EAD",
-                  "content": "DOCUMENTOS INDIVIDUALES",
-                  "fontFamily": "Open Sans",
-                  "fontSize": 11,
-                  "fontWeight": "600",
-                  "letterSpacing": 1.5
-                },
-                {
-                  "type": "text",
-                  "id": "DcCVG",
-                  "name": "count",
-                  "fill": "#4A5568",
-                  "content": "5 documentos",
-                  "fontFamily": "Open Sans",
-                  "fontSize": 12,
                   "fontWeight": "normal"
                 }
               ]
@@ -50595,567 +50639,44 @@
             },
             {
               "type": "frame",
-              "id": "Ce4bU",
-              "name": "docsGrid",
+              "id": "T5mg6",
+              "name": "docsTable",
               "width": "fill_container",
-              "gap": 20,
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "S6Eat",
-                  "name": "docCard1",
-                  "width": "fill_container",
-                  "fill": "#0D1535",
-                  "cornerRadius": 10,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#27282B"
-                  },
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    24,
-                    20
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "EKMi4",
-                      "name": "iconRow",
-                      "width": "fill_container",
-                      "justifyContent": "space_between",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "Cba4U",
-                          "name": "badge",
-                          "width": 36,
-                          "height": 36,
-                          "fill": "#C9A84C20",
-                          "cornerRadius": 8,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "gq3Of",
-                              "name": "icon",
-                              "fill": "#B8860B",
-                              "content": "◈",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 18,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "Jupro",
-                          "name": "status1",
-                          "fill": "#16A34A",
-                          "content": "● Listo",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 12,
-                          "fontWeight": "600"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "7nRZN",
-                      "name": "title",
-                      "fill": "#F8F8F8",
-                      "content": "Canvas de Propuesta de Valor",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "vO2H4",
-                      "name": "desc",
-                      "fill": "#8B9DB7",
-                      "content": "ICP, problemas, soluciones, Modelo Kano",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "frame",
-                      "id": "lZRu4",
-                      "name": "ar1",
-                      "width": "fill_container",
-                      "gap": 8,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "fmVkq",
-                          "name": "pbtn1",
-                          "width": "fill_container",
-                          "fill": "#0D1535",
-                          "cornerRadius": 6,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#27282B"
-                          },
-                          "padding": [
-                            7,
-                            14
-                          ],
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "atss4",
-                              "name": "pl1",
-                              "fill": "#F8F8F8",
-                              "content": "Vista previa",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "w1PR9",
-                          "name": "dbtn1",
-                          "width": "fill_container",
-                          "fill": "#B8860B",
-                          "cornerRadius": 6,
-                          "padding": [
-                            7,
-                            14
-                          ],
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "cUYzZ",
-                              "name": "dl1",
-                              "fill": "#0A1128",
-                              "content": "Descargar PDF",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 13,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "ATdaQ",
-                  "name": "docCard2",
-                  "width": "fill_container",
-                  "fill": "#0D1535",
-                  "cornerRadius": 10,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#27282B"
-                  },
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    24,
-                    20
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "qBpWQ",
-                      "name": "iconRow",
-                      "width": "fill_container",
-                      "justifyContent": "space_between",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "GWpql",
-                          "name": "badge",
-                          "width": 36,
-                          "height": 36,
-                          "fill": "#C9A84C20",
-                          "cornerRadius": 8,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "jOmOK",
-                              "name": "icon",
-                              "fill": "#B8860B",
-                              "content": "◈",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 18,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "5wGkA",
-                          "name": "status2",
-                          "fill": "#16A34A",
-                          "content": "● Listo",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 12,
-                          "fontWeight": "600"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "jADX8",
-                      "name": "title",
-                      "fill": "#F8F8F8",
-                      "content": "Canvas de Modelo de Negocio",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "xWfaa",
-                      "name": "desc",
-                      "fill": "#8B9DB7",
-                      "content": "Oferta, canales, ingresos, economía unitaria",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "frame",
-                      "id": "JveBN",
-                      "name": "ar2",
-                      "width": "fill_container",
-                      "gap": 8,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "IpWqy",
-                          "name": "pbtn2",
-                          "width": "fill_container",
-                          "fill": "#0D1535",
-                          "cornerRadius": 6,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#27282B"
-                          },
-                          "padding": [
-                            7,
-                            14
-                          ],
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "9WY9t",
-                              "name": "pl2",
-                              "fill": "#F8F8F8",
-                              "content": "Vista previa",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "BKAN2",
-                          "name": "dbtn2",
-                          "width": "fill_container",
-                          "fill": "#B8860B",
-                          "cornerRadius": 6,
-                          "padding": [
-                            7,
-                            14
-                          ],
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "0XFGr",
-                              "name": "dl2",
-                              "fill": "#0A1128",
-                              "content": "Descargar PDF",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 13,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "Xxja8",
-                  "name": "docCard4",
-                  "width": "fill_container",
-                  "fill": "#0D1535",
-                  "cornerRadius": 10,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#27282B"
-                  },
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    24,
-                    20
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "chEEf",
-                      "name": "badge",
-                      "width": 36,
-                      "height": 36,
-                      "fill": "#C9A84C20",
-                      "cornerRadius": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "xZXcF",
-                          "name": "icon",
-                          "fill": "#B8860B",
-                          "content": "◈",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 18,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "6ND62",
-                      "name": "title",
-                      "fill": "#F8F8F8",
-                      "content": "Recorrido del Cliente",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "Sum6m",
-                      "name": "desc",
-                      "fill": "#8B9DB7",
-                      "content": "Recorrido ideal, fricción y mejores acciones",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "xCWBB",
-                      "name": "pend3",
-                      "fill": "#8B9DB7",
-                      "content": "Pendiente — se genera en la Sesión de Consejo",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "J9JtD",
-                  "name": "docCard5",
-                  "width": "fill_container",
-                  "fill": "#0D1535",
-                  "cornerRadius": 10,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#27282B"
-                  },
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    24,
-                    20
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "E6BKs",
-                      "name": "badge",
-                      "width": 36,
-                      "height": 36,
-                      "fill": "#C9A84C20",
-                      "cornerRadius": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "hcR71",
-                          "name": "icon",
-                          "fill": "#B8860B",
-                          "content": "◈",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 18,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "kPDFC",
-                      "name": "title",
-                      "fill": "#F8F8F8",
-                      "content": "Plan de Negocio",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "alRfO",
-                      "name": "desc",
-                      "fill": "#8B9DB7",
-                      "content": "8 evaluaciones de preparación. Decisión ir/no-ir",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "QdNae",
-                      "name": "pend4",
-                      "fill": "#8B9DB7",
-                      "content": "Pendiente — se genera en la Sesión de Consejo",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "ehpVX",
-                  "name": "docCard3",
-                  "width": "fill_container",
-                  "fill": "#0D1535",
-                  "cornerRadius": 10,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#27282B"
-                  },
-                  "layout": "vertical",
-                  "gap": 14,
-                  "padding": [
-                    24,
-                    20
-                  ],
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "mboEO",
-                      "name": "badge",
-                      "width": 36,
-                      "height": 36,
-                      "fill": "#C9A84C20",
-                      "cornerRadius": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "YKOeC",
-                          "name": "icon",
-                          "fill": "#B8860B",
-                          "content": "◈",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 18,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "YidJB",
-                      "name": "title",
-                      "fill": "#F8F8F8",
-                      "content": "Estrategia de Comunicación",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "0XKwz",
-                      "name": "desc",
-                      "fill": "#8B9DB7",
-                      "content": "Posicionamiento, mensajes clave, canales y tono de marca",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "kubV8",
-                      "name": "pend5",
-                      "fill": "#8B9DB7",
-                      "content": "Pendiente — se genera en la Sesión de Consejo",
-                      "fontFamily": "Open Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "rectangle",
-              "id": "GXgJA",
-              "name": "sectionDivider",
-              "fill": "#0D1535",
-              "width": "fill_container",
-              "height": 1
-            },
-            {
-              "type": "frame",
-              "id": "rP86K",
-              "name": "packagesSection",
-              "width": "fill_container",
+              "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#27282B"
+              },
               "layout": "vertical",
-              "gap": 16,
               "children": [
                 {
                   "type": "frame",
-                  "id": "8tNtr",
-                  "name": "pkgHeader",
+                  "id": "CsNwn",
+                  "name": "tableHeader",
                   "width": "fill_container",
-                  "justifyContent": "space_between",
+                  "fill": "#0A1128",
+                  "gap": 16,
+                  "padding": [
+                    12,
+                    20
+                  ],
                   "alignItems": "center",
                   "children": [
                     {
+                      "type": "rectangle",
+                      "id": "3B8oP",
+                      "name": "thChk",
+                      "fill": "#00000000",
+                      "width": 16,
+                      "height": 1
+                    },
+                    {
                       "type": "text",
-                      "id": "prp1T",
-                      "name": "label",
+                      "id": "M4Wcc",
+                      "name": "thDoc",
                       "fill": "#6E8EAD",
-                      "content": "PAQUETES DE EXPORTACIÓN",
+                      "content": "DOCUMENTO",
                       "fontFamily": "Open Sans",
                       "fontSize": 11,
                       "fontWeight": "600",
@@ -51163,380 +50684,780 @@
                     },
                     {
                       "type": "text",
-                      "id": "mAW9w",
-                      "name": "sub",
-                      "fill": "#4A5568",
-                      "content": "Todo lo que necesitas para el siguiente paso",
+                      "id": "YE7Ma",
+                      "name": "thStatus",
+                      "fill": "#6E8EAD",
+                      "content": "ESTADO",
                       "fontFamily": "Open Sans",
-                      "fontSize": 12,
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 1.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "DRzg2",
+                      "name": "thFormat",
+                      "fill": "#6E8EAD",
+                      "content": "FORMATO",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 1.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "Un9ab",
+                      "name": "thDate",
+                      "fill": "#6E8EAD",
+                      "content": "ÚLTIMA EDICIÓN",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 1.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "qqCmk",
+                      "name": "thActions",
+                      "fill": "#6E8EAD",
+                      "content": "ACCIONES",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 11,
+                      "fontWeight": "600",
+                      "letterSpacing": 1.5
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SW4qW",
+                  "name": "tableRow1",
+                  "width": "fill_container",
+                  "fill": "#0D1535",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#1A2644"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 2,
+                      "id": "xUjZo",
+                      "name": "cbx1",
+                      "fill": "#00000000",
+                      "width": 16,
+                      "height": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "0CiF2",
+                      "name": "docCell1",
+                      "width": 374,
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "GxKdo",
+                          "name": "dc1title",
+                          "fill": "#F8F8F8",
+                          "content": "Canvas de Propuesta de Valor",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "SHnkY",
+                          "name": "dc1desc",
+                          "fill": "#8B9DB7",
+                          "content": "ICP, problemas, soluciones, Modelo Kano",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "tgdwd",
+                      "name": "dc1status",
+                      "fill": "#16A34A",
+                      "content": "● Listo",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "H0TlU",
+                      "name": "dc1format",
+                      "fill": "#8B9DB7",
+                      "content": "PDF",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "LCPGC",
+                      "name": "dc1date",
+                      "fill": "#8B9DB7",
+                      "content": "hace 2h",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "0isav",
+                      "name": "ar1",
+                      "width": "fill_container",
+                      "gap": 20,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "IaPGz",
+                          "name": "ar1vp",
+                          "fill": "#B8860B",
+                          "content": "Vista previa",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "9jO3W",
+                          "name": "ar1dl",
+                          "fill": "#8B9DB7",
+                          "content": "Descargar",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "RGSAL",
+                          "name": "ar1ed",
+                          "fill": "#8B9DB7",
+                          "content": "Editar",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "LbITh",
+                          "name": "ar1more",
+                          "fill": "#4A5568",
+                          "content": "⋯",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "oGtlF",
+                  "name": "tableRow2",
+                  "width": "fill_container",
+                  "fill": "#0D1535",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#1A2644"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 2,
+                      "id": "hHdCV",
+                      "name": "cbx2",
+                      "fill": "#00000000",
+                      "width": 16,
+                      "height": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Oi1SF",
+                      "name": "docCell2",
+                      "width": 374,
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "BmqSj",
+                          "name": "dc2title",
+                          "fill": "#F8F8F8",
+                          "content": "Canvas de Modelo de Negocio",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DKlCx",
+                          "name": "dc2desc",
+                          "fill": "#8B9DB7",
+                          "content": "Oferta, canales, ingresos, economía unitaria",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "72TOR",
+                      "name": "dc2status",
+                      "fill": "#16A34A",
+                      "content": "● Listo",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "HCCiA",
+                      "name": "dc2format",
+                      "fill": "#8B9DB7",
+                      "content": "PDF",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "iphfH",
+                      "name": "dc2date",
+                      "fill": "#8B9DB7",
+                      "content": "hace 1h",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wc2qc",
+                      "name": "ar2",
+                      "width": "fill_container",
+                      "gap": 20,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "hpW8h",
+                          "name": "ar2vp",
+                          "fill": "#B8860B",
+                          "content": "Vista previa",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "yEF56",
+                          "name": "ar2dl",
+                          "fill": "#8B9DB7",
+                          "content": "Descargar",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "XDmOd",
+                          "name": "ar2ed",
+                          "fill": "#8B9DB7",
+                          "content": "Editar",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "dSRzL",
+                          "name": "ar2more",
+                          "fill": "#4A5568",
+                          "content": "⋯",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4GeKs",
+                  "name": "tableRow3",
+                  "width": "fill_container",
+                  "fill": "#0D1535",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#1A2644"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 2,
+                      "id": "h4IK1",
+                      "name": "cbx3",
+                      "fill": "#00000000",
+                      "width": 16,
+                      "height": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#27282B"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hScty",
+                      "name": "docCell3",
+                      "width": 374,
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jKlYT",
+                          "name": "dc3title",
+                          "fill": "#F8F8F8",
+                          "content": "Recorrido del Cliente",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "GcyGc",
+                          "name": "dc3desc",
+                          "fill": "#8B9DB7",
+                          "content": "Puntos de contacto, fricción y acciones clave",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "5bc2W",
+                      "name": "dc3status",
+                      "fill": "#16A34A",
+                      "content": "● Listo",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Hk6cd",
+                      "name": "dc3format",
+                      "fill": "#8B9DB7",
+                      "content": "PDF",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "SwVYW",
+                      "name": "dc3date",
+                      "fill": "#8B9DB7",
+                      "content": "hace 45min",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "STf8o",
+                      "name": "ar3",
+                      "width": "fill_container",
+                      "gap": 20,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "spOkN",
+                          "name": "ar3vp",
+                          "fill": "#B8860B",
+                          "content": "Vista previa",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "FPa3S",
+                          "name": "ar3dl",
+                          "fill": "#8B9DB7",
+                          "content": "Descargar",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bRqoW",
+                          "name": "ar3ed",
+                          "fill": "#8B9DB7",
+                          "content": "Editar",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Q22J7",
+                          "name": "ar3more",
+                          "fill": "#4A5568",
+                          "content": "⋯",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "fbmXO",
+                  "name": "tableRow4",
+                  "width": "fill_container",
+                  "fill": "#0D1535",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#1A2644"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    20
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 2,
+                      "id": "ow1zy",
+                      "name": "cbx4",
+                      "fill": "#00000000",
+                      "width": 16,
+                      "height": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#1A2644"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "USoJt",
+                      "name": "docCell4",
+                      "width": 374,
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "iRNqv",
+                          "name": "dc4title",
+                          "fill": "#4A5568",
+                          "content": "Plan de Negocio",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "PMUUE",
+                          "name": "dc4desc",
+                          "fill": "#4A5568",
+                          "content": "8 evaluaciones de preparación. Decisión ir/no-ir",
+                          "fontFamily": "Open Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Epfro",
+                      "name": "dc4status",
+                      "fill": "#4A5568",
+                      "content": "○ Pendiente",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "JrbQd",
+                      "name": "dc4format",
+                      "fill": "#4A5568",
+                      "content": "—",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mUzue",
+                      "name": "dc4date",
+                      "fill": "#4A5568",
+                      "content": "—",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bSWqI",
+                      "name": "dc4act",
+                      "fill": "#4A5568",
+                      "content": "Pendiente — se genera en la Sesión de Consejo",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
                       "fontWeight": "normal"
                     }
                   ]
                 },
                 {
                   "type": "frame",
-                  "id": "iAm3S",
-                  "name": "pkgGrid",
+                  "id": "Kse0P",
+                  "name": "tableRow5",
                   "width": "fill_container",
+                  "fill": "#0D1535",
                   "gap": 16,
+                  "padding": [
+                    16,
+                    20
+                  ],
+                  "alignItems": "center",
                   "children": [
                     {
-                      "type": "frame",
-                      "id": "JCO4x",
-                      "name": "pkg0",
-                      "width": "fill_container",
-                      "fill": "#0D1535",
-                      "cornerRadius": 10,
+                      "type": "rectangle",
+                      "cornerRadius": 2,
+                      "id": "K8IGk",
+                      "name": "cbx5",
+                      "fill": "#00000000",
+                      "width": 16,
+                      "height": 16,
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "#C9A84C40"
-                      },
+                        "fill": "#1A2644"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rlea9",
+                      "name": "docCell5",
+                      "width": 374,
                       "layout": "vertical",
-                      "gap": 10,
-                      "padding": 20,
+                      "gap": 2,
                       "children": [
                         {
-                          "type": "frame",
-                          "id": "WGUYk",
-                          "name": "badge",
-                          "width": 36,
-                          "height": 36,
-                          "fill": "#2A1A1A",
-                          "cornerRadius": 8,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon_font",
-                              "id": "jDCFl",
-                              "name": "icon",
-                              "width": 18,
-                              "height": 18,
-                              "iconFontName": "file-down",
-                              "iconFontFamily": "lucide",
-                              "fill": "#E5484D"
-                            }
-                          ]
-                        },
-                        {
                           "type": "text",
-                          "id": "tEHjO",
-                          "name": "title",
-                          "fill": "#F8F8F8",
-                          "content": "Paquete PDF completo",
+                          "id": "3XWkw",
+                          "name": "dc5title",
+                          "fill": "#4A5568",
+                          "content": "Estrategia de Comunicación",
                           "fontFamily": "Open Sans",
                           "fontSize": 14,
                           "fontWeight": "600"
                         },
                         {
                           "type": "text",
-                          "id": "D1EPX",
-                          "name": "desc",
-                          "fill": "#6E8EAD",
-                          "content": "Todos tus documentos en un solo PDF",
-                          "lineHeight": 1.5,
+                          "id": "0SvIx",
+                          "name": "dc5desc",
+                          "fill": "#4A5568",
+                          "content": "Posicionamiento, mensajes clave, canales y tono",
                           "fontFamily": "Open Sans",
                           "fontSize": 12,
                           "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "NeSWS",
-                          "name": "btn",
-                          "width": "fill_container",
-                          "fill": "#B8860B",
-                          "cornerRadius": 6,
-                          "padding": [
-                            7,
-                            14
-                          ],
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "F1zGo",
-                              "name": "label",
-                              "fill": "#0A1128",
-                              "content": "Descargar PDF",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 13,
-                              "fontWeight": "600"
-                            }
-                          ]
                         }
                       ]
                     },
                     {
+                      "type": "text",
+                      "id": "cChPe",
+                      "name": "dc5status",
+                      "fill": "#4A5568",
+                      "content": "○ Pendiente",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "T8fqD",
+                      "name": "dc5format",
+                      "fill": "#4A5568",
+                      "content": "—",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "rto0w",
+                      "name": "dc5date",
+                      "fill": "#4A5568",
+                      "content": "—",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "PJt3F",
+                      "name": "dc5act",
+                      "fill": "#4A5568",
+                      "content": "Pendiente — se genera en la Sesión de Consejo",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "9rEVs",
+                  "name": "paginationRow",
+                  "width": "fill_container",
+                  "fill": "#0A1128",
+                  "padding": [
+                    14,
+                    20
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PgGyh",
+                      "name": "pagLeft",
+                      "fill": "#4A5568",
+                      "content": "Mostrando 1-5 de 5",
+                      "fontFamily": "Open Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
                       "type": "frame",
-                      "id": "QGgwh",
-                      "name": "pkg1",
-                      "width": "fill_container",
-                      "fill": "#0D1535",
-                      "cornerRadius": 10,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#27282B"
-                      },
-                      "layout": "vertical",
-                      "gap": 10,
-                      "padding": 20,
+                      "id": "oOgQb",
+                      "name": "pagControls",
+                      "gap": 8,
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "exwjX",
-                          "name": "badge",
-                          "width": 36,
-                          "height": 36,
-                          "fill": "#1A2742",
-                          "cornerRadius": 8,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon_font",
-                              "id": "sCiaF",
-                              "name": "icon",
-                              "width": 18,
-                              "height": 18,
-                              "iconFontName": "file-code-2",
-                              "iconFontFamily": "lucide",
-                              "fill": "#3B82F6"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "eoqex",
-                          "name": "title",
-                          "fill": "#F8F8F8",
-                          "content": "Paquete Markdown",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 14,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "1YzCm",
-                          "name": "desc",
-                          "fill": "#4A5568",
-                          "content": "5 documentos en .md listos para tu repositorio o Notion",
-                          "lineHeight": 1.5,
-                          "fontFamily": "Open Sans",
-                          "fontSize": 12,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "GWwE9",
-                          "name": "btn",
-                          "width": "fill_container",
-                          "fill": "#1A2742",
+                          "id": "mwnf6",
+                          "name": "pagPrev",
+                          "fill": "#0D1535",
                           "cornerRadius": 6,
                           "stroke": {
                             "align": "inside",
                             "thickness": 1,
-                            "fill": "#3B82F640"
+                            "fill": "#27282B"
                           },
                           "padding": [
-                            7,
-                            14
+                            6,
+                            12
                           ],
                           "justifyContent": "center",
                           "alignItems": "center",
                           "children": [
                             {
                               "type": "text",
-                              "id": "jzc6Q",
-                              "name": "label",
-                              "fill": "#007BFF",
-                              "content": "Descargar .zip",
+                              "id": "pj159",
+                              "name": "pagPrevLbl",
+                              "fill": "#4A5568",
+                              "content": "←",
                               "fontFamily": "Open Sans",
-                              "fontSize": 13,
+                              "fontSize": 14,
                               "fontWeight": "500"
                             }
                           ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "Vn9RJ",
-                      "name": "pkg3",
-                      "width": "fill_container",
-                      "fill": "#0D1535",
-                      "cornerRadius": 10,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#27282B"
-                      },
-                      "layout": "vertical",
-                      "gap": 10,
-                      "padding": 20,
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "QsSPS",
-                          "name": "badge",
-                          "width": 36,
-                          "height": 36,
-                          "fill": "#2A1A3A",
-                          "cornerRadius": 8,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon_font",
-                              "id": "Jbgj2",
-                              "name": "icon",
-                              "width": 18,
-                              "height": 18,
-                              "iconFontName": "presentation",
-                              "iconFontFamily": "lucide",
-                              "fill": "#30A46C"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "xC1GM",
-                          "name": "title",
-                          "fill": "#F8F8F8",
-                          "content": "Slides / Pitch",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 14,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "6Eg33",
-                          "name": "desc",
-                          "fill": "#4A5568",
-                          "content": "Deck de presentación generado desde tus documentos. Listo para demo day o clientes",
-                          "lineHeight": 1.5,
-                          "fontFamily": "Open Sans",
-                          "fontSize": 12,
-                          "fontWeight": "normal"
                         },
                         {
                           "type": "frame",
-                          "id": "gEgmN",
-                          "name": "btn",
-                          "width": "fill_container",
-                          "fill": "#2A1A3A",
+                          "id": "KDrIj",
+                          "name": "pagNext",
+                          "fill": "#0D1535",
                           "cornerRadius": 6,
                           "stroke": {
                             "align": "inside",
                             "thickness": 1,
-                            "fill": "#A855F740"
+                            "fill": "#27282B"
                           },
                           "padding": [
-                            7,
-                            14
+                            6,
+                            12
                           ],
                           "justifyContent": "center",
                           "alignItems": "center",
                           "children": [
                             {
                               "type": "text",
-                              "id": "WXnSB",
-                              "name": "label",
-                              "fill": "#A855F7",
-                              "content": "Generar slides",
+                              "id": "5kBUv",
+                              "name": "pagNextLbl",
+                              "fill": "#8B9DB7",
+                              "content": "→",
                               "fontFamily": "Open Sans",
-                              "fontSize": 13,
+                              "fontSize": 14,
                               "fontWeight": "500"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "ri8Dj",
-                      "name": "pkg4",
-                      "width": "fill_container",
-                      "fill": "#0D1535",
-                      "cornerRadius": 10,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#C9A84C40"
-                      },
-                      "layout": "vertical",
-                      "gap": 10,
-                      "padding": 20,
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "GAQ9k",
-                          "name": "badge",
-                          "width": 36,
-                          "height": 36,
-                          "fill": "#2A1E0A",
-                          "cornerRadius": 8,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "5AUxs",
-                              "name": "icon",
-                              "fill": "#B8860B",
-                              "content": "◈",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 16,
-                              "fontWeight": "700"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "6B47Z",
-                          "name": "title",
-                          "fill": "#F8F8F8",
-                          "content": "Paquete Inversionista",
-                          "fontFamily": "Open Sans",
-                          "fontSize": 14,
-                          "fontWeight": "600"
-                        },
-                        {
-                          "type": "text",
-                          "id": "MaDkg",
-                          "name": "desc",
-                          "fill": "#4A5568",
-                          "content": "Modelo de negocio + propuesta de valor + plan + métricas clave. Formato ejecutivo para due diligence",
-                          "lineHeight": 1.5,
-                          "fontFamily": "Open Sans",
-                          "fontSize": 12,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "LTJvZ",
-                          "name": "btn",
-                          "width": "fill_container",
-                          "fill": "#B8860B",
-                          "cornerRadius": 6,
-                          "padding": [
-                            7,
-                            14
-                          ],
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "x91d6",
-                              "name": "label",
-                              "fill": "#0A1128",
-                              "content": "Preparar paquete",
-                              "fontFamily": "Open Sans",
-                              "fontSize": 13,
-                              "fontWeight": "600"
                             }
                           ]
                         }

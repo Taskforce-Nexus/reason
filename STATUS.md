@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-12
-Etapa actual: ITERATE — Export__Center__Default rediseñado (8 fixes) + FREEZE ✓. Pendiente: Documents__Branding__Default o siguiente frame
+Etapa actual: ITERATE — Export__Center__Default rebuild v2 (tabla escalable CRUD) + FREEZE ✓. Pendiente: Documents__Branding__Default
 
 ---
 
@@ -64,7 +64,8 @@ Etapa actual: ITERATE — Export__Center__Default rediseñado (8 fixes) + FREEZE
 
 - Documents__Viewer__Ajustes/Contenido/Identidad — FREEZE ✓
 
-- Export__Center__Default — rediseño completo: breadcrumb, subtítulo, barra progreso, cards Listo/Pendiente, PDF completo, Estrategia de Comunicación, Repo Handoff eliminado ✓
+- Export__Center__Default — rediseño completo v1: breadcrumb, subtítulo, barra progreso, cards Listo/Pendiente, PDF completo, Estrategia de Comunicación ✓
+- Export__Center__Default — rebuild v2: tabla escalable CRUD con header acciones globales, 5 filas, estados Listo/Pendiente, acciones por fila, paginación ✓
 - Export__Center__Default — FREEZE ✓
 
 ## Siguiente paso
