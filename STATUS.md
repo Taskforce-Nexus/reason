@@ -294,9 +294,41 @@ Etapa actual: IMPLEMENTATION — Story 4.3 COMPLETA. Sesión de Consejo: generac
   - Modal "Invitar colaborador" con email + rol + descripción de permisos
   - Confirmación inline eliminación por fila
 
+## Story 3.1 — Advisory Board (COMPLETO ✓)
+
+- /project/[id]/consejo — MyBoard con hat tracker, LIDERA/APOYA/OBSERVA, especialistas, buyer personas ✓
+- foundersSidebar (280px, rounded-xl): cofounders IA + humanos, totales, CTA "Consultar al consejo →" ✓
+- Hat dots 6 sombreros (blanco/negro/rojo/amarillo/verde/azul) con cobertura calculada ✓
+- LIDERA cards: border #C5A55A (gold), hat dots, "Cambiar ↗" button ✓
+- src/app/project/[id]/consejo/page.tsx + src/components/consejo/MyBoard.tsx ✓
+
+## Story 8.1 — Landing Page (COMPLETO ✓)
+
+- src/app/page.tsx — estática server component, 10 secciones ✓
+  - Nav (logo + Características/Precio + Comenzar →)
+  - Hero (headline + subtítulo + 2 CTAs + product mockup)
+  - Problema (headline + 3 stat cards)
+  - Para Quién (4 ICP cards)
+  - Cómo Funciona (5 step cards)
+  - Consejo IA (6 advisor cards)
+  - Documentos (8 doc cards)
+  - Nexo Dual (constructivo vs crítico)
+  - Suite AVA (3 product cards, Reason gold border)
+  - CTA Final + Footer
+- Redirect a /dashboard si autenticado ✓
+- middleware.ts actualizado: / como ruta pública, redirect auth a /dashboard ✓
+- Dashboard movido a /dashboard (src/app/(dashboard)/dashboard/page.tsx) ✓
+- Links href="/" actualizados a href="/dashboard" en 4 archivos ✓
+
+## Story 7.x — Settings restantes (COMPLETO ✓)
+
+- /settings/planes — 3 cards Core/Pro/Enterprise con features y botones de acción ✓
+- /settings/notificaciones — toggles por categoría (Actividad + Email) ✓
+- /settings/conexiones — GitHub disponible + 4 próximamente ✓
+
 ## Siguiente paso
 
-Story 8.x — A definir por Kira (ProjectView refinements, Advisory Board updates, o pipeline completion)
+Story 9.x — A definir por Kira
 
 ---
 
