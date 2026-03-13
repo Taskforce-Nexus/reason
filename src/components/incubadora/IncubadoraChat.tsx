@@ -319,19 +319,13 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
           </span>
         </div>
         <div className="flex items-center gap-3">
-          {!voiceMode && (
-            <button
-              type="button"
-              onClick={() => setVoiceMode(true)}
-              className="flex items-center gap-1.5 text-sm border border-[#1E2A4A] text-[#8892A4] hover:text-white px-3 py-1.5 rounded-lg transition-colors"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
-                <path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/>
-              </svg>
-              Modo voz
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setVoiceMode(true)}
+            className="px-3 py-1.5 text-sm text-[#F8F8F8] border border-[#1E2A4A] rounded-lg hover:bg-[#0D1535] transition-colors"
+          >
+            🎙 Modo voz
+          </button>
           <Link href={`/project/${project.id}`}
             className="text-sm text-[#8892A4] border border-[#1E2A4A] px-3 py-1.5 rounded-lg hover:text-white hover:border-[#1E2A4A] transition-colors">
             Salir
@@ -521,11 +515,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         {voiceMode ? (
           <VoiceModePanel
             projectId={project.id}
-            conversationId={activeConversationId}
-            messages={messages}
-            onMessagesUpdate={setMessages}
             onExit={() => setVoiceMode(false)}
-            onSemillaComplete={(brief) => { setFounderBrief(brief); setSemillaComplete(true) }}
           />
         ) : (
         <main className="flex-1 flex flex-col overflow-hidden">
