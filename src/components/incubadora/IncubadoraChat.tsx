@@ -65,6 +65,9 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const keepListeningRef = useRef(false)
   const supabase = createClient()
 
+  // Garantía: siempre arrancar en modo texto, nunca en modo voz
+  useEffect(() => { setVoiceMode(false) }, [])
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
