@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
+import DocumentPreview, { type DocumentSection } from './DocumentPreview'
 
 interface Document {
   id: string
@@ -38,7 +39,7 @@ interface Debate {
   synthesis: string | null
 }
 
-type UIState = 'init' | 'starting' | 'question_ready' | 'debating' | 'debate_ready' | 'resolving' | 'phase_complete' | 'session_complete'
+type UIState = 'init' | 'starting' | 'question_ready' | 'debating' | 'debate_ready' | 'resolving' | 'awaiting_approval' | 'session_complete'
 type Mode = 'normal' | 'autopiloto' | 'levantar_mano'
 
 const LEVEL_LABELS: Record<string, string> = { lidera: 'LIDERA', apoya: 'APOYA', observa: 'OBSERVA' }
@@ -90,8 +91,32 @@ export default function SesionConsejoView({ project, advisors, cofounders, docum
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
+  // Document sections state: docId → DocumentSection[]
+  const [documentSections, setDocumentSections] = useState<Record<string, DocumentSection[]>>({})
+  const [isGeneratingSection, setIsGeneratingSection] = useState(false)
+
+  // Approval state
+  const [pendingApprovalDocId, setPendingApprovalDocId] = useState<string | null>(null)
+  const [pendingApprovalPhaseIndex, setPendingApprovalPhaseIndex] = useState<number | null>(null)
+  const [isApproving, setIsApproving] = useState(false)
+
   const currentDoc = docs[currentDocIndex]
   const currentDocName = currentDoc?.name ?? ''
+  const currentDocId = currentDoc?.id ?? ''
+  const currentSpecSections = currentDoc?.document_specs?.sections ?? []
+
+  function addSection(docId: string, section: DocumentSection) {
+    setDocumentSections(prev => {
+      const existing = prev[docId] ?? []
+      const idx = existing.findIndex(s => s.section_name === section.section_name)
+      if (idx >= 0) {
+        const updated = [...existing]
+        updated[idx] = section
+        return { ...prev, [docId]: updated }
+      }
+      return { ...prev, [docId]: [...existing, section] }
+    })
+  }
 
   async function handleStart() {
     setUiState('starting')
@@ -149,6 +174,7 @@ export default function SesionConsejoView({ project, advisors, cofounders, docum
   async function handleResolve(resolution: 'constructiva' | 'critico' | 'responder_yo' | 'acuerdo') {
     if (!debate || !session || !currentPhaseId) return
     setUiState('resolving')
+    setIsGeneratingSection(true)
     setError(null)
     try {
       const res = await fetch('/api/session/turn', {
@@ -163,33 +189,35 @@ export default function SesionConsejoView({ project, advisors, cofounders, docum
           questionIndex,
           resolution,
           founderResponse: resolution === 'responder_yo' ? founderInput : undefined,
+          constructiveContent: debate.constructive,
+          criticalContent: debate.critical,
+          synthesis: debate.synthesis,
+          question: currentQuestion,
+          documentId: currentDocId,
+          documentName: currentDocName,
+          specSections: currentSpecSections,
+          previousSections: documentSections[currentDocId] ?? [],
           founderBrief: project.founder_brief,
         }),
       })
       const data = await res.json()
-      if (!res.ok) { setError(data.error); setUiState('debate_ready'); return }
+      if (!res.ok) { setError(data.error); setUiState('debate_ready'); setIsGeneratingSection(false); return }
 
-      // Record resolved question
+      setIsGeneratingSection(false)
+
+      // Add generated section to preview
+      if (data.generatedSection) {
+        addSection(currentDocId, data.generatedSection)
+      }
+
       setResolvedList(prev => [...prev, { question: currentQuestion ?? '', resolution }])
       setDebate(null)
       setFounderInput('')
 
-      if (data.sessionComplete) {
-        setUiState('session_complete')
-        return
-      }
-
       if (data.phaseComplete) {
-        setUiState('phase_complete')
-        setTimeout(() => {
-          setCurrentDocIndex(data.nextDocumentIndex)
-          setCurrentPhaseId(data.nextPhaseId)
-          setCurrentQuestion(data.nextQuestion)
-          setQuestionIndex(0)
-          setTotalQuestions(data.totalQuestions)
-          setSession(s => s ? { ...s, current_document_index: data.nextDocumentIndex, current_question_index: 0 } : s)
-          setUiState('question_ready')
-        }, 2000)
+        setPendingApprovalDocId(data.documentId ?? currentDocId)
+        setPendingApprovalPhaseIndex(data.phaseIndex ?? currentDocIndex)
+        setUiState('awaiting_approval')
         return
       }
 
@@ -200,6 +228,49 @@ export default function SesionConsejoView({ project, advisors, cofounders, docum
     } catch {
       setError('Error registrando resolución. Inténtalo de nuevo.')
       setUiState('debate_ready')
+      setIsGeneratingSection(false)
+    }
+  }
+
+  async function handleApprove() {
+    if (!session || pendingApprovalDocId === null || pendingApprovalPhaseIndex === null) return
+    setIsApproving(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/session/turn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'approve',
+          projectId: project.id,
+          sessionId: session.id,
+          documentId: pendingApprovalDocId,
+          phaseIndex: pendingApprovalPhaseIndex,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setError(data.error); setIsApproving(false); return }
+
+      setIsApproving(false)
+      setPendingApprovalDocId(null)
+      setPendingApprovalPhaseIndex(null)
+
+      if (data.sessionComplete) {
+        setUiState('session_complete')
+        return
+      }
+
+      setCurrentDocIndex(data.nextDocumentIndex)
+      setCurrentPhaseId(data.nextPhaseId)
+      setCurrentQuestion(data.nextQuestion)
+      setQuestionIndex(0)
+      setTotalQuestions(data.totalQuestions)
+      setSession(s => s ? { ...s, current_document_index: data.nextDocumentIndex, current_question_index: 0 } : s)
+      setResolvedList([])
+      setUiState('question_ready')
+    } catch {
+      setError('Error aprobando el documento. Inténtalo de nuevo.')
+      setIsApproving(false)
     }
   }
 
@@ -354,14 +425,77 @@ export default function SesionConsejoView({ project, advisors, cofounders, docum
             </div>
           )}
 
-          {/* Phase complete transition */}
-          {uiState === 'phase_complete' && (
-            <div className="flex flex-col items-center justify-center h-full min-h-[400px] space-y-4">
-              <div className="w-12 h-12 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center text-green-400 text-2xl">✓</div>
-              <h2 className="text-lg font-semibold text-white">Documento completado</h2>
-              <p className="text-sm text-[#8892A4]">Pasando al siguiente documento...</p>
-            </div>
-          )}
+          {/* Document awaiting approval */}
+          {uiState === 'awaiting_approval' && (() => {
+            const approvalSections = documentSections[pendingApprovalDocId ?? currentDocId] ?? []
+            return (
+              <div className="space-y-5">
+                {/* Nexo message */}
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] text-xs font-bold shrink-0 mt-1">N</div>
+                  <div className="max-w-2xl bg-[#0D1535] border border-[#1E2A4A] rounded-2xl rounded-tl-sm px-5 py-4 text-sm text-[#e0e0e5] leading-relaxed">
+                    El documento <strong>{currentDocName}</strong> ha sido generado con {approvalSections.length} sección{approvalSections.length !== 1 ? 'es' : ''}. Revísalo y apruébalo para continuar.
+                  </div>
+                </div>
+
+                {/* Full document view */}
+                <div className="bg-[#0D1535] border border-[#B8860B]/20 rounded-xl overflow-hidden">
+                  <div className="px-5 py-4 border-b border-[#1E2A4A] flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] text-xs font-bold">
+                      {currentDocIndex + 1}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-white">{currentDocName}</p>
+                      <p className="text-xs text-[#8892A4]">{approvalSections.length} secciones generadas</p>
+                    </div>
+                  </div>
+                  <div className="divide-y divide-[#1E2A4A]">
+                    {approvalSections.map((section, i) => (
+                      <div key={i} className="px-5 py-4">
+                        <p className="text-xs text-[#B8860B] font-medium uppercase tracking-wider mb-2">{section.section_name}</p>
+                        <p className="text-sm text-[#e0e0e5] leading-relaxed whitespace-pre-line">{section.content}</p>
+                        {section.key_points?.length > 0 && (
+                          <ul className="mt-3 space-y-1">
+                            {section.key_points.map((point, pi) => (
+                              <li key={pi} className="flex items-start gap-2 text-xs text-[#8892A4]">
+                                <span className="text-[#B8860B] shrink-0 mt-0.5">•</span>
+                                {point}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
+                    {approvalSections.length === 0 && (
+                      <div className="px-5 py-6 text-center text-sm text-[#8892A4]">
+                        Generando contenido del documento...
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Approval CTA */}
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={handleApprove}
+                    disabled={isApproving}
+                    className="flex-1 bg-[#B8860B] hover:bg-[#b8963f] text-[#0A1128] font-semibold text-sm py-3.5 rounded-xl transition-colors disabled:opacity-40"
+                  >
+                    {isApproving ? 'Aprobando...' : 'Aprobar documento →'}
+                  </button>
+                  <button
+                    type="button"
+                    disabled
+                    className="px-4 py-3 text-sm text-[#8892A4]/40 border border-[#1E2A4A]/40 rounded-xl cursor-not-allowed"
+                    title="Post-MVP"
+                  >
+                    Pedir revisión
+                  </button>
+                </div>
+              </div>
+            )
+          })()}
 
           {/* Session complete */}
           {uiState === 'session_complete' && (
@@ -635,29 +769,25 @@ export default function SesionConsejoView({ project, advisors, cofounders, docum
             </div>
           )}
 
-          {/* Live preview placeholder */}
-          {session && uiState !== 'init' && (
+          {/* Document Preview */}
+          {session && uiState !== 'init' && uiState !== 'starting' && currentDoc && (
             <div>
               <p className="text-[10px] text-[#B8860B] uppercase tracking-wider font-medium mb-3">Preview en Vivo</p>
-              <div className="bg-[#0D1535] border border-[#1E2A4A] rounded-xl px-4 py-3">
-                <p className="text-[10px] text-[#8892A4] leading-relaxed">
-                  {resolvedList.length === 0
-                    ? `El documento "${currentDocName}" se construirá a medida que el consejo debate.`
-                    : `${resolvedList.length} pregunta${resolvedList.length !== 1 ? 's' : ''} resuelta${resolvedList.length !== 1 ? 's' : ''}. El documento se está formando.`
-                  }
-                </p>
-                {resolvedList.length > 0 && (
-                  <button
-                    onClick={() => {
-                      const doc = docs[currentDocIndex]
-                      if (doc) router.push(`/project/${project.id}/documento/${doc.id}`)
-                    }}
-                    className="mt-2 text-[10px] text-[#B8860B] hover:underline"
-                  >
-                    Ver borrador →
-                  </button>
-                )}
-              </div>
+              <DocumentPreview
+                documentName={currentDoc.name}
+                sections={documentSections[currentDocId] ?? []}
+                totalSections={Math.max(currentSpecSections.length, 3)}
+                isGenerating={isGeneratingSection}
+              />
+              {(documentSections[currentDocId] ?? []).length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => router.push(`/project/${project.id}/documento/${currentDoc.id}`)}
+                  className="mt-2 text-[10px] text-[#B8860B] hover:underline"
+                >
+                  Ver documento completo →
+                </button>
+              )}
             </div>
           )}
         </aside>

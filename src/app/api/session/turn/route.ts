@@ -6,10 +6,17 @@ import {
   NEXO_CONSTRUCTIVO_SYSTEM,
   NEXO_CRITICO_SYSTEM,
   NEXO_SYNTHESIS_SYSTEM,
+  NEXO_SECTION_WRITER_SYSTEM,
 } from '@/lib/prompts'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Supa = ReturnType<typeof createClient>
+
+export interface GeneratedSection {
+  section_name: string
+  content: string
+  key_points: string[]
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,6 +35,7 @@ export async function POST(req: NextRequest) {
       case 'start':   return await handleStart(supabase, project)
       case 'debate':  return await handleDebate(supabase, body)
       case 'resolve': return await handleResolve(supabase, project, body)
+      case 'approve': return await handleApprove(supabase, project, body)
       default: return NextResponse.json({ error: 'Acción inválida' }, { status: 400 })
     }
   } catch (err) {
@@ -39,7 +47,6 @@ export async function POST(req: NextRequest) {
 // ─── Start Session ────────────────────────────────────────────────────────────
 
 async function handleStart(supabase: Supa, project: { id: string; founder_brief: string }) {
-  // Get project documents with their specs
   const { data: documents } = await supabase
     .from('project_documents')
     .select('*, document_specs(*)')
@@ -50,7 +57,6 @@ async function handleStart(supabase: Supa, project: { id: string; founder_brief:
     return NextResponse.json({ error: 'No hay documentos configurados' }, { status: 400 })
   }
 
-  // Create session
   const { data: session } = await supabase.from('sessions').insert({
     project_id: project.id,
     status: 'activa',
@@ -62,11 +68,9 @@ async function handleStart(supabase: Supa, project: { id: string; founder_brief:
 
   if (!session) return NextResponse.json({ error: 'Error creando sesión' }, { status: 500 })
 
-  // Generate questions for the first document
   const firstDoc = documents[0]
   const questions = await generateQuestions(project.founder_brief, firstDoc)
 
-  // Create phases for all documents
   const phasesData = documents.map((doc, i) => ({
     session_id: session.id,
     document_id: doc.id,
@@ -110,14 +114,12 @@ Documento en construcción: ${documentName}
 Pregunta estratégica para el debate:
 ${question}`
 
-  // Nexo Constructivo — optimistic proposal
   const constructiveContent = await callClaude(
     NEXO_CONSTRUCTIVO_SYSTEM,
     [{ role: 'user', content: context }],
     600
   )
 
-  // Nexo Crítico — sees the constructive proposal
   const criticalContext = `${context}
 
 Propuesta del Nexo Constructivo:
@@ -129,7 +131,6 @@ ${constructiveContent}`
     600
   )
 
-  // Synthesis — check agreement level
   let agreement = false
   let synthesis: string | null = null
 
@@ -141,15 +142,14 @@ ${constructiveContent}`
       400,
       'claude-haiku-4-5-20251001'
     )
-    const cleanedRaw = synthesisRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
-    const parsed = JSON.parse(cleanedRaw)
+    const clean = synthesisRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
+    const parsed = JSON.parse(clean)
     agreement = parsed.agreement === true
     synthesis = parsed.synthesis ?? null
   } catch {
     agreement = false
   }
 
-  // Save NexoDualResponse
   const { data: nexoResponse } = await supabase.from('nexo_dual_responses').insert({
     phase_id: phaseId,
     question_index: questionIndex,
@@ -179,6 +179,14 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
   questionIndex: number
   resolution: 'constructiva' | 'critico' | 'responder_yo' | 'acuerdo'
   founderResponse?: string
+  constructiveContent?: string
+  criticalContent?: string
+  synthesis?: string
+  question?: string
+  documentId?: string
+  documentName?: string
+  specSections?: { nombre: string; descripcion: string }[]
+  previousSections?: GeneratedSection[]
 }) {
   const { sessionId, phaseId, responseId, questionIndex, resolution, founderResponse } = body
 
@@ -207,11 +215,31 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
     questions[questionIndex] = { ...questions[questionIndex], resolucion: resolution }
   }
 
+  // Generate section content for this question
+  const generatedSection = await generateSection({
+    founderBrief: project.founder_brief,
+    question: body.question ?? questions[questionIndex]?.pregunta ?? '',
+    resolution,
+    resolutionContent: resolution === 'responder_yo'
+      ? (founderResponse ?? '')
+      : resolution === 'critico'
+        ? (body.criticalContent ?? '')
+        : (body.synthesis ?? body.constructiveContent ?? ''),
+    documentName: body.documentName ?? '',
+    sectionSpec: body.specSections?.[questionIndex] ?? null,
+    previousSections: body.previousSections ?? [],
+  })
+
+  // Update project_documents.content_json
+  if (body.documentId && generatedSection) {
+    await upsertDocumentSection(supabase, body.documentId, generatedSection)
+  }
+
   const nextQuestionIndex = questionIndex + 1
   const phaseComplete = nextQuestionIndex >= questions.length
 
   if (phaseComplete) {
-    // Mark this phase as completada
+    // Mark phase as completada — DO NOT advance yet (user must approve doc first)
     await supabase.from('session_phases').update({
       status: 'completada',
       questions,
@@ -219,73 +247,93 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
       completed_at: new Date().toISOString(),
     }).eq('id', phaseId)
 
-    // Update document status
-    await supabase.from('project_documents')
-      .update({ status: 'generado', generated_at: new Date().toISOString() })
-      .eq('id', phase.document_id)
-
-    // Get session
-    const { data: session } = await supabase
-      .from('sessions').select('*').eq('id', sessionId).single()
-    const nextDocIndex = (session?.current_document_index ?? 0) + 1
-
-    // Look for next phase
-    const { data: nextPhase } = await supabase
-      .from('session_phases')
-      .select('*, project_documents(*, document_specs(*))')
-      .eq('session_id', sessionId)
-      .eq('phase_index', nextDocIndex)
-      .maybeSingle()
-
-    if (!nextPhase) {
-      // Session complete
-      await supabase.from('sessions').update({
-        status: 'completada',
-        completed_at: new Date().toISOString(),
-      }).eq('id', sessionId)
-      await supabase.from('projects')
-        .update({ current_phase: 'completado', last_active_at: new Date().toISOString() })
-        .eq('id', project.id)
-      return NextResponse.json({ sessionComplete: true })
+    // Mark doc as generado (not approved yet)
+    if (phase.document_id) {
+      await supabase.from('project_documents')
+        .update({ status: 'generado', generated_at: new Date().toISOString() })
+        .eq('id', phase.document_id)
     }
-
-    // Generate questions for next phase
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nextDoc = (nextPhase as any).project_documents
-    const nextQuestions = await generateQuestions(project.founder_brief, nextDoc)
-
-    await supabase.from('session_phases').update({
-      status: 'en_progreso',
-      questions: nextQuestions,
-      momentum: { total_questions: nextQuestions.length, resolved: 0, constructivo_count: 0, critico_count: 0 },
-      started_at: new Date().toISOString(),
-    }).eq('id', nextPhase.id)
-
-    await supabase.from('sessions').update({
-      current_document_index: nextDocIndex,
-      current_question_index: 0,
-    }).eq('id', sessionId)
 
     return NextResponse.json({
       phaseComplete: true,
-      nextPhaseId: nextPhase.id,
-      nextQuestion: nextQuestions[0]?.pregunta ?? null,
-      nextDocumentName: nextDoc?.name ?? '',
-      nextDocumentIndex: nextDocIndex,
-      nextQuestionIndex: 0,
-      totalQuestions: nextQuestions.length,
-    })
-  } else {
-    // Advance within same phase
-    await supabase.from('session_phases').update({ questions, momentum }).eq('id', phaseId)
-    await supabase.from('sessions').update({ current_question_index: nextQuestionIndex }).eq('id', sessionId)
-
-    return NextResponse.json({
-      phaseComplete: false,
-      nextQuestionIndex,
-      nextQuestion: questions[nextQuestionIndex]?.pregunta ?? null,
+      documentId: phase.document_id,
+      phaseIndex: phase.phase_index,
+      generatedSection,
     })
   }
+
+  // Advance within same phase
+  await supabase.from('session_phases').update({ questions, momentum }).eq('id', phaseId)
+  await supabase.from('sessions').update({ current_question_index: nextQuestionIndex }).eq('id', sessionId)
+
+  return NextResponse.json({
+    phaseComplete: false,
+    nextQuestionIndex,
+    nextQuestion: questions[nextQuestionIndex]?.pregunta ?? null,
+    generatedSection,
+  })
+}
+
+// ─── Approve Document & Advance ───────────────────────────────────────────────
+
+async function handleApprove(supabase: Supa, project: { id: string; founder_brief: string }, body: {
+  sessionId: string
+  documentId: string
+  phaseIndex: number
+}) {
+  const { sessionId, documentId, phaseIndex } = body
+
+  // Mark document as approved
+  await supabase.from('project_documents')
+    .update({ status: 'aprobado', approved_at: new Date().toISOString() })
+    .eq('id', documentId)
+
+  const nextDocIndex = phaseIndex + 1
+
+  // Look for next phase
+  const { data: nextPhase } = await supabase
+    .from('session_phases')
+    .select('*, project_documents(*, document_specs(*))')
+    .eq('session_id', sessionId)
+    .eq('phase_index', nextDocIndex)
+    .maybeSingle()
+
+  if (!nextPhase) {
+    // All phases done — session complete
+    await supabase.from('sessions').update({
+      status: 'completada',
+      completed_at: new Date().toISOString(),
+    }).eq('id', sessionId)
+    await supabase.from('projects')
+      .update({ current_phase: 'completado', last_active_at: new Date().toISOString() })
+      .eq('id', project.id)
+    return NextResponse.json({ sessionComplete: true })
+  }
+
+  // Generate questions for next phase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const nextDoc = (nextPhase as any).project_documents
+  const nextQuestions = await generateQuestions(project.founder_brief, nextDoc)
+
+  await supabase.from('session_phases').update({
+    status: 'en_progreso',
+    questions: nextQuestions,
+    momentum: { total_questions: nextQuestions.length, resolved: 0, constructivo_count: 0, critico_count: 0 },
+    started_at: new Date().toISOString(),
+  }).eq('id', nextPhase.id)
+
+  await supabase.from('sessions').update({
+    current_document_index: nextDocIndex,
+    current_question_index: 0,
+  }).eq('id', sessionId)
+
+  return NextResponse.json({
+    nextPhaseId: nextPhase.id,
+    nextQuestion: nextQuestions[0]?.pregunta ?? null,
+    nextDocumentName: nextDoc?.name ?? '',
+    nextDocumentIndex: nextDocIndex,
+    totalQuestions: nextQuestions.length,
+  })
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -333,4 +381,85 @@ Responde SOLO con un JSON array de 3 strings.`
     { pregunta: '¿Qué diferencia tu propuesta de las alternativas que ya existen en el mercado?', resolucion: null },
     { pregunta: '¿Cuáles son los 3 riesgos principales y cómo los mitigarías desde el inicio?', resolucion: null },
   ]
+}
+
+async function generateSection(args: {
+  founderBrief: string
+  question: string
+  resolution: string
+  resolutionContent: string
+  documentName: string
+  sectionSpec: { nombre: string; descripcion: string } | null
+  previousSections: GeneratedSection[]
+}): Promise<GeneratedSection | null> {
+  const { founderBrief, question, resolution, resolutionContent, documentName, sectionSpec, previousSections } = args
+
+  const previousContext = previousSections.length > 0
+    ? `\n\nContexto de secciones anteriores:\n${previousSections.map(s => `${s.section_name}: ${s.content.slice(0, 200)}...`).join('\n')}`
+    : ''
+
+  const prompt = `DOCUMENTO: ${documentName}
+SPEC DE LA SECCIÓN: ${sectionSpec?.nombre ?? 'Sección principal'} — ${sectionSpec?.descripcion ?? 'Contenido relevante para el documento'}
+
+RESUMEN DEL FUNDADOR:
+${founderBrief ?? 'No disponible'}
+
+RESOLUCIÓN DEL DEBATE:
+Pregunta: ${question}
+Posición elegida: ${resolution}
+Contenido de la resolución:
+${resolutionContent}${previousContext}
+
+Genera el contenido de la sección "${sectionSpec?.nombre ?? 'Sección principal'}" del documento "${documentName}".`
+
+  try {
+    const raw = await callClaude(
+      NEXO_SECTION_WRITER_SYSTEM,
+      [{ role: 'user', content: prompt }],
+      800,
+      'claude-haiku-4-5-20251001'
+    )
+    const clean = raw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
+    const parsed = JSON.parse(clean) as GeneratedSection
+    if (parsed.section_name && parsed.content) return parsed
+  } catch {
+    // fallback below
+  }
+
+  return {
+    section_name: sectionSpec?.nombre ?? 'Sección principal',
+    content: resolutionContent.slice(0, 800),
+    key_points: [],
+  }
+}
+
+async function upsertDocumentSection(
+  supabase: Supa,
+  documentId: string,
+  newSection: GeneratedSection
+): Promise<void> {
+  try {
+    const { data: doc } = await supabase
+      .from('project_documents')
+      .select('content_json')
+      .eq('id', documentId)
+      .single()
+
+    const current = (doc?.content_json as { sections?: GeneratedSection[] } | null) ?? { sections: [] }
+    const sections: GeneratedSection[] = current.sections ?? []
+
+    const idx = sections.findIndex(s => s.section_name === newSection.section_name)
+    if (idx >= 0) {
+      sections[idx] = newSection
+    } else {
+      sections.push(newSection)
+    }
+
+    await supabase.from('project_documents').update({
+      content_json: { sections },
+      status: 'en_progreso',
+    }).eq('id', documentId)
+  } catch (err) {
+    console.error('[upsertDocumentSection]', err)
+  }
 }

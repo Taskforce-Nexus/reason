@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-13
-Etapa actual: IMPLEMENTATION — Story 4.1 + 4.2 COMPLETA. Sesión de Consejo implementada: motor Nexo Dual + UI 3 columnas.
+Etapa actual: IMPLEMENTATION — Story 4.3 COMPLETA. Sesión de Consejo: generación de secciones en vivo + DocumentPreview + flujo de aprobación.
 
 ---
 
@@ -226,9 +226,28 @@ Etapa actual: IMPLEMENTATION — Story 4.1 + 4.2 COMPLETA. Sesión de Consejo im
   - Modos: Normal / Autopiloto / Levantar Mano
   - Estados: init → starting → question_ready → debating → debate_ready → resolving → phase_complete → session_complete
 
+## Story 4.3 — Preview en vivo + Aprobación de documentos (COMPLETO ✓)
+
+- src/lib/prompts.ts — NEXO_SECTION_WRITER_SYSTEM añadido ✓
+- src/app/api/session/turn/route.ts — actualizado ✓
+  - handleResolve: genera sección con Haiku tras cada resolución, upsert content_json, retorna generatedSection
+  - handleApprove (nueva acción): marca doc como aprobado, avanza a siguiente fase
+  - generateSection(): Haiku genera JSON {section_name, content, key_points} mapeado a spec sections
+  - upsertDocumentSection(): upsert en project_documents.content_json
+- src/components/sesion-consejo/DocumentPreview.tsx — nuevo ✓
+  - Secciones expandibles con checkmark verde + key points como bullets
+  - Indicador pulsante mientras genera
+  - Placeholders grises para secciones pendientes
+  - Auto-scroll a última sección
+- src/components/sesion-consejo/SesionConsejoView.tsx — actualizado ✓
+  - documentSections state (Record<docId, DocumentSection[]>)
+  - isGeneratingSection, pendingApprovalDocId/PhaseIndex, isApproving
+  - phase_complete reemplazado por awaiting_approval — muestra documento completo + "Aprobar documento →"
+  - Preview en Vivo en sidebar derecho usa DocumentPreview real
+
 ## Siguiente paso
 
-Story 4.3 — Preview en vivo de documento (content_json + Documents Viewer con contenido parcial)
+Story 5.1 — Documents Viewer (3 tabs: Ajustes, Contenido, Identidad)
 
 ---
 

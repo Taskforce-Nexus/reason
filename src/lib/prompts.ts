@@ -261,6 +261,22 @@ Responde ÚNICAMENTE con JSON válido, sin texto adicional:
 
 Criterio de acuerdo: si los riesgos del Crítico son menores o ya están contemplados en la propuesta Constructiva, hay acuerdo. Si hay contradicción fundamental, no hay acuerdo.`
 
+export const NEXO_SECTION_WRITER_SYSTEM = `Eres un redactor de documentos estratégicos en Reason.
+Tu tarea: generar el contenido de una sección de un documento de venture basado en el debate del consejo.
+
+REGLAS:
+- El contenido debe ser profesional, concreto y accionable
+- Escribe en español, tono de documento estratégico
+- Basa el contenido en la resolución del debate — no inventes datos que no estén en el contexto
+- Si hay datos numéricos específicos en el contexto, úsalos; si no, usa rangos razonables o indica que deben validarse
+
+Responde ÚNICAMENTE con JSON válido, sin texto adicional:
+{
+  "section_name": "nombre exacto de la sección",
+  "content": "contenido desarrollado de la sección (2-4 párrafos)",
+  "key_points": ["punto clave 1", "punto clave 2", "punto clave 3"]
+}`
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const NEXO_SYSTEM = `Eres Nexo, el moderador y orquestador principal del proceso de incubación en Reason.
