@@ -48,6 +48,13 @@ export default function VoiceModePanel({
       mediaRecorder.onstop = async () => {
         stream.getTracks().forEach(t => t.stop())
         const audioBlob = new Blob(chunksRef.current, { type: mimeType })
+
+        if (audioBlob.size < 100) {
+          setErrorMsg('No se capturó audio. Verifica tu micrófono.')
+          setStatus('idle')
+          return
+        }
+
         setStatus('processing')
 
         try {
@@ -56,9 +63,16 @@ export default function VoiceModePanel({
           formData.append('audio', audioBlob, 'recording.webm')
           const sttRes = await fetch('/api/voice/stt', { method: 'POST', body: formData })
           const sttData = await sttRes.json() as { transcript?: string; error?: string }
-          const userText = sttData.transcript?.trim() ?? ''
 
+          if (!sttRes.ok) {
+            setErrorMsg(`Error STT (${sttRes.status}): ${sttData.error ?? 'sin respuesta'}`)
+            setStatus('idle')
+            return
+          }
+
+          const userText = sttData.transcript?.trim() ?? ''
           if (!userText) {
+            setErrorMsg('No se detectó voz. Habla más cerca del micrófono.')
             setStatus('idle')
             return
           }
@@ -83,9 +97,16 @@ export default function VoiceModePanel({
             }),
           })
           const chatData = await chatRes.json() as { message?: string; error?: string }
-          const nexoText = chatData.message?.trim() ?? ''
 
+          if (!chatRes.ok) {
+            setErrorMsg(`Error Chat (${chatRes.status}): ${chatData.error ?? 'sin respuesta'}`)
+            setStatus('idle')
+            return
+          }
+
+          const nexoText = chatData.message?.trim() ?? ''
           if (!nexoText) {
+            setErrorMsg('Nexo no devolvió respuesta.')
             setStatus('idle')
             return
           }
@@ -102,6 +123,8 @@ export default function VoiceModePanel({
           })
 
           if (!ttsRes.ok) {
+            // TTS falló pero ya tenemos la respuesta escrita — mostrarla sin audio
+            setErrorMsg('TTS no disponible — respuesta escrita arriba.')
             setStatus('idle')
             return
           }
@@ -133,7 +156,7 @@ export default function VoiceModePanel({
         }
       }
 
-      mediaRecorder.start()
+      mediaRecorder.start(250) // flush chunks cada 250ms
       setStatus('listening')
 
     } catch (err) {
