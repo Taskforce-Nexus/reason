@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server'
 
 // Cartesia voice selected for Nexo:
-// Name: "Alejandro - Calm Mentor"
-// ID:   3a35daa1-ba81-451c-9b21-59332e9db2f3
-// Spanish-language male voice — calm, mentor-like. Best character match for Nexo as strategic cofounder.
+// Name: "Manuel - Newsman"
+// ID:   948196a7-fe02-417b-9b6d-c45ee0803565
+// Spanish-language male voice — newsman style, faster delivery.
+// Alt: Alejandro - Calm Mentor (3a35daa1-ba81-451c-9b21-59332e9db2f3)
 // Alt: Jeronimo - Empathetic Advisor (7c1ecd2d-1c83-4d5d-a25c-b3820a274a2e)
-// Alt: Manuel - Newsman (948196a7-fe02-417b-9b6d-c45ee0803565)
 
-const NEXO_VOICE_ID = '3a35daa1-ba81-451c-9b21-59332e9db2f3'
+const NEXO_VOICE_ID = '948196a7-fe02-417b-9b6d-c45ee0803565'
 
 export async function POST(req: Request) {
   try {
@@ -29,9 +29,10 @@ export async function POST(req: Request) {
         transcript: text,
         voice: { mode: 'id', id: NEXO_VOICE_ID },
         language: 'es',
+        speed: 1.15,
         output_format: {
           container: 'mp3',
-          sample_rate: 24000,
+          sample_rate: 44100,
           bit_rate: 128000,
         },
       }),
