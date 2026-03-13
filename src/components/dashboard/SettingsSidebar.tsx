@@ -29,7 +29,7 @@ export default function SettingsSidebar() {
       <div className="p-6 flex flex-col flex-1 gap-1">
         {/* Header */}
         <div className="mb-2 space-y-0.5">
-          <Link href="/" className="text-[11px] text-[#6E8EAD] hover:text-white transition-colors">
+          <Link href="/dashboard" className="text-[11px] text-[#6E8EAD] hover:text-white transition-colors">
             ← Proyectos / Configuración
           </Link>
           <h1 className="text-[20px] text-white font-bold font-outfit">Configuración</h1>

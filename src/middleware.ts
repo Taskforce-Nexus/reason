@@ -34,7 +34,9 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/forgot-password-sent') ||
     request.nextUrl.pathname.startsWith('/auth/confirm')
 
-  if (!user && !isAuthPage) {
+  const isPublicPage = request.nextUrl.pathname === '/'
+
+  if (!user && !isAuthPage && !isPublicPage) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
@@ -42,7 +44,7 @@ export async function middleware(request: NextRequest) {
 
   if (user && isAuthPage) {
     const url = request.nextUrl.clone()
-    url.pathname = '/'
+    url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
 

@@ -81,7 +81,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
       <main className="flex-1 overflow-y-auto px-8 py-7">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-[#8892A4] mb-4">
-          <Link href="/" className="hover:text-[#B8860B] transition-colors">← Proyectos</Link>
+          <Link href="/dashboard" className="hover:text-[#B8860B] transition-colors">← Proyectos</Link>
           <span>/</span>
           <span className="text-white">{p.name}{p.description ? ` — ${p.description}` : ''}</span>
         </div>

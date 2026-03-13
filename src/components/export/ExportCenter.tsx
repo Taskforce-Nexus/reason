@@ -71,7 +71,7 @@ export default function ExportCenter({ project, documents }: Props) {
     <div className="min-h-screen bg-[#0A1128] flex flex-col">
       {/* Nav */}
       <nav className="h-[60px] flex items-center justify-between px-16 border-b border-[#27282B] shrink-0">
-        <Link href="/">
+        <Link href="/dashboard">
           <Image src="/branding/logo-claro-reason.png" alt="Reason" width={80} height={26} />
         </Link>
         <div className="flex items-center gap-4 text-[13px] text-[#6E8EAD]">
