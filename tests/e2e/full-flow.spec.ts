@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test'
 
 const BASE = 'http://localhost:3000'
 
-const TEST_EMAIL = 'juan@taskforce.fyi'
-const TEST_PASSWORD = 'TaskForceLolos990'
+const TEST_EMAIL = 'e2e@reason.test'
+const TEST_PASSWORD = 'E2eReason2026x'
 
 async function login(page: import('@playwright/test').Page) {
   await page.goto(`${BASE}/login`)
@@ -33,7 +33,7 @@ test.describe('Reason E2E', () => {
 
   test('3. Dashboard shows projects', async ({ page }) => {
     await login(page)
-    await expect(page.locator('text=Nuevo Proyecto')).toBeVisible()
+    await expect(page.locator('text=Nuevo Proyecto').first()).toBeVisible()
     await page.screenshot({ path: 'tests/screenshots/03-dashboard-projects.png' })
   })
 
