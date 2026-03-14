@@ -43,3 +43,5 @@ next-env.d.ts
 .kiro/
 .agents/
 .vscode/
+tests/screenshots/
+test-results/
