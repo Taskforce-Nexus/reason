@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
-import type { DocumentRef, Consultation, ConsultationMessage } from '@/app/project/[id]/consultoria/page'
+import type { DocumentRef, Consultation, ConsultationMessage } from '@/app/(dashboard)/project/[id]/consultoria/page'
 
 interface Props {
   project: Project

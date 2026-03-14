@@ -40,13 +40,13 @@ function AuthConfirmInner() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#0F0F11] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#0A1128] flex items-center justify-center p-4">
       <div className="w-full max-w-md text-center">
-        <h1 className="text-2xl font-bold tracking-widest text-[#C9A84C] mb-8">Reason</h1>
-        <div className="bg-[#1A1B1E] border border-[#2a2b30] rounded-xl p-8">
+        <h1 className="text-2xl font-bold tracking-widest text-[#B8860B] mb-8">Reason</h1>
+        <div className="bg-[#0D1535] border border-[#1E2A4A] rounded-xl p-8">
           {status === 'loading' && (
             <>
-              <svg className="animate-spin h-8 w-8 text-[#C9A84C] mx-auto mb-4" viewBox="0 0 24 24" fill="none">
+              <svg className="animate-spin h-8 w-8 text-[#B8860B] mx-auto mb-4" viewBox="0 0 24 24" fill="none">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
               </svg>
@@ -73,7 +73,7 @@ function AuthConfirmInner() {
               </div>
               <h2 className="font-semibold mb-2">Error de verificación</h2>
               <p className="text-sm text-[#6b6d75] mb-6">{message}</p>
-              <a href="/login" className="text-sm text-[#C9A84C] hover:underline">
+              <a href="/login" className="text-sm text-[#B8860B] hover:underline">
                 Volver al inicio de sesión
               </a>
             </>

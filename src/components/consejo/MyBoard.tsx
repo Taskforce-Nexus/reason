@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
-import type { Specialist, BuyerPersona } from '@/app/project/[id]/consejo/page'
+import type { Specialist, BuyerPersona } from '@/app/(dashboard)/project/[id]/consejo/page'
 
 interface Props {
   project: Project
