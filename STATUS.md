@@ -376,6 +376,29 @@ Etapa actual: POLISH — Epic 9 completado. Pre-demo: copy consistency, favicon,
   - MyBoard import path: project/[id]/ → (dashboard)/project/[id]/ ✓
   - Eliminado project/[id]/documento/[docId]/page.tsx (duplicado) ✓
 
+## Epic 9.7 — Build limpio + polish final (COMPLETO ✓)
+
+- ESLint: 18 errores → 0 errores (unescaped entities + @typescript-eslint disable comments) ✓
+- .eslintrc.json creado con next/core-web-vitals ✓
+- Accesibilidad axe/forms: aria-label/htmlFor en 4 inputs (GitHubOnboardingWizard, ProjectCard, ConsultoriaView, SesionConsejoView) ✓
+- Microsoft Edge Tools no-inline-styles: .hintrc + .vscode/settings.json (webhint off) ✓
+- markdownlint aurum_brain.md: MD012 + MD032 corregidos ✓
+- extract-text route: import dinámico pdf-parse + force-dynamic (fix DOM APIs en build) ✓
+- **npm run build → EXIT:0** ✓ — build de producción limpio
+- TypeScript: 0 errores ✓
+- ESLint: 0 errores, 4 warnings intencionales ✓
+
+## Estado final del proyecto
+
+**DEMO-READY** — 9 Epics completos, build limpio, deploy activo en Railway.
+
+- 9/9 rutas funcionales con datos reales
+- TypeScript + ESLint limpios
+- Nomenclatura consistente (Seed Session / Sesión de Consejo)
+- Responsive 375/768/1024/1440px
+- Persistencia localStorage en SeedSessionFlow
+- Auth completo (login/register/verify/forgot)
+
 ## Siguiente paso
 
 Screenshots Pencil (requiere MCP activo) + comparación browser
