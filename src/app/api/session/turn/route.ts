@@ -50,7 +50,7 @@ async function handleStart(supabase: Supa, project: { id: string; founder_brief:
     .from('project_documents')
     .select('*, document_specs(*)')
     .eq('project_id', project.id)
-    .order('created_at')
+    .order('generated_at', { ascending: true, nullsFirst: true })
 
   if (!documents?.length) {
     return NextResponse.json({ error: 'No hay documentos configurados' }, { status: 400 })

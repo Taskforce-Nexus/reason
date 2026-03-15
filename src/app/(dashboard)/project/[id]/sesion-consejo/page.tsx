@@ -24,7 +24,7 @@ export default async function SesionConsejoPage({ params }: { params: { id: stri
     { data: session },
   ] = await Promise.all([
     supabase.from('councils').select('*').eq('project_id', params.id).maybeSingle(),
-    supabase.from('project_documents').select('*, document_specs(*)').eq('project_id', params.id).order('created_at'),
+    supabase.from('project_documents').select('*, document_specs(*)').eq('project_id', params.id).order('generated_at', { ascending: true, nullsFirst: true }),
     supabase.from('sessions').select('*').eq('project_id', params.id).eq('status', 'activa').maybeSingle(),
   ])
 

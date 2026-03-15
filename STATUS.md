@@ -395,6 +395,19 @@ Etapa actual: POLISH — Epic 9 completado. Pre-demo: copy consistency, favicon,
 - ExportCenter.tsx: progress bar → `useRef` + `useEffect` elimina `style=` del JSX ✓
 - 5 errores PROBLEMS panel → 0 ✓
 
+## Fix bug — project_documents order('created_at') (COMPLETO ✓)
+
+- `sesion-consejo/page.tsx` + `api/session/turn/route.ts`: `.order('created_at')` → `.order('generated_at', nullsFirst: true)` ✓
+  - `project_documents` no tiene columna `created_at` — query fallaba silenciosamente → "No hay documentos configurados"
+  - Detectado via E2E smoke test de Sesión de Consejo
+
+## Smoke test — Sesión de Consejo E2E (COMPLETO ✓)
+
+- `tests/e2e/sesion-consejo.spec.ts` creado — flujo completo: login → TestCo → sesion-consejo → Iniciar → debate IA ✓
+- `tests/e2e/create-user.js` actualizado con `setupSessionTest()` — crea proyecto TestCo con council + 4 docs pendientes ✓
+- **1/1 PASS** ✓
+- Screenshots: layout 3 columnas ✓, pregunta generada ✓, 4 documentos en sidebar ✓, PREVIEW EN VIVO ✓
+
 ## Fix crítico — Session persistence (COMPLETO ✓)
 
 - seed-session/page.tsx: `.single()` → `.order('updated_at').limit(1)` + `conversations?.[0] ?? null` ✓
