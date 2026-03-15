@@ -104,7 +104,7 @@ export default function CofoundersPropuesta({ project, cofounders, acceptedIds, 
 
                   {/* Communication style */}
                   {cf.communication_style && (
-                    <p className="text-xs text-[#8892A4] italic mb-4">"{cf.communication_style}"</p>
+                    <p className="text-xs text-[#8892A4] italic mb-4">&ldquo;{cf.communication_style}&rdquo;</p>
                   )}
 
                   <button

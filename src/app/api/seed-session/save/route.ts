@@ -132,7 +132,6 @@ export async function POST(req: NextRequest) {
 }
 
 async function ensureCouncil(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
   projectId: string
 ): Promise<string | null> {

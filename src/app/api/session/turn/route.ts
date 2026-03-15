@@ -9,7 +9,6 @@ import {
   NEXO_SECTION_WRITER_SYSTEM,
 } from '@/lib/prompts'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Supa = ReturnType<typeof createClient>
 
 export interface GeneratedSection {
@@ -311,7 +310,6 @@ async function handleApprove(supabase: Supa, project: { id: string; founder_brie
   }
 
   // Generate questions for next phase
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const nextDoc = (nextPhase as any).project_documents
   const nextQuestions = await generateQuestions(project.founder_brief, nextDoc)
 
@@ -340,7 +338,6 @@ async function handleApprove(supabase: Supa, project: { id: string; founder_brie
 
 async function generateQuestions(
   founderBrief: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   document: any
 ): Promise<Array<{ pregunta: string; resolucion: null }>> {
   const spec = document?.document_specs

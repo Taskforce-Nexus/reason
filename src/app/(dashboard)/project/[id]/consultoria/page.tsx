@@ -44,9 +44,7 @@ export default async function ConsultoriaPage({ params }: { params: { id: string
       supabase.from('council_advisors').select('*, advisors(*)').eq('council_id', council.id),
       supabase.from('council_cofounders').select('*, cofounders(*)').eq('council_id', council.id),
     ])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     advisors = (councilAdvisors ?? []).map((ca: any) => ({ ...ca.advisors, level: ca.level })) as Advisor[]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cofounders = (councilCofounders ?? []).map((cc: any) => ({ ...cc.cofounders, role: cc.role })) as Cofounder[]
   }
 

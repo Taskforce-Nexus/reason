@@ -62,7 +62,6 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const [coveredTopics, setCoveredTopics] = useState<number[]>([])
   const bottomRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null)
   const keepListeningRef = useRef(false)
   const supabase = createClient()
@@ -238,7 +237,6 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   }
 
   async function toggleVoice() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     if (!SpeechRecognitionAPI) {
       setVoiceUnavailable(true)
@@ -269,9 +267,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
     recognition.lang = 'es-ES'
     recognition.continuous = true
     recognition.interimResults = true
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onresult = async (event: any) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const results: any[] = Array.from(event.results)
       const last = results[results.length - 1]
       const raw = last[0].transcript as string

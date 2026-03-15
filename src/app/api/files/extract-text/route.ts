@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const pdfParse = require('pdf-parse')
 
 const MAX_CHARS = 32000 // ~8000 tokens

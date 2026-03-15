@@ -124,7 +124,7 @@ export default function AuthBrandPanel({ variant = 'default' }: { variant?: Vari
       {variant === 'default' && (
         <div className="bg-[#0A1128] border border-[#1E2A4A] rounded-xl p-5">
           <p className="text-sm text-[#C8D0E0] leading-relaxed mb-4">
-            "Tenía la idea hace meses pero no sabía por dónde empezar. Reason me sentó con los expertos que necesitaba y en horas tenía un plan que habría tomado meses."
+            &ldquo;Tenía la idea hace meses pero no sabía por dónde empezar. Reason me sentó con los expertos que necesitaba y en horas tenía un plan que habría tomado meses.&rdquo;
           </p>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#1E2A4A] flex items-center justify-center text-xs font-semibold text-[#B8860B]">

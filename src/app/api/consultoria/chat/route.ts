@@ -79,7 +79,6 @@ export async function POST(req: NextRequest) {
         .from('council_advisors')
         .select('advisors(id, name, specialty, category)')
         .eq('council_id', council.id)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       advisors = (councilAdvisors ?? []).map((ca: any) => ca.advisors).filter(Boolean)
     }
 
@@ -129,7 +128,6 @@ Selecciona 2-3 consejeros relevantes del consejo y responde según el formato JS
     )
 
     const clean = raw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let responses: any[] = []
     try {
       responses = JSON.parse(clean)

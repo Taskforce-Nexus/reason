@@ -33,7 +33,6 @@ export default async function EquipoPage() {
         .in('council_id', councilIds)
         .limit(20)
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       members = (advisorMembers ?? []).map((m: any) => ({
         id: m.advisor_id,
         name: m.advisors?.name ?? 'Consejero',

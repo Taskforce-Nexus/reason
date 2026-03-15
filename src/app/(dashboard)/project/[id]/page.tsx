@@ -205,7 +205,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
               {consultation ? (
                 <>
                   <p className="text-xs text-[#8892A4] mb-1">Última consulta hace {formatDistanceToNow(new Date(consultation.updated_at ?? consultation.created_at), { locale: es })}</p>
-                  <p className="text-xs text-white italic mb-1 line-clamp-2">"{consultation.last_question ?? '¿Cómo ajusto el pricing si mi CAC subió 30%?'}"</p>
+                  <p className="text-xs text-white italic mb-1 line-clamp-2">&ldquo;{consultation.last_question ?? '¿Cómo ajusto el pricing si mi CAC subió 30%?'}&rdquo;</p>
                   <p className="text-xs text-[#8892A4] mb-4 flex-1">— Respondido por: {consultation.last_advisor ?? 'Estratega de Negocio'}</p>
                 </>
               ) : (
@@ -322,7 +322,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
             <p className="text-[10px] font-semibold text-[#8892A4] uppercase tracking-widest mb-2">Último Insight</p>
             <div className="bg-[#0D1535] border border-[#1E2A4A] rounded-lg p-3 border-l-2 border-l-[#B8860B]">
               <p className="text-xs text-[#C8D0E0] italic leading-relaxed line-clamp-4 mb-2">
-                "{council?.last_insight ?? p.founder_brief}"
+                &ldquo;{council?.last_insight ?? p.founder_brief}&rdquo;
               </p>
               {council?.last_insight_source && (
                 <p className="text-[10px] text-[#8892A4]">— {council.last_insight_source}</p>
