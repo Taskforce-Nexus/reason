@@ -388,6 +388,14 @@ Etapa actual: POLISH — Epic 9 completado. Pre-demo: copy consistency, favicon,
 - TypeScript: 0 errores ✓
 - ESLint: 0 errores, 4 warnings intencionales ✓
 
+## Fix crítico — Session persistence (COMPLETO ✓)
+
+- seed-session/page.tsx: `.single()` → `.order('updated_at').limit(1)` + `conversations?.[0] ?? null` ✓
+  - Causa raíz: `.single()` retorna null cuando existen 2+ filas (race conditions) → creaba conversación vacía
+  - Fix: obtener la conversación más reciente ordenando por `updated_at DESC LIMIT 1`
+- SeedSessionFlow localStorage persistence: ya estaba implementado correctamente ✓
+  - Restaura step guardado en mount, persiste en cada cambio, limpia en ConsejoListo
+
 ## Estado final del proyecto
 
 **DEMO-READY** — 9 Epics completos, build limpio, deploy activo en Railway.

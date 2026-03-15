@@ -38,12 +38,14 @@ export default async function SeedSessionPage({ params }: { params: { id: string
   }
 
   // Seed Session aún no completa → chat con Nexo
-  let { data: conversation } = await supabase
+  const { data: conversations } = await supabase
     .from('conversations')
     .select('*')
     .eq('project_id', params.id)
     .eq('phase', 'semilla')
-    .single()
+    .order('updated_at', { ascending: false })
+    .limit(1)
+  let conversation = conversations?.[0] ?? null
 
   if (!conversation) {
     const { data: newConv } = await supabase.from('conversations').insert({
