@@ -7,8 +7,8 @@ Faber lo actualiza después de cada sesión de trabajo.
 
 ## Estado general
 
-Fecha última actualización: 2026-03-14
-Etapa actual: POLISH — Epic 9 completado. Pre-demo: copy consistency, favicon, loading states, E2E suite 9/9 pass, README actualizado.
+Fecha última actualización: 2026-03-15
+Etapa actual: POLISH — Voice mode VAD verificado E2E. E2E suite: voice-mode 1/1, viewer-consultoria 2/2, sesion-consejo 2/2, persistence 2/2.
 
 ---
 

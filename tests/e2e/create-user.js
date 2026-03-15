@@ -240,11 +240,48 @@ async function fixFinTrackPhase() {
   else console.log('FinTrack phase updated → completado')
 }
 
+async function setupVoiceTest() {
+  // Create a project without founder_brief so seed-session shows IncubadoraChat (voice mode available)
+  const { data: existing } = await supabase
+    .from('projects')
+    .select('id')
+    .eq('user_id', TEST_USER_ID)
+    .eq('name', 'VoiceTest')
+    .maybeSingle()
+
+  if (existing) {
+    console.log('VoiceTest project already exists:', existing.id)
+    return existing.id
+  }
+
+  const { data: project, error } = await supabase.from('projects').insert({
+    name: 'VoiceTest',
+    description: 'Proyecto de prueba para voice mode E2E',
+    user_id: TEST_USER_ID,
+    owner_id: TEST_USER_ID,
+    entry_level: 'raw_idea',
+    purpose: 'Validar voice mode',
+    current_phase: 'semilla',
+    seed_completed: false,
+    // No founder_brief → renders IncubadoraChat with "Modo voz" button
+    last_active_at: new Date().toISOString(),
+  }).select().single()
+
+  if (error || !project) {
+    console.error('VoiceTest project create error:', error?.message)
+    return null
+  }
+
+  console.log('VoiceTest project created:', project.id)
+  return project.id
+}
+
 async function main() {
   await createTestUser()
   await fixFinTrackDocuments()
   await fixFinTrackPhase()
   await setupSessionTest()
+  await setupVoiceTest()
 }
 
 main()
