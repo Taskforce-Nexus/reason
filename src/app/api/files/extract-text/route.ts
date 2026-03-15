@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
-const pdfParse = require('pdf-parse')
+
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 const MAX_CHARS = 32000 // ~8000 tokens
 
@@ -13,6 +15,8 @@ export async function POST(req: Request) {
     const name = file.name.toLowerCase()
 
     if (name.endsWith('.pdf')) {
+      const pdfModule = await import('pdf-parse')
+      const pdfParse: (buf: Buffer) => Promise<{ text: string }> = (pdfModule as { default?: unknown }).default as never ?? pdfModule
       const result = await pdfParse(buffer)
       let text: string = result.text ?? ''
       const truncated = text.length > MAX_CHARS
