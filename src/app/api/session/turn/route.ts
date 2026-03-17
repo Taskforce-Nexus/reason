@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { callClaude } from '@/lib/claude'
 import {
   NEXO_SESSION_QUESTION_SYSTEM,
@@ -9,7 +10,7 @@ import {
   NEXO_SECTION_WRITER_SYSTEM,
 } from '@/lib/prompts'
 
-type Supa = Awaited<ReturnType<typeof createClient>>
+type Admin = ReturnType<typeof createAdminClient>
 
 export interface GeneratedSection {
   section_name: string
@@ -30,11 +31,13 @@ export async function POST(req: NextRequest) {
       .from('projects').select('*').eq('id', projectId).eq('user_id', user.id).single()
     if (!project) return NextResponse.json({ error: 'Proyecto no encontrado' }, { status: 404 })
 
+    const admin = createAdminClient()
+
     switch (action) {
-      case 'start':   return await handleStart(supabase, project)
-      case 'debate':  return await handleDebate(supabase, body)
-      case 'resolve': return await handleResolve(supabase, project, body)
-      case 'approve': return await handleApprove(supabase, project, body)
+      case 'start':   return await handleStart(admin, project)
+      case 'debate':  return await handleDebate(admin, body)
+      case 'resolve': return await handleResolve(admin, project, body)
+      case 'approve': return await handleApprove(admin, project, body)
       default: return NextResponse.json({ error: 'Acción inválida' }, { status: 400 })
     }
   } catch (err) {
@@ -45,7 +48,7 @@ export async function POST(req: NextRequest) {
 
 // ─── Start Session ────────────────────────────────────────────────────────────
 
-async function handleStart(supabase: Supa, project: { id: string; founder_brief: string }) {
+async function handleStart(admin: Admin, project: { id: string; founder_brief: string }) {
   const { data: documents } = await supabase
     .from('project_documents')
     .select('*, document_specs(*)')
@@ -56,7 +59,7 @@ async function handleStart(supabase: Supa, project: { id: string; founder_brief:
     return NextResponse.json({ error: 'No hay documentos configurados' }, { status: 400 })
   }
 
-  const { data: session } = await supabase.from('sessions').insert({
+  const { data: session } = await admin.from('sessions').insert({
     project_id: project.id,
     status: 'activa',
     mode: 'normal',
@@ -80,7 +83,7 @@ async function handleStart(supabase: Supa, project: { id: string; founder_brief:
     started_at: i === 0 ? new Date().toISOString() : null,
   }))
 
-  const { data: phases } = await supabase.from('session_phases').insert(phasesData).select()
+  const { data: phases } = await admin.from('session_phases').insert(phasesData).select()
 
   return NextResponse.json({
     session,
@@ -96,7 +99,7 @@ async function handleStart(supabase: Supa, project: { id: string; founder_brief:
 
 // ─── Run Nexo Dual Debate ─────────────────────────────────────────────────────
 
-async function handleDebate(supabase: Supa, body: {
+async function handleDebate(admin: Admin, body: {
   phaseId: string
   questionIndex: number
   question: string
@@ -149,7 +152,7 @@ ${constructiveContent}`
     agreement = false
   }
 
-  const { data: nexoResponse } = await supabase.from('nexo_dual_responses').insert({
+  const { data: nexoResponse } = await admin.from('nexo_dual_responses').insert({
     phase_id: phaseId,
     question_index: questionIndex,
     constructive_content: constructiveContent,
@@ -171,7 +174,7 @@ ${constructiveContent}`
 
 // ─── Resolve Question ─────────────────────────────────────────────────────────
 
-async function handleResolve(supabase: Supa, project: { id: string; founder_brief: string }, body: {
+async function handleResolve(admin: Admin, project: { id: string; founder_brief: string }, body: {
   sessionId: string
   phaseId: string
   responseId: string
@@ -190,7 +193,7 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
   const { sessionId, phaseId, responseId, questionIndex, resolution, founderResponse } = body
 
   // Record resolution
-  await supabase.from('nexo_dual_responses').update({
+  await admin.from('nexo_dual_responses').update({
     resolution,
     founder_response: founderResponse ?? null,
   }).eq('id', responseId)
@@ -231,7 +234,7 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
 
   // Update project_documents.content_json
   if (body.documentId && generatedSection) {
-    await upsertDocumentSection(supabase, body.documentId, generatedSection)
+    await upsertDocumentSection(admin, body.documentId, generatedSection)
   }
 
   const nextQuestionIndex = questionIndex + 1
@@ -239,7 +242,7 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
 
   if (phaseComplete) {
     // Mark phase as completada — DO NOT advance yet (user must approve doc first)
-    await supabase.from('session_phases').update({
+    await admin.from('session_phases').update({
       status: 'completada',
       questions,
       momentum,
@@ -248,7 +251,7 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
 
     // Mark doc as generado (not approved yet)
     if (phase.document_id) {
-      await supabase.from('project_documents')
+      await admin.from('project_documents')
         .update({ status: 'generado', generated_at: new Date().toISOString() })
         .eq('id', phase.document_id)
     }
@@ -262,8 +265,8 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
   }
 
   // Advance within same phase
-  await supabase.from('session_phases').update({ questions, momentum }).eq('id', phaseId)
-  await supabase.from('sessions').update({ current_question_index: nextQuestionIndex }).eq('id', sessionId)
+  await admin.from('session_phases').update({ questions, momentum }).eq('id', phaseId)
+  await admin.from('sessions').update({ current_question_index: nextQuestionIndex }).eq('id', sessionId)
 
   return NextResponse.json({
     phaseComplete: false,
@@ -275,7 +278,7 @@ async function handleResolve(supabase: Supa, project: { id: string; founder_brie
 
 // ─── Approve Document & Advance ───────────────────────────────────────────────
 
-async function handleApprove(supabase: Supa, project: { id: string; founder_brief: string }, body: {
+async function handleApprove(admin: Admin, project: { id: string; founder_brief: string }, body: {
   sessionId: string
   documentId: string
   phaseIndex: number
@@ -283,7 +286,7 @@ async function handleApprove(supabase: Supa, project: { id: string; founder_brie
   const { sessionId, documentId, phaseIndex } = body
 
   // Mark document as approved
-  await supabase.from('project_documents')
+  await admin.from('project_documents')
     .update({ status: 'aprobado', approved_at: new Date().toISOString() })
     .eq('id', documentId)
 
@@ -299,11 +302,11 @@ async function handleApprove(supabase: Supa, project: { id: string; founder_brie
 
   if (!nextPhase) {
     // All phases done — session complete
-    await supabase.from('sessions').update({
+    await admin.from('sessions').update({
       status: 'completada',
       completed_at: new Date().toISOString(),
     }).eq('id', sessionId)
-    await supabase.from('projects')
+    await admin.from('projects')
       .update({ current_phase: 'completado', last_active_at: new Date().toISOString() })
       .eq('id', project.id)
     return NextResponse.json({ sessionComplete: true })
@@ -313,14 +316,14 @@ async function handleApprove(supabase: Supa, project: { id: string; founder_brie
   const nextDoc = (nextPhase as any).project_documents
   const nextQuestions = await generateQuestions(project.founder_brief, nextDoc)
 
-  await supabase.from('session_phases').update({
+  await admin.from('session_phases').update({
     status: 'en_progreso',
     questions: nextQuestions,
     momentum: { total_questions: nextQuestions.length, resolved: 0, constructivo_count: 0, critico_count: 0 },
     started_at: new Date().toISOString(),
   }).eq('id', nextPhase.id)
 
-  await supabase.from('sessions').update({
+  await admin.from('sessions').update({
     current_document_index: nextDocIndex,
     current_question_index: 0,
   }).eq('id', sessionId)
@@ -431,7 +434,7 @@ Genera el contenido de la sección "${sectionSpec?.nombre ?? 'Sección principal
 }
 
 async function upsertDocumentSection(
-  supabase: Supa,
+  admin: Admin,
   documentId: string,
   newSection: GeneratedSection
 ): Promise<void> {
@@ -452,7 +455,7 @@ async function upsertDocumentSection(
       sections.push(newSection)
     }
 
-    await supabase.from('project_documents').update({
+    await admin.from('project_documents').update({
       content_json: { sections },
       status: 'en_progreso',
     }).eq('id', documentId)

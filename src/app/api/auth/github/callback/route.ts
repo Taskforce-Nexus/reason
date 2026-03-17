@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
@@ -46,7 +47,8 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.redirect(new URL('/login', req.url))
 
-  await supabase.from('user_integrations').upsert({
+  const admin = createAdminClient()
+  await admin.from('user_integrations').upsert({
     user_id: user.id,
     provider: 'github',
     access_token: accessToken,

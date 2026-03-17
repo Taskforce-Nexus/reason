@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { callClaude } from '@/lib/claude'
 import {
   VALUE_PROP_PROMPT,
@@ -99,13 +100,14 @@ export async function POST(req: NextRequest) {
 
     const generated: Record<string, string> = {}
     const repoPath = project?.github_repo ?? null
+    const admin = createAdminClient()
 
     const generateAndSave = async (field: string, prompt: string): Promise<void> => {
       const content = await callClaude(prompt, conversationMessages, 2048)
       generated[field] = content
 
       // Save to project
-      await supabase.from('projects').update({ [field]: content }).eq('id', projectId)
+      await admin.from('projects').update({ [field]: content }).eq('id', projectId)
 
       // Push to GitHub
       if (githubToken && repoPath) {

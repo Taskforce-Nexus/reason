@@ -1,5 +1,6 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 const GITHUB_API = 'https://api.github.com'
 
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
+    const admin = createAdminClient()
 
     // Get founder's GitHub token
     const { data: integration } = await supabase
@@ -69,7 +71,7 @@ export async function POST(req: NextRequest) {
       const err = await createRes.json()
       // If repo already exists, just use it
       if (err.errors?.[0]?.message?.includes('already exists')) {
-        await supabase.from('projects').update({ github_repo: fullRepo }).eq('id', projectId)
+        await admin.from('projects').update({ github_repo: fullRepo }).eq('id', projectId)
         return NextResponse.json({ ok: true, repo: fullRepo, alreadyExists: true })
       }
       return NextResponse.json({ error: err.message || 'Error creando repo' }, { status: 400 })
@@ -91,7 +93,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Save to project
-    await supabase.from('projects').update({ github_repo: fullRepo }).eq('id', projectId)
+    await admin.from('projects').update({ github_repo: fullRepo }).eq('id', projectId)
 
     return NextResponse.json({ ok: true, repo: fullRepo })
   } catch (err) {

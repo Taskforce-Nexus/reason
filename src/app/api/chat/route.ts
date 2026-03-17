@@ -181,7 +181,7 @@ export async function POST(req: NextRequest) {
                 512,
                 'claude-haiku-4-5-20251001'
               )
-              await supabase.from('projects').update({ founder_brief: founderBrief }).eq('id', projectId)
+              await admin.from('projects').update({ founder_brief: founderBrief }).eq('id', projectId)
               controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'semilla_complete', founder_brief: founderBrief })}\n\n`))
             } catch (e) {
               console.error('[chat-stream] founder-brief error:', e)
@@ -207,7 +207,7 @@ export async function POST(req: NextRequest) {
                 .update({ messages: updatedMessages, updated_at: new Date().toISOString() })
                 .eq('id', activeConvId)
             }
-            await supabase.from('projects')
+            await admin.from('projects')
               .update({ last_active_at: new Date().toISOString() })
               .eq('id', projectId)
           } catch (e) {
@@ -286,7 +286,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Update project last_active_at
-    await supabase.from('projects')
+    await adminNS.from('projects')
       .update({ last_active_at: new Date().toISOString() })
       .eq('id', projectId)
 
@@ -303,7 +303,7 @@ export async function POST(req: NextRequest) {
           512,
           'claude-haiku-4-5-20251001'
         )
-        await supabase.from('projects').update({ founder_brief: founderBrief }).eq('id', projectId)
+        await adminNS.from('projects').update({ founder_brief: founderBrief }).eq('id', projectId)
       } catch (err) {
         console.error('[founder-brief]', err)
       }

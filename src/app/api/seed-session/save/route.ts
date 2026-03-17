@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,6 +25,8 @@ export async function POST(req: NextRequest) {
       .from('projects').select('id').eq('id', projectId).eq('user_id', user.id).single()
     if (!project) return NextResponse.json({ error: 'Proyecto no encontrado' }, { status: 404 })
 
+    const admin = createAdminClient()
+
     switch (step) {
 
       case 'entregables': {
@@ -41,22 +44,22 @@ export async function POST(req: NextRequest) {
         const specNames = Object.fromEntries((specs ?? []).map(s => [s.id, s.name]))
         const docsWithNames = docs.map(d => ({ ...d, name: specNames[d.spec_id ?? ''] ?? d.name }))
         // Delete existing and re-insert
-        await supabase.from('project_documents').delete().eq('project_id', projectId)
-        await supabase.from('project_documents').insert(docsWithNames)
+        await admin.from('project_documents').delete().eq('project_id', projectId)
+        await admin.from('project_documents').insert(docsWithNames)
         break
       }
 
       case 'cofounders': {
         if (!body.cofounderIds?.length) break
         // Ensure council exists
-        const councilId = await ensureCouncil(supabase, projectId)
+        const councilId = await ensureCouncil(admin, projectId)
         if (!councilId) break
         // Upsert cofounders
-        await supabase.from('council_cofounders').delete().eq('council_id', councilId)
+        await admin.from('council_cofounders').delete().eq('council_id', councilId)
         const { data: cfs } = await supabase
           .from('cofounders').select('id, role').in('id', body.cofounderIds)
         if (cfs?.length) {
-          await supabase.from('council_cofounders').insert(
+          await admin.from('council_cofounders').insert(
             cfs.map(c => ({ council_id: councilId, cofounder_id: c.id, role: c.role }))
           )
         }
@@ -65,14 +68,14 @@ export async function POST(req: NextRequest) {
 
       case 'consejo_principal': {
         if (!body.advisorIds?.length) break
-        const councilId = await ensureCouncil(supabase, projectId)
+        const councilId = await ensureCouncil(admin, projectId)
         if (!councilId) break
         // Upsert advisors
-        await supabase.from('council_advisors').delete().eq('council_id', councilId)
+        await admin.from('council_advisors').delete().eq('council_id', councilId)
         const { data: advs } = await supabase
           .from('advisors').select('id, level').in('id', body.advisorIds)
         if (advs?.length) {
-          await supabase.from('council_advisors').insert(
+          await admin.from('council_advisors').insert(
             advs.map(a => ({ council_id: councilId, advisor_id: a.id, level: a.level }))
           )
         }
@@ -82,8 +85,8 @@ export async function POST(req: NextRequest) {
       case 'especialistas': {
         if (!body.specialists?.length) break
         // Delete existing and insert new
-        await supabase.from('specialists').delete().eq('project_id', projectId)
-        await supabase.from('specialists').insert(
+        await admin.from('specialists').delete().eq('project_id', projectId)
+        await admin.from('specialists').insert(
           body.specialists.map(s => ({
             project_id: projectId,
             name: s.name,
@@ -97,8 +100,8 @@ export async function POST(req: NextRequest) {
 
       case 'icps': {
         if (!body.personas?.length) break
-        await supabase.from('buyer_personas').delete().eq('project_id', projectId)
-        await supabase.from('buyer_personas').insert(
+        await admin.from('buyer_personas').delete().eq('project_id', projectId)
+        await admin.from('buyer_personas').insert(
           body.personas.map(p => ({
             project_id: projectId,
             name: p.name,
@@ -113,11 +116,11 @@ export async function POST(req: NextRequest) {
 
       case 'consejo_listo': {
         // Mark council as ready + update project phase
-        const councilId = await ensureCouncil(supabase, projectId)
+        const councilId = await ensureCouncil(admin, projectId)
         if (councilId) {
-          await supabase.from('councils').update({ status: 'listo' }).eq('id', councilId)
+          await admin.from('councils').update({ status: 'listo' }).eq('id', councilId)
         }
-        await supabase.from('projects')
+        await admin.from('projects')
           .update({ current_phase: 'sesion_consejo', last_active_at: new Date().toISOString() })
           .eq('id', projectId)
         break
@@ -132,13 +135,13 @@ export async function POST(req: NextRequest) {
 }
 
 async function ensureCouncil(
-  supabase: any,
+  admin: ReturnType<typeof createAdminClient>,
   projectId: string
 ): Promise<string | null> {
-  const { data: existing } = await supabase
+  const { data: existing } = await admin
     .from('councils').select('id').eq('project_id', projectId).maybeSingle()
   if (existing) return existing.id
-  const { data: created } = await supabase
+  const { data: created } = await admin
     .from('councils').insert({ project_id: projectId, status: 'configurando' }).select('id').single()
   return created?.id ?? null
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function GET() {
   const supabase = await createClient()
@@ -21,8 +22,9 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
 
+  const admin = createAdminClient()
   const body = await req.json()
-  const { data, error } = await supabase.from('projects').insert({
+  const { data, error } = await admin.from('projects').insert({
     ...body,
     user_id: user.id,
     last_active_at: new Date().toISOString(),
