@@ -1,3 +1,7 @@
+'use client'
+
+import { toast } from '@/components/ui/Toast'
+
 export default function PlanesPage() {
   const plans = [
     {
@@ -104,6 +108,7 @@ export default function PlanesPage() {
             ) : plan.id === 'enterprise' ? (
               <button
                 type="button"
+                onClick={() => toast('Próximamente — escríbenos a hola@reason.dev para hablar con ventas.')}
                 className="w-full py-2.5 border border-[#1E2A4A] hover:border-[#4A5568] rounded-lg text-[13px] text-[#8B9DB7] hover:text-white transition-colors"
               >
                 Hablar con ventas
@@ -111,6 +116,7 @@ export default function PlanesPage() {
             ) : (
               <button
                 type="button"
+                onClick={() => toast(`Próximamente — el cambio al plan ${plan.name} estará disponible pronto.`)}
                 className="w-full py-2.5 bg-[#B8860B] hover:bg-[#A07710] text-black font-semibold text-[13px] rounded-lg transition-colors"
               >
                 Cambiar a {plan.name}

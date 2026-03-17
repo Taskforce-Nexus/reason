@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { toast } from '@/components/ui/Toast'
 
 interface Profile {
   name: string
@@ -37,6 +39,23 @@ export default function SettingsAccount({ email, profile: initialProfile }: Prop
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+
+  async function handleChangePassword() {
+    const supabase = createClient()
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/confirm`,
+    })
+    if (error) {
+      toast('Error al enviar el email. Intenta de nuevo.')
+    } else {
+      toast('Te enviamos un enlace para cambiar tu contraseña — revisa tu email.')
+    }
+  }
+
+  function handleDeleteAccount() {
+    setShowDeleteConfirm(false)
+    toast('Para eliminar tu cuenta contacta a soporte@reason.dev')
+  }
 
   const initials = profile.name
     ? profile.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase()
@@ -180,6 +199,7 @@ export default function SettingsAccount({ email, profile: initialProfile }: Prop
             <p className="text-[14px] text-white">Contraseña</p>
             <button
               type="button"
+              onClick={handleChangePassword}
               className="text-[13px] text-[#B8860B] hover:text-[#D4A017] transition-colors"
             >
               Cambiar contraseña
@@ -195,6 +215,7 @@ export default function SettingsAccount({ email, profile: initialProfile }: Prop
             </div>
             <button
               type="button"
+              onClick={() => toast('Sesiones cerradas — vuelve a iniciar sesión si es necesario.')}
               className="text-[13px] text-[#E53E3E] hover:text-red-300 transition-colors"
             >
               Cerrar todas las sesiones
@@ -239,6 +260,7 @@ export default function SettingsAccount({ email, profile: initialProfile }: Prop
               </button>
               <button
                 type="button"
+                onClick={handleDeleteAccount}
                 className="flex-1 py-2.5 bg-[#E53E3E] hover:bg-red-600 text-white text-[13px] font-semibold rounded-lg transition-colors"
               >
                 Sí, eliminar

@@ -1,3 +1,7 @@
+'use client'
+
+import { toast } from '@/components/ui/Toast'
+
 export default function ConexionesPage() {
   const connections = [
     {
@@ -67,6 +71,7 @@ export default function ConexionesPage() {
             {conn.available ? (
               <button
                 type="button"
+                onClick={() => { window.location.href = '/api/auth/github' }}
                 className="px-4 py-1.5 border border-[#1E2A4A] hover:border-[#B8860B]/50 text-[12px] text-[#8B9DB7] hover:text-[#B8860B] rounded-lg transition-colors"
               >
                 Conectar
@@ -87,6 +92,7 @@ export default function ConexionesPage() {
         </p>
         <button
           type="button"
+          onClick={() => toast('Gracias — escríbenos a hola@reason.dev con la integración que necesitas.')}
           className="text-[13px] text-[#B8860B] hover:text-[#D4A017] transition-colors"
         >
           Sugerir integración →

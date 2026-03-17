@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { toast } from '@/components/ui/Toast'
 import type { Project } from '@/lib/types'
 
 interface DocumentSection {
@@ -320,6 +321,7 @@ function AjustarPanel({
           />
           <button
             type="button"
+            onClick={() => toast('Próximamente — el ajuste por IA se implementará en la siguiente versión.')}
             className="px-3 py-2 bg-[#B8860B]/20 hover:bg-[#B8860B]/30 text-[#B8860B] rounded-lg text-[12px] transition-colors"
           >
             →

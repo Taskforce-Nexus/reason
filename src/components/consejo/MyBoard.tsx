@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
 import type { Specialist, BuyerPersona } from '@/app/(dashboard)/project/[id]/consejo/page'
+import { toast } from '@/components/ui/Toast'
 
 interface Props {
   project: Project
@@ -338,6 +339,7 @@ function AdvisorCard({ advisor, level }: { advisor: Advisor; level: string }) {
         </div>
         <button
           type="button"
+          onClick={() => toast('Próximamente — el selector de consejeros se implementará en la siguiente versión.')}
           className="text-[11px] text-[#B8860B] hover:text-[#D4A017] transition-colors shrink-0 ml-2"
         >
           Cambiar ↗

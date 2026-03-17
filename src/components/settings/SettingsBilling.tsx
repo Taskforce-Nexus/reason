@@ -1,5 +1,7 @@
 'use client'
 
+import { toast } from '@/components/ui/Toast'
+
 interface Subscription {
   plan_id: string | null
   status: string | null
@@ -87,6 +89,7 @@ export default function SettingsBilling({
           </div>
           <button
             type="button"
+            onClick={() => toast('Próximamente — la recarga de saldo estará disponible en la siguiente versión.')}
             className="flex items-center gap-2 px-4 py-2 bg-[#B8860B] hover:bg-[#A07710] text-black font-semibold text-[13px] rounded-lg transition-colors"
           >
             Recargar saldo →
@@ -118,12 +121,14 @@ export default function SettingsBilling({
           <div className="flex gap-3">
             <button
               type="button"
+              onClick={() => toast('Próximamente — el cambio de plan estará disponible pronto.')}
               className="px-4 py-2 border border-[#1E2A4A] hover:border-[#4A5568] text-[13px] text-[#8892A4] hover:text-white rounded-lg transition-colors"
             >
               Cambiar plan
             </button>
             <button
               type="button"
+              onClick={() => toast('Próximamente — escríbenos a hola@reason.dev para hablar con ventas.')}
               className="px-4 py-2 border border-[#1E2A4A] hover:border-[#4A5568] text-[13px] text-[#8892A4] hover:text-white rounded-lg transition-colors"
             >
               Hablar con ventas
@@ -187,6 +192,7 @@ export default function SettingsBilling({
           )}
           <button
             type="button"
+            onClick={() => toast(paymentMethod ? 'Próximamente — la cancelación de suscripción estará disponible pronto.' : 'Próximamente — los métodos de pago se configurarán en la siguiente versión.')}
             className="text-[13px] text-[#E53E3E] hover:text-red-300 transition-colors"
           >
             {paymentMethod ? 'Cancelar suscripción' : 'Agregar método'}
@@ -195,6 +201,7 @@ export default function SettingsBilling({
         {!paymentMethod && (
           <button
             type="button"
+            onClick={() => toast('Próximamente — los métodos de pago se configurarán en la siguiente versión.')}
             className="text-[13px] text-[#B8860B] hover:text-[#D4A017] transition-colors"
           >
             + Agregar método de pago

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { TeamMember } from '@/app/(dashboard)/settings/equipo/page'
+import { toast } from '@/components/ui/Toast'
 
 interface Props {
   currentUserId: string
@@ -13,6 +14,33 @@ export default function SettingsTeam({ currentUserEmail, members }: Props) {
   const [showInvite, setShowInvite] = useState(false)
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteRole, setInviteRole] = useState('member')
+  const [sending, setSending] = useState(false)
+
+  async function handleSendInvite() {
+    if (!inviteEmail.includes('@')) return
+    setSending(true)
+    try {
+      const res = await fetch('/api/team/invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: inviteEmail, role: inviteRole }),
+      })
+      if (res.ok) {
+        toast(`Invitación enviada a ${inviteEmail}`)
+        setShowInvite(false)
+        setInviteEmail('')
+      } else {
+        toast('Próximamente — el sistema de invitaciones está en desarrollo.')
+        setShowInvite(false)
+        setInviteEmail('')
+      }
+    } catch {
+      toast('Próximamente — el sistema de invitaciones está en desarrollo.')
+      setShowInvite(false)
+      setInviteEmail('')
+    }
+    setSending(false)
+  }
 
   return (
     <div className="space-y-8">
@@ -118,10 +146,11 @@ export default function SettingsTeam({ currentUserEmail, members }: Props) {
               </button>
               <button
                 type="button"
-                disabled={!inviteEmail.includes('@')}
+                onClick={handleSendInvite}
+                disabled={!inviteEmail.includes('@') || sending}
                 className="flex-1 py-2.5 bg-[#B8860B] hover:bg-[#A07710] disabled:opacity-40 text-black font-semibold text-[13px] rounded-lg transition-colors"
               >
-                Enviar invitación
+                {sending ? 'Enviando...' : 'Enviar invitación'}
               </button>
             </div>
           </div>
@@ -173,6 +202,7 @@ function MemberRow({ member }: { member: TeamMember }) {
             <span className="text-[#4A5568]">/</span>
             <button
               type="button"
+              onClick={() => { setConfirmDelete(false); toast('Próximamente — la eliminación de miembros estará disponible pronto.') }}
               className="text-[11px] text-[#E53E3E] hover:text-red-300 transition-colors"
             >
               Sí

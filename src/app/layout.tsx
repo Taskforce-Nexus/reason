@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import { ToastProvider } from '@/components/ui/Toast'
 import './globals.css'
 
 const outfit = localFont({
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="dark">
       <body className={`${outfit.variable} ${openSans.variable} font-sans bg-[#0A1128] text-white antialiased`}>
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   )
