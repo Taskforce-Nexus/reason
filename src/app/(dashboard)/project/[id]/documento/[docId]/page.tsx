@@ -6,9 +6,10 @@ import type { Project } from '@/lib/types'
 export default async function DocumentoPage({
   params,
 }: {
-  params: { id: string; docId: string }
+  params: Promise<{ id: string; docId: string }>
 }) {
-  const supabase = createClient()
+  const { id, docId } = await params
+  const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -17,7 +18,7 @@ export default async function DocumentoPage({
   const { data: project } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('user_id', user.id)
     .single()
 
@@ -26,8 +27,8 @@ export default async function DocumentoPage({
   const { data: document } = await supabase
     .from('project_documents')
     .select('*, document_specs(*)')
-    .eq('id', params.docId)
-    .eq('project_id', params.id)
+    .eq('id', docId)
+    .eq('project_id', id)
     .single()
 
   if (!document) notFound()
@@ -36,7 +37,7 @@ export default async function DocumentoPage({
   const { data: allDocuments } = await supabase
     .from('project_documents')
     .select('id, name, status')
-    .eq('project_id', params.id)
+    .eq('project_id', id)
     .order('generated_at', { ascending: true, nullsFirst: true })
 
   return (

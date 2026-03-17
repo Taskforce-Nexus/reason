@@ -3,15 +3,16 @@ import { createClient } from '@/lib/supabase/server'
 import MyBoard from '@/components/consejo/MyBoard'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
 
-export default async function ConsejoPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+export default async function ConsejoPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
   const { data: project } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('user_id', user.id)
     .single()
 
@@ -20,7 +21,7 @@ export default async function ConsejoPage({ params }: { params: { id: string } }
   const { data: council } = await supabase
     .from('councils')
     .select('*')
-    .eq('project_id', params.id)
+    .eq('project_id', id)
     .maybeSingle()
 
   let advisors: Advisor[] = []
@@ -36,8 +37,8 @@ export default async function ConsejoPage({ params }: { params: { id: string } }
   }
 
   const [{ data: specialists }, { data: buyerPersonas }] = await Promise.all([
-    supabase.from('specialists').select('*').eq('project_id', params.id),
-    supabase.from('buyer_personas').select('*').eq('project_id', params.id),
+    supabase.from('specialists').select('*').eq('project_id', id),
+    supabase.from('buyer_personas').select('*').eq('project_id', id),
   ])
 
   return (

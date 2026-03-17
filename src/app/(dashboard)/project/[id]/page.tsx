@@ -29,15 +29,16 @@ function getActiveStage(p: Project, hasCouncil: boolean, hasDocs: boolean, hasCo
   return 4
 }
 
-export default async function ProjectPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return notFound()
 
   const { data: project } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('user_id', user.id)
     .single()
 
@@ -45,9 +46,9 @@ export default async function ProjectPage({ params }: { params: { id: string } }
   const p = project as Project & { description?: string | null; purpose?: string | null }
 
   const [councilRes, docsRes, consultationRes] = await Promise.all([
-    supabase.from('councils').select('*').eq('project_id', params.id).maybeSingle(),
-    supabase.from('project_documents').select('id, status').eq('project_id', params.id),
-    supabase.from('consultations').select('*').eq('project_id', params.id)
+    supabase.from('councils').select('*').eq('project_id', id).maybeSingle(),
+    supabase.from('project_documents').select('id, status').eq('project_id', id),
+    supabase.from('consultations').select('*').eq('project_id', id)
       .order('updated_at', { ascending: false }).limit(1),
   ])
 

@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import SettingsBilling from '@/components/settings/SettingsBilling'
 
 export default async function FacturacionPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 

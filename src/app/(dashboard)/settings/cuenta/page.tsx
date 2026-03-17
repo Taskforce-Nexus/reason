@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import SettingsAccount from '@/components/settings/SettingsAccount'
 
 export default async function CuentaPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 

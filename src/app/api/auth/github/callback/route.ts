@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
   const me = await meRes.json()
 
   // Save to DB
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.redirect(new URL('/login', req.url))
 

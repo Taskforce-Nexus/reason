@@ -4,15 +4,16 @@ import IncubadoraChat from '@/components/incubadora/IncubadoraChat'
 import SeedSessionFlow from '@/components/seed-session/SeedSessionFlow'
 import type { Project, DocumentSpec, Advisor, Cofounder } from '@/lib/types'
 
-export default async function SeedSessionPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+export default async function SeedSessionPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
   const { data: project } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('user_id', user.id)
     .single()
 
@@ -41,7 +42,7 @@ export default async function SeedSessionPage({ params }: { params: { id: string
   const { data: conversations } = await supabase
     .from('conversations')
     .select('*')
-    .eq('project_id', params.id)
+    .eq('project_id', id)
     .eq('type', 'semilla')
     .order('updated_at', { ascending: false })
     .limit(1)
@@ -49,7 +50,7 @@ export default async function SeedSessionPage({ params }: { params: { id: string
 
   if (!conversation) {
     const { data: newConv } = await supabase.from('conversations').insert({
-      project_id: params.id,
+      project_id: id,
       type: 'semilla',
       messages: [],
       progress: { founder_context: 0, product_idea: 0 },

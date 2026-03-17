@@ -3,15 +3,16 @@ import { createClient } from '@/lib/supabase/server'
 import ConsultoriaView from '@/components/consultoria/ConsultoriaView'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
 
-export default async function ConsultoriaPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+export default async function ConsultoriaPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
   const { data: project } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('user_id', user.id)
     .single()
 
@@ -23,16 +24,16 @@ export default async function ConsultoriaPage({ params }: { params: { id: string
     { data: documents },
     { data: consultations },
   ] = await Promise.all([
-    supabase.from('councils').select('*').eq('project_id', params.id).maybeSingle(),
+    supabase.from('councils').select('*').eq('project_id', id).maybeSingle(),
     supabase
       .from('project_documents')
       .select('id, name, status, content_json')
-      .eq('project_id', params.id)
+      .eq('project_id', id)
       .order('generated_at', { ascending: true, nullsFirst: true }),
     supabase
       .from('consultations')
       .select('*')
-      .eq('project_id', params.id)
+      .eq('project_id', id)
       .order('created_at', { ascending: false }),
   ])
 

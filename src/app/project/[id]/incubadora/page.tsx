@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 
-export default function IncubadoraPage({ params }: { params: { id: string } }) {
-  redirect(`/project/${params.id}/seed-session`)
+export default async function IncubadoraPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  redirect(`/project/${id}/seed-session`)
 }

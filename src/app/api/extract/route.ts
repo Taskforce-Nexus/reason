@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     const { projectId, conversationId } = await req.json()
     if (!projectId) return NextResponse.json({ error: 'projectId requerido' }, { status: 400 })
 
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
 

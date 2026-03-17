@@ -9,7 +9,7 @@ import {
   NEXO_SECTION_WRITER_SYSTEM,
 } from '@/lib/prompts'
 
-type Supa = ReturnType<typeof createClient>
+type Supa = Awaited<ReturnType<typeof createClient>>
 
 export interface GeneratedSection {
   section_name: string
@@ -19,7 +19,7 @@ export interface GeneratedSection {
 
 export async function POST(req: NextRequest) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
 

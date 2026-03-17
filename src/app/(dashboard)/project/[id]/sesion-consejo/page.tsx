@@ -3,15 +3,16 @@ import { createClient } from '@/lib/supabase/server'
 import SesionConsejoView from '@/components/sesion-consejo/SesionConsejoView'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
 
-export default async function SesionConsejoPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+export default async function SesionConsejoPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
   const { data: project } = await supabase
     .from('projects')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('user_id', user.id)
     .single()
 
@@ -23,9 +24,9 @@ export default async function SesionConsejoPage({ params }: { params: { id: stri
     { data: documents },
     { data: session },
   ] = await Promise.all([
-    supabase.from('councils').select('*').eq('project_id', params.id).maybeSingle(),
-    supabase.from('project_documents').select('*, document_specs(*)').eq('project_id', params.id).order('generated_at', { ascending: true, nullsFirst: true }),
-    supabase.from('sessions').select('*').eq('project_id', params.id).eq('status', 'activa').maybeSingle(),
+    supabase.from('councils').select('*').eq('project_id', id).maybeSingle(),
+    supabase.from('project_documents').select('*, document_specs(*)').eq('project_id', id).order('generated_at', { ascending: true, nullsFirst: true }),
+    supabase.from('sessions').select('*').eq('project_id', id).eq('status', 'activa').maybeSingle(),
   ])
 
   let advisors: Advisor[] = []

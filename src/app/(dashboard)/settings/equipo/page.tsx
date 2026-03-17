@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import SettingsTeam from '@/components/settings/SettingsTeam'
 
 export default async function EquipoPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
