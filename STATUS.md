@@ -63,11 +63,10 @@ Etapa actual: SESSION ENGINE REDESIGN — CofounderSwapDrawer + AdvisorSwapDrawe
 - CofoundersPropuesta — botón Cambiar conectado a CofounderSwapDrawer ✓
 - ConsejoPrincipalPropuesta — botón Cambiar por card conectado a AdvisorSwapDrawer ✓
 - "Ver perfil" ya funcional en ConsejoPrincipalPropuesta, EspecialistasPropuesta, ICPsPropuesta ✓
-- scripts/generate-marketplace.ts — generación 1,440 perfiles (Opus) listo ✓
-  - 3 fixes: advisor_type NOT NULL, batchSize 5, retry JSON, cleanup previo
-  - Fix adicional: CATEGORY_DB_MAP (CHECK constraint advisors_category_check)
-  - EN EJECUCIÓN — ~30-45 min para completar
-  - Pendiente: migraciones SQL para specialists + buyer_personas (project_id nullable)
+- scripts/generate-marketplace.ts — resumable, Sonnet, skip logic por sección ✓
+  - Estado DB actual (2026-03-17): Advisors 340/1,000 · Cofounders 124/40 · Specialists 431/200 · Personas 0/200
+  - ⚠️ BLOQUEADO: API limit Anthropic — se renueva 2026-04-01 00:00 UTC
+  - Script es completamente resumable — re-ejecutar después del 1 Abr para completar advisors + personas
 
 - Projects__Incubator__Default — 12 fixes: header Reason, breadcrumb multi-color, FinTrack, toggle Normal, remove Sí/No, remove Etapa redundante, remove Semilla, Experto UX 0%, Experto en Producto En espera, PREVIEW sobre PROGRESO, remove thumbs replies, Responder yo ✓
 

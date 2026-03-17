@@ -31,17 +31,19 @@ Nexo filtra y recomienda según propósito + Resumen del usuario.
 
 ### Tamaño del catálogo (objetivo post-generación)
 
-| Tabla | Cantidad | Estado |
+| Tabla | Objetivo | Estado DB (2026-03-17) |
 |---|---|---|
-| `advisors` | 1,000 | Script listo — pendiente ejecución |
-| `cofounders` | 40 (20 constructivos + 20 críticos) | Script listo — pendiente ejecución |
-| `specialists` | 200 (plantillas por industria) | Script listo — requiere migración SQL |
-| `buyer_personas` | 200 (arquetipos reutilizables) | Script listo — requiere migración SQL |
-| **Total** | **1,440** | |
+| `advisors` | 1,000 | **340** — estrategia completa, resto parcial |
+| `cofounders` | 40 (20+20) | **124** — completo (excede objetivo, runs múltiples) |
+| `specialists` | 200 | **431** — completo (excede objetivo, runs múltiples) |
+| `buyer_personas` | 200 | **0** — pendiente |
+| **Total** | **1,440** | **895** |
 
 Script: `scripts/generate-marketplace.ts`
-Modelo: `claude-opus-4-20250514` (reasoning tier)
-Tiempo estimado: ~30-45 min (144 llamadas con rate limiting)
+Modelo: `claude-sonnet-4-20250514` (strong tier)
+Estado: **RESUMABLE** — skip logic por sección activo
+⚠️ **Bloqueado**: API limit Anthropic — se renueva 2026-04-01 00:00 UTC
+Acción pendiente: re-ejecutar `npx tsx scripts/generate-marketplace.ts` después del 1 Abr
 
 ### Migraciones SQL requeridas antes de correr el script
 
