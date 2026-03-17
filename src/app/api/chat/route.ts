@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { callClaude } from '@/lib/claude'
-import { NEXO_SEED_SYSTEM } from '@/lib/prompts'
+import { NEXO_SEED_SYSTEM, NEXO_GAME_ANALYSIS_SYSTEM } from '@/lib/prompts'
 import type { Message } from '@/lib/types'
 
 const GITHUB_API = 'https://api.github.com'
@@ -181,7 +181,20 @@ export async function POST(req: NextRequest) {
                 512,
                 'claude-haiku-4-5-20251001'
               )
-              await admin.from('projects').update({ founder_brief: founderBrief }).eq('id', projectId)
+              let gameAnalysis = null
+              try {
+                const gameRaw = await callClaude(
+                  NEXO_GAME_ANALYSIS_SYSTEM,
+                  [{ role: 'user', content: `RESUMEN DEL FUNDADOR:\n${founderBrief}` }],
+                  4096,
+                  'claude-haiku-4-5-20251001'
+                )
+                const cleanGame = gameRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
+                gameAnalysis = JSON.parse(cleanGame)
+              } catch (e) {
+                console.error('[game-analysis-stream]', e)
+              }
+              await admin.from('projects').update({ founder_brief: founderBrief, game_analysis: gameAnalysis }).eq('id', projectId)
               controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'semilla_complete', founder_brief: founderBrief })}\n\n`))
             } catch (e) {
               console.error('[chat-stream] founder-brief error:', e)
@@ -303,7 +316,20 @@ export async function POST(req: NextRequest) {
           512,
           'claude-haiku-4-5-20251001'
         )
-        await adminNS.from('projects').update({ founder_brief: founderBrief }).eq('id', projectId)
+        let gameAnalysis = null
+        try {
+          const gameRaw = await callClaude(
+            NEXO_GAME_ANALYSIS_SYSTEM,
+            [{ role: 'user', content: `RESUMEN DEL FUNDADOR:\n${founderBrief}` }],
+            4096,
+            'claude-haiku-4-5-20251001'
+          )
+          const cleanGame = gameRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
+          gameAnalysis = JSON.parse(cleanGame)
+        } catch (e) {
+          console.error('[game-analysis]', e)
+        }
+        await adminNS.from('projects').update({ founder_brief: founderBrief, game_analysis: gameAnalysis }).eq('id', projectId)
       } catch (err) {
         console.error('[founder-brief]', err)
       }

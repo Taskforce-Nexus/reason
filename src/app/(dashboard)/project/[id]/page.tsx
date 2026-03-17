@@ -344,13 +344,26 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
         )}
 
         {/* Documents summary */}
-        <div>
+        <div className="mb-5">
           <p className="text-[10px] font-semibold text-[#8892A4] uppercase tracking-widest mb-2">Documentos Reason</p>
           <div className="bg-[#0D1535] border border-[#1E2A4A] rounded-lg p-3">
             <p className="font-outfit text-2xl font-bold text-white">{completedAurum}<span className="text-sm text-[#8892A4] font-normal"> / {totalDocs}</span></p>
             <p className="text-xs text-[#8892A4] mt-0.5">aprobados</p>
           </div>
         </div>
+
+        {/* Game Analysis */}
+        {p.game_analysis && (
+          <div>
+            <p className="text-[10px] font-semibold text-[#8892A4] uppercase tracking-widest mb-2">Análisis Estratégico</p>
+            <div className="bg-[#0D1535] border border-[#1E2A4A] rounded-lg p-3">
+              <p className="text-[10px] text-[#B8860B] font-semibold mb-2">Tensiones clave:</p>
+              {p.game_analysis.key_tensions?.slice(0, 3).map((t, i) => (
+                <p key={i} className="text-xs text-[#8892A4] mb-1 leading-relaxed">• {t.tension}</p>
+              ))}
+            </div>
+          </div>
+        )}
       </aside>
     </div>
   )

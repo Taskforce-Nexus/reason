@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
 // ─── Start Session ────────────────────────────────────────────────────────────
 
-async function handleStart(admin: Admin, project: { id: string; founder_brief: string }) {
+async function handleStart(admin: Admin, project: { id: string; founder_brief: string; game_analysis?: unknown }) {
   const { data: documents } = await admin
     .from('project_documents')
     .select('*, document_specs(*)')
@@ -77,7 +77,7 @@ async function handleStart(admin: Admin, project: { id: string; founder_brief: s
   if (!session) return NextResponse.json({ error: 'Error creando sesión' }, { status: 500 })
 
   const firstDoc = documents[0]
-  const questions = await generateQuestions(project.founder_brief, firstDoc)
+  const questions = await generateQuestions(project.founder_brief, firstDoc, project.game_analysis)
 
   const phasesData = documents.map((doc, i) => ({
     session_id: session.id,
@@ -176,7 +176,26 @@ Responde SOLO en JSON válido:
     // non-blocking — cofounders debate still runs
   }
 
-  // Step 2: Constructivo and Crítico with advisor context
+  // Step 2: Fetch game_analysis for this project (non-blocking)
+  let gameContext = ''
+  try {
+    const { data: proj } = await admin.from('projects').select('game_analysis').eq('id', projectId).single()
+    const ga = proj?.game_analysis as {
+      players?: Array<{ name: string; type: string; power: string; incentive: string }>
+      key_tensions?: Array<{ tension: string; why_it_matters?: string }>
+      incentives?: { conflicts?: string[] }
+    } | null
+    if (ga) {
+      const playersText = ga.players?.map(p => `${p.name} (${p.type}, poder: ${p.power}) — incentivo: ${p.incentive}`).join('; ') ?? ''
+      const tensionsText = ga.key_tensions?.map(t => t.tension).join('; ') ?? ''
+      const conflictsText = ga.incentives?.conflicts?.join('; ') ?? ''
+      gameContext = `\n\nANÁLISIS DEL JUEGO ESTRATÉGICO:\nPlayers: ${playersText}\nTensiones clave: ${tensionsText}\nConflictos de incentivos: ${conflictsText}`
+    }
+  } catch {
+    // non-blocking
+  }
+
+  // Step 3: Constructivo and Crítico with advisor + game context
   const advisorContext = advisorResponses.length > 0
     ? `\n\nLos siguientes consejeros ya opinaron sobre esta pregunta:\n${advisorResponses.map(a => `${a.advisor_name} (${a.specialty}): ${a.content}`).join('\n\n')}\n\nConsidera sus perspectivas al dar la tuya.`
     : ''
@@ -187,7 +206,7 @@ ${founderBrief}
 Documento en construcción: ${documentName}
 
 Pregunta estratégica para el debate:
-${question}${advisorContext}`
+${question}${gameContext}${advisorContext}`
 
   const [constructiveContent, criticalContent] = await Promise.all([
     callClaude(NEXO_CONSTRUCTIVO_SYSTEM, [{ role: 'user', content: context }], 4096),
@@ -347,7 +366,7 @@ async function handleResolve(admin: Admin, project: { id: string; founder_brief:
 
 // ─── Approve Document & Advance ───────────────────────────────────────────────
 
-async function handleApprove(admin: Admin, project: { id: string; founder_brief: string }, body: {
+async function handleApprove(admin: Admin, project: { id: string; founder_brief: string; game_analysis?: unknown }, body: {
   sessionId: string
   documentId: string
   phaseIndex: number
@@ -415,7 +434,7 @@ async function handleApprove(admin: Admin, project: { id: string; founder_brief:
 
   // Generate questions for next phase
   const nextDoc = (nextPhase as any).project_documents
-  const nextQuestions = await generateQuestions(project.founder_brief, nextDoc)
+  const nextQuestions = await generateQuestions(project.founder_brief, nextDoc, project.game_analysis)
 
   await admin.from('session_phases').update({
     status: 'en_progreso',
@@ -442,13 +461,14 @@ async function handleApprove(admin: Admin, project: { id: string; founder_brief:
 
 async function generateQuestions(
   founderBrief: string,
-  document: any
+  document: any,
+  gameAnalysis?: unknown
 ): Promise<Array<{ pregunta: string; resolucion: null }>> {
   const docName = document?.document_specs?.name ?? document?.name ?? ''
   const predefined = getQuestionsForDocument(docName)
 
   if (predefined && predefined.length > 0) {
-    return await adaptQuestionsToContext(predefined, founderBrief, docName)
+    return await adaptQuestionsToContext(predefined, founderBrief, docName, gameAnalysis)
   }
 
   // Fallback: Claude generates questions
@@ -499,20 +519,36 @@ Responde SOLO con un JSON array de 6 strings.`
 async function adaptQuestionsToContext(
   questions: CanonicalQuestion[],
   founderBrief: string,
-  documentName: string
+  documentName: string,
+  gameAnalysis?: unknown
 ): Promise<Array<{ pregunta: string; resolucion: null }>> {
   const questionsList = questions
     .map((q, i) => `${i + 1}. [${q.section}] ${q.question}`)
     .join('\n')
 
+  const ga = gameAnalysis as {
+    players?: Array<{ name: string; type: string; incentive: string }>
+    key_tensions?: Array<{ tension: string; why_it_matters: string }>
+    incentives?: { conflicts?: string[] }
+  } | null | undefined
+
+  const tensionContext = ga?.key_tensions?.length
+    ? `\nTENSIONES CLAVE DEL JUEGO:\n${ga.key_tensions.map(t => `- ${t.tension} (${t.why_it_matters})`).join('\n')}`
+    : ''
+  const playerContext = ga?.players?.length
+    ? `\nPLAYERS:\n${ga.players.map(p => `- ${p.name} (${p.type}): ${p.incentive}`).join('\n')}`
+    : ''
+
   const prompt = `Tienes estas preguntas estratégicas canónicas para el documento "${documentName}":
 ${questionsList}
 
-Resumen del Fundador:
+RESUMEN DEL FUNDADOR:
 ${founderBrief ?? 'No disponible'}
+${playerContext}${tensionContext}
 
 Adapta cada pregunta al contexto específico del founder manteniendo EXACTAMENTE el mismo enfoque estratégico.
-Usa el contexto del founder (industria, producto, cliente específico) para hacer las preguntas más precisas y relevantes.
+Usa el contexto del founder (industria, producto, cliente específico, players, tensiones del juego) para hacer las preguntas más precisas y relevantes.
+Si una tensión clave del juego es más relevante que la pregunta prediseñada para una sección, reemplaza la pregunta con una basada en la tensión.
 No cambies el propósito estratégico de ninguna pregunta. Solo personaliza el lenguaje al contexto del proyecto.
 Responde SOLO con un JSON array de ${questions.length} strings (las preguntas adaptadas, en el mismo orden).`
 

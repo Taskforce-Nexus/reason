@@ -897,6 +897,20 @@ sin cambiar su enfoque estratégico (Game Theory preservado).
 
 Documentos cubiertos: Value Proposition Canvas, Business Model, Customer Journey, Business Plan.
 
+**Extensión (Game Analysis — 2026-03-17):**
+
+Al completar la Semilla, Nexo genera un `game_analysis` JSONB que mapea explícitamente:
+Players, Rules, Incentives y Key Tensions del juego estratégico del founder.
+Este análisis se guarda en `projects.game_analysis` y se inyecta en:
+
+- `adaptQuestionsToContext()` — tensiones y players contextualizan las preguntas canónicas
+- `handleDebate()` — advisors y cofounders debaten considerando el juego completo
+- ProjectView sidebar — muestra las 3 primeras tensiones clave al founder
+
+Generación: `NEXO_GAME_ANALYSIS_SYSTEM` → Haiku 4096 tokens → `projects.game_analysis`
+Disparado en: `/api/chat/route.ts` al detectar `[CONSEJO:...]` (ambas rutas streaming y non-streaming)
+SQL requerido: `ALTER TABLE projects ADD COLUMN IF NOT EXISTS game_analysis jsonb;`
+
 **Fecha:** 2026-03-17
 
 ---

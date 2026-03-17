@@ -32,6 +32,12 @@ export type Project = {
   aurum_customer_journey: string | null
   aurum_business_plan: string | null
   github_repo: string | null
+  game_analysis: {
+    players: Array<{ name: string; type: string; power: string; description: string; incentive: string }>
+    rules: Array<{ constraint: string; impact: string; description: string }>
+    incentives: { alignments: string[]; conflicts: string[]; opportunities: string[] }
+    key_tensions: Array<{ tension: string; why_it_matters: string; related_players: string[] }>
+  } | null
   created_at: string
   updated_at: string
 }

@@ -507,6 +507,26 @@ Kira 12-fix session engine redesign + Porfirio feedback fixes + Fix 13 ProjectVi
 - Fix 12 UI: "Buscar punto medio" en sidebar debate\_ready → find\_common\_ground resolution ✓
 - Fix 8: Nombres en sidebar ya correctos (spread ca.advisors en page.tsx) — no requería fix
 
+## Epic Game Analysis — Nexo mapea el juego estratégico post-Semilla (COMPLETO ✓)
+
+- `NEXO_GAME_ANALYSIS_SYSTEM` prompt añadido a `src/lib/prompts.ts` ✓
+- `game_analysis` field añadido a `Project` type en `src/lib/types.ts` ✓
+- `/api/chat/route.ts` — genera `game_analysis` (Haiku 4096 tokens) al completar Semilla ✓
+  - Ambas rutas: streaming (`[CONSEJO:...]`) y non-streaming
+  - Guarda `founder_brief` + `game_analysis` juntos en `projects`
+- `/api/session/turn/route.ts` ✓
+  - `generateQuestions` → `adaptQuestionsToContext` recibe `gameAnalysis` y lo inyecta en el prompt
+  - `handleDebate` fetches `game_analysis` y construye `gameContext` (players + tensiones + conflictos)
+  - Contexto del juego inyectado en prompts de constructivo y crítico
+- `ProjectView` sidebar: muestra las 3 primeras tensiones clave si existe `game_analysis` ✓
+- `aurum_decisions.md` — decisión #48 extendida con implementación Game Analysis ✓
+
+Acción requerida de Juan:
+
+```sql
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS game_analysis jsonb;
+```
+
 ## Siguiente paso
 
 Configurar Google OAuth en Supabase Dashboard (Google Cloud Console) + confirmar reason.guru CNAME en Railway
