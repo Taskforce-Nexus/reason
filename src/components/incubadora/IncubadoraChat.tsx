@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import { createClient } from '@/lib/supabase/client'
-import { LOGO_DATA_URL } from '@/lib/logo'
 import VoiceModePanel from './VoiceModePanel'
 import type { Project, Conversation, Message } from '@/lib/types'
 
@@ -330,7 +329,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
       <header className="border-b border-[#1E2A4A] px-6 py-3 flex items-center justify-between shrink-0">
         <Link href={`/project/${project.id}`} className="hover:opacity-80 transition-opacity">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={LOGO_DATA_URL} alt="Reason" className="h-7 w-auto" />
+          <img src="/branding/logo-claro-reason.png" alt="Reason" className="h-7 w-auto" />
         </Link>
         <div className="flex items-center gap-3 text-sm text-[#8892A4]">
           <span>{project.name} — Sesión Semilla</span>

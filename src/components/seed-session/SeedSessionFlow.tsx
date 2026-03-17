@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { LOGO_DATA_URL } from '@/lib/logo'
 import type { Project, DocumentSpec, Advisor, Cofounder } from '@/lib/types'
 import EntregablesPropuesta from './EntregablesPropuesta'
 import CofoundersPropuesta from './CofoundersPropuesta'
@@ -104,7 +103,7 @@ export default function SeedSessionFlow({ project, documentSpecs, advisors, cofo
       <header className="border-b border-[#1E2A4A] px-6 py-3 flex items-center justify-between shrink-0">
         <Link href={`/project/${project.id}`} className="hover:opacity-80 transition-opacity">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={LOGO_DATA_URL} alt="Reason" className="h-7 w-auto" />
+          <img src="/branding/logo-claro-reason.png" alt="Reason" className="h-7 w-auto" />
         </Link>
         <div className="flex items-center gap-3 text-sm text-[#8892A4]">
           <span>{project.name} — Sesión de Consejo</span>

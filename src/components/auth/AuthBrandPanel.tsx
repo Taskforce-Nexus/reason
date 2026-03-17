@@ -1,6 +1,5 @@
 'use client'
 
-import { LOGO_DATA_URL } from '@/lib/logo'
 
 const FEATURES = [
   {
@@ -61,7 +60,7 @@ export default function AuthBrandPanel({ variant = 'default' }: { variant?: Vari
       <div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={LOGO_DATA_URL}
+          src="/branding/logo-claro-reason.png"
           alt="Reason"
           className="h-8 w-auto mb-8"
         />
