@@ -159,12 +159,12 @@ Responde SOLO en JSON válido:
   ]
 }`
 
-        const advisorRaw = await callClaude(
-          advisorSystemPrompt,
-          [{ role: 'user', content: `Contexto del Fundador:\n${founderBrief}\n\nDocumento: ${documentName}\n\nPregunta: ${question}` }],
-          2048,
-          'claude-haiku-4-5-20251001'
-        )
+        const advisorRaw = await callClaude({
+          system: advisorSystemPrompt,
+          messages: [{ role: 'user', content: `Contexto del Fundador:\n${founderBrief}\n\nDocumento: ${documentName}\n\nPregunta: ${question}` }],
+          max_tokens: 2048,
+          tier: 'strong',
+        })
         const cleanAdv = advisorRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
         const parsedAdv = JSON.parse(cleanAdv)
         if (Array.isArray(parsedAdv.advisor_responses)) {
@@ -209,8 +209,8 @@ Pregunta estratégica para el debate:
 ${question}${gameContext}${advisorContext}`
 
   const [constructiveContent, criticalContent] = await Promise.all([
-    callClaude(NEXO_CONSTRUCTIVO_SYSTEM, [{ role: 'user', content: context }], 4096),
-    callClaude(NEXO_CRITICO_SYSTEM, [{ role: 'user', content: context }], 4096),
+    callClaude({ system: NEXO_CONSTRUCTIVO_SYSTEM, messages: [{ role: 'user', content: context }], max_tokens: 4096, tier: 'strong' }),
+    callClaude({ system: NEXO_CRITICO_SYSTEM, messages: [{ role: 'user', content: context }], max_tokens: 4096, tier: 'strong' }),
   ])
 
   let agreement = false
@@ -218,12 +218,12 @@ ${question}${gameContext}${advisorContext}`
 
   try {
     const synthesisContext = `Perspectiva Constructiva:\n${constructiveContent}\n\nPerspectiva Crítica:\n${criticalContent}`
-    const synthesisRaw = await callClaude(
-      NEXO_SYNTHESIS_SYSTEM,
-      [{ role: 'user', content: synthesisContext }],
-      2048,
-      'claude-haiku-4-5-20251001'
-    )
+    const synthesisRaw = await callClaude({
+      system: NEXO_SYNTHESIS_SYSTEM,
+      messages: [{ role: 'user', content: synthesisContext }],
+      max_tokens: 2048,
+      tier: 'strong',
+    })
     const clean = synthesisRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
     const parsed = JSON.parse(clean)
     agreement = parsed.agreement === true
@@ -491,12 +491,12 @@ Deben cubrir TODAS las secciones del documento listadas arriba y girar alrededor
 Responde SOLO con un JSON array de 6 strings.`
 
   try {
-    const response = await callClaude(
-      NEXO_SESSION_QUESTION_SYSTEM,
-      [{ role: 'user', content: prompt }],
-      400,
-      'claude-haiku-4-5-20251001'
-    )
+    const response = await callClaude({
+      system: NEXO_SESSION_QUESTION_SYSTEM,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 400,
+      tier: 'fast',
+    })
     const clean = response.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
     const parsed = JSON.parse(clean)
     if (Array.isArray(parsed) && parsed.length > 0) {
@@ -553,12 +553,12 @@ No cambies el propósito estratégico de ninguna pregunta. Solo personaliza el l
 Responde SOLO con un JSON array de ${questions.length} strings (las preguntas adaptadas, en el mismo orden).`
 
   try {
-    const response = await callClaude(
-      NEXO_SESSION_QUESTION_SYSTEM,
-      [{ role: 'user', content: prompt }],
-      600,
-      'claude-haiku-4-5-20251001'
-    )
+    const response = await callClaude({
+      system: NEXO_SESSION_QUESTION_SYSTEM,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 600,
+      tier: 'fast',
+    })
     const clean = response.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
     const parsed = JSON.parse(clean)
     if (Array.isArray(parsed) && parsed.length === questions.length) {
@@ -607,12 +607,12 @@ INSTRUCCIONES:
 - El contenido debe ser accionable y específico, no genérico`
 
   try {
-    const raw = await callClaude(
-      NEXO_SECTION_WRITER_SYSTEM,
-      [{ role: 'user', content: prompt }],
-      8192,
-      'claude-haiku-4-5-20251001'
-    )
+    const raw = await callClaude({
+      system: NEXO_SECTION_WRITER_SYSTEM,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 8192,
+      tier: 'strong',
+    })
     const clean = raw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
     const parsed = JSON.parse(clean) as GeneratedSection
     if (parsed.section_name && parsed.content) return parsed

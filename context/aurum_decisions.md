@@ -914,3 +914,20 @@ SQL requerido: `ALTER TABLE projects ADD COLUMN IF NOT EXISTS game_analysis json
 **Fecha:** 2026-03-17
 
 ---
+
+## 49. Tres tiers de modelo — fast / strong / reasoning
+
+`callClaude()` usa `tier` para seleccionar el modelo por función, no por entorno:
+
+- `fast` (`CLAUDE_MODEL`, default Haiku) — mecánico: Semilla chat, preguntas canónicas, voice, topics
+- `strong` (`CLAUDE_MODEL_STRONG`, default Sonnet) — debate constructivo/crítico, síntesis, secciones de documentos, consultoría, advisors
+- `reasoning` (`CLAUDE_MODEL_REASONING`, default Opus) — founder_brief, game_analysis (2 llamadas por proyecto, alta calidad)
+
+El tier es explícito en cada llamada — no hay "modelo global" por entorno.
+En Railway/Vercel: cada variable se configura independientemente.
+
+Implementación: `src/lib/claude.ts` — `interface CallClaudeOptions { system, messages, max_tokens?, tier? }`
+
+**Fecha:** 2026-03-17
+
+---

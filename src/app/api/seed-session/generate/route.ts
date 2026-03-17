@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 
     const system = type === 'specialist' ? SPECIALIST_SYSTEM : PERSONA_SYSTEM
 
-    const raw = await callClaude(system, [{ role: 'user', content: prompt }], 400, 'claude-haiku-4-5-20251001')
+    const raw = await callClaude({ system, messages: [{ role: 'user', content: prompt }], max_tokens: 400, tier: 'fast' })
     const clean = raw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
     const item = JSON.parse(clean)
 

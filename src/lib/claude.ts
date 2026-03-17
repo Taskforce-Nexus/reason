@@ -2,22 +2,34 @@ import Anthropic from '@anthropic-ai/sdk'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-const MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-4-20250514'
+type ModelTier = 'fast' | 'strong' | 'reasoning'
 
-export async function callClaude(
-  systemPrompt: string,
-  messages: Array<{ role: 'user' | 'assistant'; content: string }>,
-  maxTokens = 2048,
-  modelOverride?: string
-): Promise<string> {
+interface CallClaudeOptions {
+  system: string
+  messages: Array<{ role: string; content: string }>
+  max_tokens?: number
+  tier?: ModelTier
+}
+
+const getModel = (tier: ModelTier): string => {
+  const models: Record<ModelTier, string> = {
+    fast: process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001',
+    strong: process.env.CLAUDE_MODEL_STRONG || 'claude-sonnet-4-20250514',
+    reasoning: process.env.CLAUDE_MODEL_REASONING || 'claude-opus-4-20250514',
+  }
+  return models[tier]
+}
+
+export async function callClaude({ system, messages, max_tokens = 2048, tier = 'fast' }: CallClaudeOptions): Promise<string> {
+  const model = getModel(tier)
   let attempt = 0
   while (attempt < 4) {
     try {
       const response = await client.messages.create({
-        model: modelOverride ?? MODEL,
-        max_tokens: maxTokens,
-        system: systemPrompt,
-        messages,
+        model,
+        max_tokens,
+        system,
+        messages: messages as Array<{ role: 'user' | 'assistant'; content: string }>,
       })
       const block = response.content[0]
       return block.type === 'text' ? block.text : ''

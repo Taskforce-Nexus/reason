@@ -121,11 +121,12 @@ ${message}
 
 Selecciona 2-3 consejeros relevantes del consejo y responde según el formato JSON indicado.`
 
-    const raw = await callClaude(
-      NEXO_CONSULTORIA_SYSTEM,
-      [{ role: 'user', content: prompt }],
-      1200
-    )
+    const raw = await callClaude({
+      system: NEXO_CONSULTORIA_SYSTEM,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 1200,
+      tier: 'strong',
+    })
 
     const clean = raw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
     let responses: any[] = []

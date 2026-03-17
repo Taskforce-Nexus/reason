@@ -37,12 +37,12 @@ export async function POST(req: NextRequest) {
       .map(m => `${m.role === 'user' ? 'Founder' : 'Nexo'}: ${m.content}`)
       .join('\n\n')
 
-    const raw = await callClaude(
-      TOPICS_SYSTEM,
-      [{ role: 'user', content: context }],
-      128,
-      'claude-haiku-4-5-20251001'
-    )
+    const raw = await callClaude({
+      system: TOPICS_SYSTEM,
+      messages: [{ role: 'user', content: context }],
+      max_tokens: 128,
+      tier: 'fast',
+    })
 
     const parsed = JSON.parse(raw) as { covered: number[] }
     return NextResponse.json({ covered: parsed.covered ?? [], topics: TOPICS })

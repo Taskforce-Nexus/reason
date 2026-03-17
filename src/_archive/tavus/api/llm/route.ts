@@ -80,12 +80,12 @@ export async function POST(req: NextRequest) {
     history.push({ role: 'user', content: userText })
 
     const claudeMessages = history.map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
-    const response = await callClaude(
-      NEXO_CVI_SYSTEM,
-      claudeMessages,
-      512,
-      'claude-haiku-4-5-20251001'
-    )
+    const response = await callClaude({
+      system: NEXO_CVI_SYSTEM,
+      messages: claudeMessages,
+      max_tokens: 512,
+      tier: 'fast',
+    })
 
     const clean = response.replace(/\[CONSEJO:[^\]]+\]\s*/g, '').trim()
 

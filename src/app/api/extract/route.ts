@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
     const admin = createAdminClient()
 
     const generateAndSave = async (field: string, prompt: string): Promise<void> => {
-      const content = await callClaude(prompt, conversationMessages, 2048)
+      const content = await callClaude({ system: prompt, messages: conversationMessages, max_tokens: 2048, tier: 'strong' })
       generated[field] = content
 
       // Save to project

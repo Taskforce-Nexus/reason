@@ -16,15 +16,17 @@
 
 ---
 
-## Modelos Claude
+## Modelos Claude — 3 tiers
 
-| Uso | Modelo ID |
-|-----|-----------|
-| Producción | `claude-sonnet-4-20250514` |
-| Pruebas / económico | `claude-haiku-4-5-20251001` |
+| Tier | Variable | Modelo | Uso |
+|------|----------|--------|-----|
+| `fast` | `CLAUDE_MODEL` | `claude-haiku-4-5-20251001` | Semilla chat, preguntas, voice, topics |
+| `strong` | `CLAUDE_MODEL_STRONG` | `claude-sonnet-4-20250514` | Debate, secciones de documentos, consultoría, advisors |
+| `reasoning` | `CLAUDE_MODEL_REASONING` | `claude-opus-4-20250514` | founder_brief, game_analysis |
 
-- Seleccionar modelo: `CLAUDE_MODEL=claude-haiku-4-5-20251001` (dev) o `CLAUDE_MODEL=claude-sonnet-4-20250514` (prod) en `.env.local`
-- `callClaude()` en `src/lib/claude.ts` implementa reintentos con espera exponencial para errores 429
+- `callClaude({ system, messages, max_tokens?, tier? })` en `src/lib/claude.ts`
+- Default tier: `fast`. Cada llamada tiene su tier asignado explícitamente.
+- Reintentos con espera exponencial para errores 429
 
 ---
 

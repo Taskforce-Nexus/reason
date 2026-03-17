@@ -507,6 +507,15 @@ Kira 12-fix session engine redesign + Porfirio feedback fixes + Fix 13 ProjectVi
 - Fix 12 UI: "Buscar punto medio" en sidebar debate\_ready → find\_common\_ground resolution ✓
 - Fix 8: Nombres en sidebar ya correctos (spread ca.advisors en page.tsx) — no requería fix
 
+## Refactor 3 tiers de modelo — fast/strong/reasoning (COMPLETO ✓)
+
+- `src/lib/claude.ts` — nueva interfaz `callClaude({ system, messages, max_tokens?, tier? })` ✓
+- `fast` (Haiku): Semilla chat, preguntas canónicas, adaptQuestionsToContext, voice, topics, seed-session/generate ✓
+- `strong` (Sonnet): debate constructivo/crítico, síntesis, advisors, secciones de documentos, consultoría, extract ✓
+- `reasoning` (Opus): founder_brief + game_analysis (2 llamadas por proyecto) ✓
+- 11 archivos actualizados (10 callers + archive) — TypeScript 0 errores ✓
+- `aurum_decisions.md` — decisión #49 registrada ✓
+
 ## Epic Game Analysis — Nexo mapea el juego estratégico post-Semilla (COMPLETO ✓)
 
 - `NEXO_GAME_ANALYSIS_SYSTEM` prompt añadido a `src/lib/prompts.ts` ✓

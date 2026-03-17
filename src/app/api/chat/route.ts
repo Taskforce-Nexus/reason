@@ -58,12 +58,12 @@ async function incrementalGitHubSync(
     const context = [...messages.slice(-10), { role: 'assistant' as const, content: nexoResponse }]
     const contextText = context.map(m => `${m.role === 'user' ? 'Founder' : 'Nexo'}: ${m.content}`).join('\n\n')
 
-    const extractionResponse = await callClaude(
-      EXTRACTION_SYSTEM,
-      [{ role: 'user', content: contextText }],
-      512,
-      'claude-haiku-4-5-20251001'
-    )
+    const extractionResponse = await callClaude({
+      system: EXTRACTION_SYSTEM,
+      messages: [{ role: 'user', content: contextText }],
+      max_tokens: 512,
+      tier: 'fast',
+    })
 
     const extracted = JSON.parse(extractionResponse)
     if (!extracted.should_update || !extracted.document || !extracted.content) return
@@ -175,20 +175,20 @@ export async function POST(req: NextRequest) {
                 ...messages,
                 { role: 'assistant' as const, content: fullResponse },
               ].map(m => `${m.role === 'user' ? 'Fundador' : 'Nexo'}: ${m.content}`).join('\n\n')
-              const founderBrief = await callClaude(
-                FOUNDER_BRIEF_SYSTEM,
-                [{ role: 'user', content: briefContext }],
-                512,
-                'claude-haiku-4-5-20251001'
-              )
+              const founderBrief = await callClaude({
+                system: FOUNDER_BRIEF_SYSTEM,
+                messages: [{ role: 'user', content: briefContext }],
+                max_tokens: 512,
+                tier: 'reasoning',
+              })
               let gameAnalysis = null
               try {
-                const gameRaw = await callClaude(
-                  NEXO_GAME_ANALYSIS_SYSTEM,
-                  [{ role: 'user', content: `RESUMEN DEL FUNDADOR:\n${founderBrief}` }],
-                  4096,
-                  'claude-haiku-4-5-20251001'
-                )
+                const gameRaw = await callClaude({
+                  system: NEXO_GAME_ANALYSIS_SYSTEM,
+                  messages: [{ role: 'user', content: `RESUMEN DEL FUNDADOR:\n${founderBrief}` }],
+                  max_tokens: 4096,
+                  tier: 'reasoning',
+                })
                 const cleanGame = gameRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
                 gameAnalysis = JSON.parse(cleanGame)
               } catch (e) {
@@ -239,12 +239,12 @@ export async function POST(req: NextRequest) {
     }
     // ── End streaming path ────────────────────────────────────────────────────
 
-    const rawResponse = await callClaude(
-      systemPrompt,
-      claudeMessages,
-      voiceMode ? 512 : 2048,
-      voiceMode ? 'claude-haiku-4-5-20251001' : undefined
-    )
+    const rawResponse = await callClaude({
+      system: systemPrompt,
+      messages: claudeMessages,
+      max_tokens: voiceMode ? 512 : 2048,
+      tier: 'fast',
+    })
 
     // Parse [CONSEJO:...] signal from response
     const councilMatch = rawResponse.match(/\[CONSEJO:([^\]]+)\]/)
@@ -310,20 +310,20 @@ export async function POST(req: NextRequest) {
         const briefContext = updatedMessages
           .map(m => `${m.role === 'user' ? 'Fundador' : 'Nexo'}: ${m.content}`)
           .join('\n\n')
-        founderBrief = await callClaude(
-          FOUNDER_BRIEF_SYSTEM,
-          [{ role: 'user', content: briefContext }],
-          512,
-          'claude-haiku-4-5-20251001'
-        )
+        founderBrief = await callClaude({
+          system: FOUNDER_BRIEF_SYSTEM,
+          messages: [{ role: 'user', content: briefContext }],
+          max_tokens: 512,
+          tier: 'reasoning',
+        })
         let gameAnalysis = null
         try {
-          const gameRaw = await callClaude(
-            NEXO_GAME_ANALYSIS_SYSTEM,
-            [{ role: 'user', content: `RESUMEN DEL FUNDADOR:\n${founderBrief}` }],
-            4096,
-            'claude-haiku-4-5-20251001'
-          )
+          const gameRaw = await callClaude({
+            system: NEXO_GAME_ANALYSIS_SYSTEM,
+            messages: [{ role: 'user', content: `RESUMEN DEL FUNDADOR:\n${founderBrief}` }],
+            max_tokens: 4096,
+            tier: 'reasoning',
+          })
           const cleanGame = gameRaw.trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
           gameAnalysis = JSON.parse(cleanGame)
         } catch (e) {
