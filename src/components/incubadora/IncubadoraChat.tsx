@@ -70,29 +70,14 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   }, [messages])
 
   useEffect(() => {
-    const loadMessages = async () => {
-      if (!conversation?.id) {
-        sendInitialMessage()
-        return
-      }
-      // Always fetch fresh from DB — bypasses Next.js client router cache stale data
-      try {
-        const { data } = await supabase
-          .from('conversations')
-          .select('messages')
-          .eq('id', conversation.id)
-          .single()
-        const fresh = (data?.messages ?? []) as Message[]
-        if (fresh.length > 0) {
-          setMessages(fresh)
-        } else {
-          sendInitialMessage()
-        }
-      } catch {
-        if ((conversation?.messages ?? []).length === 0) sendInitialMessage()
-      }
+    // Server page is dynamic — it always passes fresh messages from DB.
+    // Only send the initial greeting if this is a brand new conversation (no messages yet).
+    // NEVER call sendInitialMessage when messages exist: it sends messages:[] to the API
+    // which overwrites the DB conversation with just the greeting, destroying history.
+    const serverMessages = (conversation?.messages ?? []) as Message[]
+    if (serverMessages.length === 0) {
+      void sendInitialMessage()
     }
-    void loadMessages()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
