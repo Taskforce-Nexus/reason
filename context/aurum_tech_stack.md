@@ -23,7 +23,7 @@
 | Producción | `claude-sonnet-4-20250514` |
 | Pruebas / económico | `claude-haiku-4-5-20251001` |
 
-- Activar modelo económico: `CLAUDE_USE_CHEAP=true` en `.env.local`
+- Seleccionar modelo: `CLAUDE_MODEL=claude-haiku-4-5-20251001` (dev) o `CLAUDE_MODEL=claude-sonnet-4-20250514` (prod) en `.env.local`
 - `callClaude()` en `src/lib/claude.ts` implementa reintentos con espera exponencial para errores 429
 
 ---
@@ -35,7 +35,7 @@ NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ANTHROPIC_API_KEY=
-CLAUDE_USE_CHEAP=              # true para Haiku, omitir para Sonnet
+CLAUDE_MODEL=                  # claude-haiku-4-5-20251001 (dev) o claude-sonnet-4-20250514 (prod)
 NEXT_PUBLIC_APP_URL=           # ej. http://localhost:3000
 GITHUB_CLIENT_ID=              # OAuth app GitHub
 GITHUB_CLIENT_SECRET=          # OAuth app GitHub

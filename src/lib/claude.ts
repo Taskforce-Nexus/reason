@@ -2,9 +2,7 @@ import Anthropic from '@anthropic-ai/sdk'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-const MODEL = process.env.CLAUDE_USE_CHEAP === 'true'
-  ? 'claude-haiku-4-5-20251001'
-  : 'claude-sonnet-4-20250514'
+const MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-4-20250514'
 
 export async function callClaude(
   systemPrompt: string,

@@ -40,7 +40,7 @@ SUPABASE_SERVICE_ROLE_KEY=       # Clave de servicio (solo servidor)
 SUPABASE_ACCESS_TOKEN=           # Token CLI de Supabase
 NEXT_PUBLIC_APP_URL=             # URL base (http://localhost:3000 en dev)
 ANTHROPIC_API_KEY=               # Clave Claude API
-CLAUDE_USE_CHEAP=true            # true = Haiku (dev), omitir = Sonnet (prod)
+CLAUDE_MODEL=claude-haiku-4-5-20251001  # Haiku (dev) o claude-sonnet-4-20250514 (prod)
 GITHUB_CLIENT_ID=                # OAuth App GitHub
 GITHUB_CLIENT_SECRET=            # OAuth App GitHub secret
 DEEPGRAM_API_KEY=                # STT (voz)
