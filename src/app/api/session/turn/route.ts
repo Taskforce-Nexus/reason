@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 // ─── Start Session ────────────────────────────────────────────────────────────
 
 async function handleStart(admin: Admin, project: { id: string; founder_brief: string }) {
-  const { data: documents } = await supabase
+  const { data: documents } = await admin
     .from('project_documents')
     .select('*, document_specs(*)')
     .eq('project_id', project.id)
@@ -199,7 +199,7 @@ async function handleResolve(admin: Admin, project: { id: string; founder_brief:
   }).eq('id', responseId)
 
   // Get current phase
-  const { data: phase } = await supabase
+  const { data: phase } = await admin
     .from('session_phases').select('*').eq('id', phaseId).single()
   if (!phase) return NextResponse.json({ error: 'Fase no encontrada' }, { status: 404 })
 
@@ -293,7 +293,7 @@ async function handleApprove(admin: Admin, project: { id: string; founder_brief:
   const nextDocIndex = phaseIndex + 1
 
   // Look for next phase
-  const { data: nextPhase } = await supabase
+  const { data: nextPhase } = await admin
     .from('session_phases')
     .select('*, project_documents(*, document_specs(*))')
     .eq('session_id', sessionId)
@@ -439,7 +439,7 @@ async function upsertDocumentSection(
   newSection: GeneratedSection
 ): Promise<void> {
   try {
-    const { data: doc } = await supabase
+    const { data: doc } = await admin
       .from('project_documents')
       .select('content_json')
       .eq('id', documentId)
