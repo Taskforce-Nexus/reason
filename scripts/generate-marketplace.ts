@@ -126,7 +126,20 @@ Batch ${batchIndex + 1}. No repetir nombres de batches anteriores. Generar exact
   const text = response.content[0].type === 'text' ? response.content[0].text : ''
   const jsonMatch = text.match(/\[[\s\S]*\]/)
   if (!jsonMatch) throw new Error(`Failed to parse advisor batch ${batchIndex}`)
-  return JSON.parse(jsonMatch[0])
+  try {
+    return JSON.parse(jsonMatch[0])
+  } catch {
+    // Retry once
+    const retry = await anthropic.messages.create({
+      model: OPUS,
+      max_tokens: 8192,
+      messages: [{ role: 'user', content: prompt }],
+    })
+    const retryText = retry.content[0].type === 'text' ? retry.content[0].text : ''
+    const retryMatch = retryText.match(/\[[\s\S]*\]/)
+    if (!retryMatch) throw new Error(`Failed to parse advisor batch ${batchIndex} after retry`)
+    return JSON.parse(retryMatch[0])
+  }
 }
 
 async function generateCofounderBatch(role: 'constructivo' | 'critico', specialties: string[]): Promise<any[]> {
@@ -273,6 +286,11 @@ async function main() {
     fs.appendFileSync(logFile, msg + '\n')
   }
 
+  // Clean previous partial run
+  const { error: cleanErr } = await supabase.from('advisors').delete().eq('is_native', true)
+  if (cleanErr) log(`⚠️ Clean error: ${cleanErr.message}`)
+  else log('🧹 Cleaned previous advisors')
+
   // Track totals
   let totalAdvisors = 0
   let totalCofounders = 0
@@ -286,7 +304,7 @@ async function main() {
     for (const sub of cat.subs) {
       const remaining = cat.count - totalAdvisors
       if (remaining <= 0) break
-      const batchSize = Math.min(perSub, 10, remaining) // Max 10 per API call
+      const batchSize = Math.min(perSub, 5, remaining) // Max 5 per API call to avoid truncated JSON
 
       try {
         log(`  Generating ${batchSize} advisors: ${cat.category} / ${sub}`)
@@ -296,6 +314,7 @@ async function main() {
           name: a.name,
           specialty: a.specialty,
           category: cat.category,
+          advisor_type: cat.category,
           level: a.level || LEVELS[Math.floor(Math.random() * 3)],
           element: a.element || ELEMENTS[Math.floor(Math.random() * 4)],
           communication_style: a.communication_style,
