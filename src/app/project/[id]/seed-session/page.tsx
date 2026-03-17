@@ -39,7 +39,7 @@ export default async function SeedSessionPage({ params }: { params: Promise<{ id
   }
 
   // Seed Session aún no completa → chat con Nexo
-  const { data: conversations } = await supabase
+  const { data: conversations, error: convError } = await supabase
     .from('conversations')
     .select('*')
     .eq('project_id', id)
@@ -48,13 +48,18 @@ export default async function SeedSessionPage({ params }: { params: Promise<{ id
     .limit(1)
   let conversation = conversations?.[0] ?? null
 
+  console.log('🔴 SERVER — project_id:', id)
+  console.log('🔴 SERVER — user_id:', user.id)
+  console.log('🔴 SERVER — conversation found:', conversation?.id ?? 'NONE', '| msgs:', conversation?.messages?.length ?? 0, '| error:', convError?.message ?? 'null')
+
   if (!conversation) {
-    const { data: newConv } = await supabase.from('conversations').insert({
+    const { data: newConv, error: insertError } = await supabase.from('conversations').insert({
       project_id: id,
       type: 'semilla',
       messages: [],
       progress: { founder_context: 0, product_idea: 0 },
     }).select().single()
+    console.log('🔴 SERVER — INSERT result:', newConv?.id ?? 'FAILED', '| error:', insertError?.message ?? 'null')
     conversation = newConv
   }
 
