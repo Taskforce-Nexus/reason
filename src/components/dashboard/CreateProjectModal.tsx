@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 const ENTRY_LEVELS = [
-  { value: 'idea', label: 'Tengo una idea' },
-  { value: 'en_desarrollo', label: 'Estoy desarrollándola' },
-  { value: 'en_mercado', label: 'Ya estoy en el mercado' },
+  { value: 'raw_idea', label: 'Tengo una idea' },
+  { value: 'has_partial', label: 'Estoy desarrollándola' },
+  { value: 'has_prd', label: 'Ya estoy en el mercado' },
 ]
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 
 export default function CreateProjectModal({ onClose }: Props) {
   const [name, setName] = useState('')
-  const [entryLevel, setEntryLevel] = useState('idea')
+  const [entryLevel, setEntryLevel] = useState('raw_idea')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
