@@ -328,7 +328,7 @@ async function main() {
           name: a.name,
           specialty: a.specialty,
           category: CATEGORY_DB_MAP[cat.category] || 'negocio', // mapped to constraint values
-          // advisor_type omitted — has UNIQUE constraint in DB, must be dropped first by Juan
+          advisor_type: cat.category, // requires: DROP CONSTRAINT advisors_advisor_type_unique + DROP NOT NULL
           level: a.level || LEVELS[Math.floor(Math.random() * 3)],
           element: a.element || ELEMENTS[Math.floor(Math.random() * 4)],
           communication_style: a.communication_style,

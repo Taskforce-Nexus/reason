@@ -45,14 +45,28 @@ Tiempo estimado: ~30-45 min (144 llamadas con rate limiting)
 
 ### Migraciones SQL requeridas antes de correr el script
 
+⚠️ **BLOQUEADOR** — La columna `advisor_type` tiene dos constraints incompatibles con el marketplace:
+- `NOT NULL` — requiere valor
+- `UNIQUE` (`advisors_advisor_type_unique`) — solo permite un advisor por tipo
+
+Ambas deben resolverse antes de ejecutar el script:
+
 ```sql
--- Specialists: hacer project_id nullable para templates
+-- 1. BLOQUEADOR CRÍTICO: Drop UNIQUE constraint en advisor_type
+--    (impide tener más de 1 advisor por tipo — incompatible con catálogo de 1,000)
+ALTER TABLE advisors DROP CONSTRAINT IF EXISTS advisors_advisor_type_unique;
+
+-- 2. BLOQUEADOR CRÍTICO: Hacer advisor_type nullable
+--    (el script lo poblará como la categoría específica: estrategia, finanzas, etc.)
+ALTER TABLE advisors ALTER COLUMN advisor_type DROP NOT NULL;
+
+-- 3. Specialists: hacer project_id nullable para templates
 ALTER TABLE specialists ALTER COLUMN project_id DROP NOT NULL;
 
--- Buyer Personas: hacer project_id nullable para templates
+-- 4. Buyer Personas: hacer project_id nullable para templates
 ALTER TABLE buyer_personas ALTER COLUMN project_id DROP NOT NULL;
 
--- Add is_template flag para diferenciar templates de instancias de proyecto
+-- 5. Add is_template flag para diferenciar templates de instancias de proyecto
 ALTER TABLE specialists ADD COLUMN IF NOT EXISTS is_template boolean DEFAULT false;
 ALTER TABLE buyer_personas ADD COLUMN IF NOT EXISTS is_template boolean DEFAULT false;
 ```
