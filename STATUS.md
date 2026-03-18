@@ -7,8 +7,8 @@ Faber lo actualiza después de cada sesión de trabajo.
 
 ## Estado general
 
-Fecha última actualización: 2026-03-17
-Etapa actual: BILLING UI COMPLETA (Story 5.2) — Settings Billing + Plans + header balance + LowBalanceBanner + InsufficientFundsModal + safeFetch/triggerInsufficientFunds.
+Fecha última actualización: 2026-03-18
+Etapa actual: PPTX EXPORT COMPLETO (Story 5.3) — pptxgenjs v4 instalado. POST /api/export/pptx (por documento), POST /api/export/pptx/all (proyecto completo). src/lib/pptx-builder.ts con helpers compartidos. ExportCenter con botón PPTX por fila + "Descargar todo (PPTX)". Build limpio.
 
 ---
 

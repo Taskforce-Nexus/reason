@@ -36,6 +36,7 @@ function formatDate(iso: string | null) {
 export default function ExportCenter({ project, documents }: Props) {
   const [downloading, setDownloading] = useState<Record<string, boolean>>({})
   const [bulkLoading, setBulkLoading] = useState(false)
+  const [bulkPptxLoading, setBulkPptxLoading] = useState(false)
   const [selectedDoc, setSelectedDoc] = useState<ExportDocument | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
@@ -78,6 +79,54 @@ export default function ExportCenter({ project, documents }: Props) {
       // silent fail
     } finally {
       setDownloading(prev => ({ ...prev, [key]: false }))
+    }
+  }
+
+  async function downloadPptx(doc: ExportDocument) {
+    if (!doc.content_json) return
+    const key = `${doc.id}-pptx`
+    setDownloading(prev => ({ ...prev, [key]: true }))
+    try {
+      const res = await fetch('/api/export/pptx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ document_id: doc.id, project_name: project.name }),
+      })
+      if (!res.ok) throw new Error('PPTX export failed')
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${doc.name.replace(/\s+/g, '-')}-${project.name.replace(/\s+/g, '-')}.pptx`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      // silent fail
+    } finally {
+      setDownloading(prev => ({ ...prev, [key]: false }))
+    }
+  }
+
+  async function downloadAllPptx() {
+    setBulkPptxLoading(true)
+    try {
+      const res = await fetch('/api/export/pptx/all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project_id: project.id }),
+      })
+      if (!res.ok) throw new Error('PPTX all export failed')
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${project.name.replace(/\s+/g, '-')}-sesion-consejo.pptx`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      // silent fail
+    } finally {
+      setBulkPptxLoading(false)
     }
   }
 
@@ -134,14 +183,24 @@ export default function ExportCenter({ project, documents }: Props) {
                 Documentos generados en tu Sesión de Consejo
               </p>
             </div>
-            <button
-              type="button"
-              onClick={downloadAll}
-              disabled={bulkLoading || readyCount === 0}
-              className="flex items-center gap-2 px-4 py-2 bg-[#B8860B] hover:bg-[#A07710] disabled:opacity-40 text-[#0A1128] text-[13px] font-semibold rounded-lg transition-colors"
-            >
-              {bulkLoading ? 'Descargando...' : 'Descargar todo (PDF)'}
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={downloadAllPptx}
+                disabled={bulkPptxLoading || readyCount === 0}
+                className="flex items-center gap-2 px-4 py-2 border border-[#B8860B]/40 hover:border-[#B8860B] text-[#B8860B] hover:text-white text-[13px] font-semibold rounded-lg transition-colors disabled:opacity-40"
+              >
+                {bulkPptxLoading ? 'Generando...' : 'Descargar todo (PPTX)'}
+              </button>
+              <button
+                type="button"
+                onClick={downloadAll}
+                disabled={bulkLoading || readyCount === 0}
+                className="flex items-center gap-2 px-4 py-2 bg-[#B8860B] hover:bg-[#A07710] disabled:opacity-40 text-[#0A1128] text-[13px] font-semibold rounded-lg transition-colors"
+              >
+                {bulkLoading ? 'Descargando...' : 'Descargar todo (PDF)'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -179,7 +238,7 @@ export default function ExportCenter({ project, documents }: Props) {
               <div className="flex-1 text-[11px] text-[#4A5568] uppercase tracking-wider">Entregable</div>
               <div className="w-[130px] text-[11px] text-[#4A5568] uppercase tracking-wider">Estado</div>
               <div className="w-[120px] text-[11px] text-[#4A5568] uppercase tracking-wider">Generado</div>
-              <div className="w-[260px] text-[11px] text-[#4A5568] uppercase tracking-wider">Acciones</div>
+              <div className="w-[300px] text-[11px] text-[#4A5568] uppercase tracking-wider">Acciones</div>
             </div>
 
             {documents.map(doc => (
@@ -190,7 +249,8 @@ export default function ExportCenter({ project, documents }: Props) {
                 downloading={downloading}
                 copied={copied}
                 onView={() => setSelectedDoc(doc)}
-                onDownload={() => downloadPDF(doc)}
+                onDownloadPdf={() => downloadPDF(doc)}
+                onDownloadPptx={() => downloadPptx(doc)}
                 onCopy={() => copyJSON(doc)}
               />
             ))}
@@ -236,7 +296,8 @@ function DocumentRow({
   downloading,
   copied,
   onView,
-  onDownload,
+  onDownloadPdf,
+  onDownloadPptx,
   onCopy,
 }: {
   doc: ExportDocument
@@ -244,7 +305,8 @@ function DocumentRow({
   downloading: Record<string, boolean>
   copied: string | null
   onView: () => void
-  onDownload: () => void
+  onDownloadPdf: () => void
+  onDownloadPptx: () => void
   onCopy: () => void
 }) {
   const ready = isReady(doc)
@@ -284,7 +346,7 @@ function DocumentRow({
       </div>
 
       {/* Actions */}
-      <div className="w-[260px] flex items-center gap-4 shrink-0">
+      <div className="w-[300px] flex items-center gap-4 shrink-0">
         <button
           type="button"
           onClick={onView}
@@ -296,11 +358,19 @@ function DocumentRow({
           <>
             <button
               type="button"
-              onClick={onDownload}
+              onClick={onDownloadPdf}
               disabled={downloading[`${doc.id}-pdf`]}
               className="text-[13px] text-[#B8860B] hover:text-[#D4A017] font-semibold transition-colors disabled:opacity-40"
             >
               {downloading[`${doc.id}-pdf`] ? '...' : 'PDF'}
+            </button>
+            <button
+              type="button"
+              onClick={onDownloadPptx}
+              disabled={downloading[`${doc.id}-pptx`]}
+              className="text-[13px] text-[#B8860B] hover:text-[#D4A017] font-semibold transition-colors disabled:opacity-40"
+            >
+              {downloading[`${doc.id}-pptx`] ? '...' : 'PPTX'}
             </button>
             <button
               type="button"
