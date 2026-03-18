@@ -11,7 +11,10 @@
     "start": "next start",
     "lint": "next lint",
     "test:ralph-loop": "ts-node scripts/test-ralph-loop.ts",
-    "ralph:validate": "ts-node -e \"import { validateRalphSchema } from '@/lib/supabase/ralph-schema'; validateRalphSchema().then(r => console.log(JSON.stringify(r, null, 2)))\""
+    "ralph:validate": "ts-node -e \"import { validateRalphSchema } from '@/lib/supabase/ralph-schema'; validateRalphSchema().then(r => console.log(JSON.stringify(r, null, 2)))\"",
+    "test:e2e": "playwright test tests/e2e/full-flow.spec.ts",
+    "test:e2e:headed": "playwright test tests/e2e/full-flow.spec.ts --headed",
+    "test:e2e:debug": "playwright test tests/e2e/full-flow.spec.ts --debug"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
