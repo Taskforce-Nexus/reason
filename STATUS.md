@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-18
-Etapa actual: STORY 5.7 COMPLETO — Tests Stripe 9/9 PASS. Bugs documentados: (A) STRIPE_SECRET_KEY es Restricted Key rk_test_ → checkout con price_data retorna URL nula; (B) STRIPE_PRICE_* vacíos → checkout suscripción 500; (C) success_url/cancel_url apuntan a /settings/billing (404) en lugar de /settings/facturacion. Stripe CLI no instalado → webhook test manual requerido.
+Etapa actual: STORY 5.8 COMPLETO + BUG-C FIXED. safeFetch en 6 componentes. Decisions 50-55 en aurum_decisions.md. Entidades actualizadas en reason_entities.md. Specialists: 479→214 (265 eliminados). Cofounders: 124 (todos en uso por councils, sin cambio). BUG-C fixed: checkout redirect → /settings/facturacion. Pendiente: BUG-A (Restricted Key), BUG-B (STRIPE_PRICE_* env vars).
 
 ---
 

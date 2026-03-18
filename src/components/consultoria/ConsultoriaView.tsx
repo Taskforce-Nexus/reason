@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
+import { safeFetch } from '@/lib/fetch402'
 import type { DocumentRef, Consultation, ConsultationMessage } from '@/app/(dashboard)/project/[id]/consultoria/page'
 
 interface Props {
@@ -53,7 +54,7 @@ export default function ConsultoriaView({
   }
 
   async function handleNewConsultation() {
-    const res = await fetch('/api/consultation/start', {
+    const res = await safeFetch('/api/consultation/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ project_id: project.id }),
@@ -88,7 +89,7 @@ export default function ConsultoriaView({
       // Ensure we have an active consultation
       let consultId = activeConsultation?.id
       if (!consultId) {
-        const startRes = await fetch('/api/consultation/start', {
+        const startRes = await safeFetch('/api/consultation/start', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ project_id: project.id }),
@@ -100,7 +101,7 @@ export default function ConsultoriaView({
         setConsultations(prev => [startData.consultation, ...prev])
       }
 
-      const res = await fetch('/api/consultation/message', {
+      const res = await safeFetch('/api/consultation/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ consultation_id: consultId, message: msg }),

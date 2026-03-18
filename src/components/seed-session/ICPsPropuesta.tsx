@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import type { Project } from '@/lib/types'
+import { safeFetch } from '@/lib/fetch402'
 
 const MAX_ACCEPTED = 5
 
@@ -43,7 +44,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
     setInitialLoading(true)
     setInitError(false)
     try {
-      const res = await fetch('/api/seed-session/generate', {
+      const res = await safeFetch('/api/seed-session/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'buyer_persona', projectId: project.id, count: 4 }),
@@ -73,7 +74,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
     if (acceptedIds.length >= MAX_ACCEPTED) return
     setGenerating(true)
     try {
-      const res = await fetch('/api/seed-session/generate', {
+      const res = await safeFetch('/api/seed-session/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

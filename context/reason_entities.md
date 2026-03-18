@@ -17,6 +17,7 @@ Define todas las entidades del sistema, sus relaciones y en qué pantallas apare
 | timezone | text | default: "America/Monterrey" |
 | notifications_email | boolean | default: true |
 | voice_mode_default | boolean | default: false |
+| stripe_customer_id | text | nullable — Stripe customer ID (tabla profiles) |
 | created_at | timestamptz | |
 | updated_at | timestamptz | |
 
@@ -220,23 +221,12 @@ Define todas las entidades del sistema, sus relaciones y en qué pantallas apare
 
 ---
 
-## 11. DocumentSpec (biblioteca de specs — read only en runtime)
+## 11. ~~DocumentSpec~~ — ELIMINADA
 
-| Campo | Tipo | Notas |
-|---|---|---|
-| id | uuid PK | |
-| name | text | ej. "Value Proposition Canvas" |
-| icp | text | ej. "founder" / "empresa" / "innovacion" |
-| strategic_decision | text | pregunta central que resuelve |
-| sections | jsonb | array de { nombre, descripcion } |
-| required_data | jsonb | qué datos necesita de la sesión |
-| key_advisors | jsonb | qué especialidades contribuyen |
-| quality_criteria | text | cómo saber que está completo |
-| is_custom | boolean | false = biblioteca oficial, true = generada en Sesión de Clarificación |
-| created_from_project | uuid FK → Project | nullable — si fue creada en clarificación |
-| created_at | timestamptz | |
-
-**Aparece en:** EntregablesPropuesta (expandible con secciones/decisión/criterio), ConsejoListo (lista de entregables), SesionConsejo (guía de cada fase).
+Reemplazada por el Framework Engine (Decisión #48).
+Nexo ya no selecciona documentos de una biblioteca estática — los compone dinámicamente.
+La tabla `document_specs` no existe en producción.
+El campo `spec_id` fue eliminado de ProjectDocument.
 
 ---
 
@@ -246,8 +236,10 @@ Define todas las entidades del sistema, sus relaciones y en qué pantallas apare
 |---|---|---|
 | id | uuid PK | |
 | project_id | uuid FK → Project | |
-| spec_id | uuid FK → DocumentSpec | spec que se usó como guía |
 | name | text | ej. "Value Proposition Canvas" |
+| key_question | text | pregunta estratégica central que responde |
+| deliverable_index | integer | orden dentro del proyecto (0-based) |
+| composition | jsonb | estructura dinámica generada por Framework Engine: { frameworks_used, sections, advisors_needed, depends_on, feeds_into } |
 | status | text | "pendiente" / "en_progreso" / "generado" / "aprobado" |
 | content_json | jsonb | contenido estructurado del documento |
 | content_html | text | nullable — versión renderizada |
@@ -357,6 +349,8 @@ Define todas las entidades del sistema, sus relaciones y en qué pantallas apare
 |---|---|---|
 | id | uuid PK | |
 | user_id | uuid FK → User | |
+| stripe_subscription_id | text | nullable — ID de suscripción en Stripe |
+| stripe_customer_id | text | nullable — ID de customer en Stripe |
 | plan | text | "core" / "pro" / "enterprise" |
 | price_monthly | decimal | |
 | status | text | "activa" / "cancelada" / "trial" |

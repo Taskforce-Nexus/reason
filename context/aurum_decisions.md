@@ -964,3 +964,89 @@ Fuente de verdad: /context/aurum_framework_engine.md
 **Fecha:** 2026-03-17
 
 ---
+
+## 50. Stripe backend — checkout, webhook, portal
+
+Stripe integrado en modo test con tres rutas:
+- `POST /api/stripe/checkout` — crea sesión Checkout (subscription o payment), busca o crea customer en profiles.stripe_customer_id
+- `POST /api/stripe/webhook` — procesa checkout.session.completed, subscription.updated/deleted, invoice.paid
+- `POST /api/stripe/portal` — abre Billing Portal para gestión de suscripción
+
+Regla de redirect: `success_url` y `cancel_url` apuntan a `/settings/facturacion`.
+Variables requeridas: `STRIPE_SECRET_KEY` (sk_test_*, NO rk_test_*), `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`.
+
+**Fecha:** 2026-03-18
+
+---
+
+## 51. Token usage tracking — OPERATION_COSTS, checkBalance, trackUsage
+
+`src/lib/usage.ts` centraliza el modelo de consumo:
+- `OPERATION_COSTS` — mapa de operación → costo en USD (chat_message: 0.04, session_question: 0.08, consultation_message: 0.08, etc.)
+- `checkBalance(userId)` — lee token_balances, retorna `{ canProceed, balance }`
+- `trackUsage(userId, projectId, operation)` — descuenta de token_balances + inserta en token_usages
+
+Todo endpoint Claude llama `checkBalance` antes de llamar a la API. Si `canProceed = false`, retorna HTTP 402.
+
+**Fecha:** 2026-03-18
+
+---
+
+## 52. 402 handler pattern — safeFetch + InsufficientFundsModal
+
+Cuando un endpoint retorna HTTP 402 (saldo insuficiente), el frontend muestra un modal de recarga.
+
+Implementación:
+- `src/lib/fetch402.ts` — `safeFetch()` es drop-in replacement de `fetch`. Intercepta 402 y dispara evento custom `'insufficient-funds'`
+- `InsufficientFundsModal` en dashboard layout — escucha el evento y muestra modal con botón de recarga
+- Componentes migrados: EntregablesPropuesta, SesionConsejoView, ICPsPropuesta, EspecialistasPropuesta, ConsultoriaView, ExportCenter
+
+Regla: todos los componentes que llaman a endpoints Claude deben usar `safeFetch` en lugar de `fetch`.
+
+**Fecha:** 2026-03-18
+
+---
+
+## 53. Consultoría Activa — chat post-sesión con el consejo
+
+Después de completar la Sesión de Consejo, el founder puede chatear con su consejo armado.
+
+Gate: requiere `sessions.status = 'completada'` para el proyecto.
+Tabla: `consultations` — `{ id, project_id, title, messages JSONB, status }`
+Messages format: `{ role: 'user' | 'council', content, responses?: AdvisorResponse[], created_at }`
+AdvisorResponse: `{ role: 'nexo' | 'advisor', content, advisor_id?, advisor_name?, specialty? }`
+
+Rutas: `/api/consultation/start`, `/api/consultation/message`, `/api/consultation/[consultationId]`
+Modelo: Claude Sonnet (tier: strong). Costo: $0.08/mensaje.
+Prompt: `NEXO_CONSULTORIA_SYSTEM` en `src/lib/prompts.ts`.
+
+**Fecha:** 2026-03-18
+
+---
+
+## 54. UI Settings — Billing + Plans
+
+Settings__Billing (`/settings/facturacion`) muestra: saldo actual, plan activo, historial de consumo, método de pago, facturas.
+Settings__Plans (`/settings/planes`) muestra: comparación de 3 tiers (Core/Pro/Enterprise) + recarga de saldo con botones fijos ($10/$25/$50).
+
+Botones de suscripción leen precio de env vars `STRIPE_PRICE_CORE`, `STRIPE_PRICE_PRO`, `STRIPE_PRICE_ENTERPRISE`.
+Botones de recarga usan `price_id` del env var correspondiente (ej. `STRIPE_PRICE_TOKEN_10`).
+Modal 402 (`InsufficientFundsModal`) aparece cuando cualquier endpoint retorna HTTP 402.
+
+**Fecha:** 2026-03-18
+
+---
+
+## 55. Deploy Railway — variables de entorno requeridas
+
+Variables mínimas para producción en Railway:
+- `ANTHROPIC_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- `STRIPE_SECRET_KEY` (sk_test_* — NO rk_test_* — Restricted Key retorna url: null en checkout)
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`
+- `NEXT_PUBLIC_APP_URL` (con https:// incluido, ej. https://reason-production-e205.up.railway.app)
+- `STRIPE_PRICE_CORE`, `STRIPE_PRICE_PRO`, `STRIPE_PRICE_ENTERPRISE`
+- `STRIPE_PRICE_TOKEN_10`, `STRIPE_PRICE_TOKEN_25`, `STRIPE_PRICE_TOKEN_50`
+
+**Fecha:** 2026-03-18
+
+---

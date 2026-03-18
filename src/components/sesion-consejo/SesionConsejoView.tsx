@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Project, Advisor, Cofounder } from '@/lib/types'
+import { safeFetch } from '@/lib/fetch402'
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -162,7 +163,7 @@ export default function SesionConsejoView({
     setUiState('starting')
     setError(null)
     try {
-      const res = await fetch('/api/session/start', {
+      const res = await safeFetch('/api/session/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ project_id: project.id }),
@@ -189,7 +190,7 @@ export default function SesionConsejoView({
     setUiState('submitting')
     setError(null)
     try {
-      const res = await fetch('/api/session/question', {
+      const res = await safeFetch('/api/session/question', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -224,7 +225,7 @@ export default function SesionConsejoView({
     setUiState('resolving')
     setError(null)
     try {
-      const res = await fetch('/api/session/resolve', {
+      const res = await safeFetch('/api/session/resolve', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

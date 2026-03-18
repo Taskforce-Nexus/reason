@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Project } from '@/lib/types'
+import { safeFetch } from '@/lib/fetch402'
 import type { ExportDocument, ContentJson } from '@/app/(dashboard)/project/[id]/export/page'
 
 interface Props {
@@ -57,7 +58,7 @@ export default function ExportCenter({ project, documents }: Props) {
     const key = `${doc.id}-pdf`
     setDownloading(prev => ({ ...prev, [key]: true }))
     try {
-      const res = await fetch('/api/export/pdf', {
+      const res = await safeFetch('/api/export/pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -87,7 +88,7 @@ export default function ExportCenter({ project, documents }: Props) {
     const key = `${doc.id}-pptx`
     setDownloading(prev => ({ ...prev, [key]: true }))
     try {
-      const res = await fetch('/api/export/pptx', {
+      const res = await safeFetch('/api/export/pptx', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ document_id: doc.id, project_name: project.name }),
@@ -110,7 +111,7 @@ export default function ExportCenter({ project, documents }: Props) {
   async function downloadAllPptx() {
     setBulkPptxLoading(true)
     try {
-      const res = await fetch('/api/export/pptx/all', {
+      const res = await safeFetch('/api/export/pptx/all', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ project_id: project.id }),

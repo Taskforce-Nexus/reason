@@ -41,8 +41,8 @@ export async function POST(req: Request) {
         customer: customerId,
         mode: 'payment',
         line_items: [{ price: resolvedPriceId, quantity: 1 }],
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/facturacion?success=true`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/facturacion?canceled=true`,
         metadata: { supabase_user_id: user.id },
       })
     } else {
@@ -65,8 +65,8 @@ export async function POST(req: Request) {
           },
           quantity: 1,
         }],
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true&amount=${num}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/facturacion?success=true&amount=${num}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/facturacion?canceled=true`,
         metadata: { supabase_user_id: user.id },
       })
     }
@@ -79,8 +79,8 @@ export async function POST(req: Request) {
       customer: customerId,
       mode: 'subscription',
       line_items: [{ price: resolvedPriceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/facturacion?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/facturacion?canceled=true`,
       metadata: { supabase_user_id: user.id },
     })
   }

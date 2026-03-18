@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import type { Project, Advisor } from '@/lib/types'
+import { safeFetch } from '@/lib/fetch402'
 
 interface DeliverableSection {
   title: string
@@ -63,7 +64,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
       const body: Record<string, string> = { project_id: project.id }
       if (adjustmentContext) body.adjustment = adjustmentContext
 
-      const res = await fetch('/api/compose', {
+      const res = await safeFetch('/api/compose', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -103,7 +104,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
 
     // Auto-select council based on deliverables' advisors_needed
     try {
-      const res = await fetch('/api/council/auto-select', {
+      const res = await safeFetch('/api/council/auto-select', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ project_id: project.id }),
@@ -124,7 +125,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
   async function handleRemove(docId: string) {
     setRemovingId(docId)
     try {
-      await fetch('/api/compose/edit', {
+      await safeFetch('/api/compose/edit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ project_id: project.id, action: 'remove', document_id: docId }),
@@ -146,7 +147,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
     setEditingId(null)
     setLoadingIds(prev => new Set([...prev, docId]))
     try {
-      const res = await fetch('/api/compose/edit', {
+      const res = await safeFetch('/api/compose/edit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -174,7 +175,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
     setAddingOpen(false)
     setAddError(null)
     try {
-      const res = await fetch('/api/compose/edit', {
+      const res = await safeFetch('/api/compose/edit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -31,13 +31,13 @@ Nexo filtra y recomienda según propósito + Resumen del usuario.
 
 ### Tamaño del catálogo (objetivo post-generación)
 
-| Tabla | Objetivo | Estado DB (2026-03-17) |
+| Tabla | Objetivo | Estado DB (2026-03-18) |
 |---|---|---|
 | `advisors` | 1,000 | **340** — estrategia completa, resto parcial |
-| `cofounders` | 40 (20+20) | **124** — completo (excede objetivo, runs múltiples) |
-| `specialists` | 200 | **431** — completo (excede objetivo, runs múltiples) |
+| `cofounders` | 40 (20+20) | **124** — todos en uso por councils activos, no recortados |
+| `specialists` | 200 | **214** — 200 templates libres + 14 project-linked/confirmed |
 | `buyer_personas` | 200 | **0** — pendiente |
-| **Total** | **1,440** | **895** |
+| **Total** | **1,440** | **678** |
 
 Script: `scripts/generate-marketplace.ts`
 Modelo: `claude-sonnet-4-20250514` (strong tier)
