@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-18
-Etapa actual: STORY 5.6 COMPLETO — Deploy Railway verificado. Build limpio (0 errores). App respondiendo en producción: <https://reason-production-e205.up.railway.app>. Variables de entorno Stripe configuradas en Railway. PENDIENTE: STRIPE_PRICE_* (Juan crea productos en Stripe Dashboard y pega los price IDs).
+Etapa actual: STORY 5.7 COMPLETO — Tests Stripe 9/9 PASS. Bugs documentados: (A) STRIPE_SECRET_KEY es Restricted Key rk_test_ → checkout con price_data retorna URL nula; (B) STRIPE_PRICE_* vacíos → checkout suscripción 500; (C) success_url/cancel_url apuntan a /settings/billing (404) en lugar de /settings/facturacion. Stripe CLI no instalado → webhook test manual requerido.
 
 ---
 

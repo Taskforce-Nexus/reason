@@ -14,7 +14,8 @@
     "ralph:validate": "ts-node -e \"import { validateRalphSchema } from '@/lib/supabase/ralph-schema'; validateRalphSchema().then(r => console.log(JSON.stringify(r, null, 2)))\"",
     "test:e2e": "playwright test tests/e2e/full-flow.spec.ts",
     "test:e2e:headed": "playwright test tests/e2e/full-flow.spec.ts --headed",
-    "test:e2e:debug": "playwright test tests/e2e/full-flow.spec.ts --debug"
+    "test:e2e:debug": "playwright test tests/e2e/full-flow.spec.ts --debug",
+    "test:stripe": "playwright test tests/e2e/stripe-integration.spec.ts --headed --timeout 180000"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
