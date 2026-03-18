@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: FRAMEWORK ENGINE instalado — Document Specification Library reemplazada por composición dinámica de entregables. callClaude 3 tiers (fast/strong/reasoning). Botones Cambiar conectados al catálogo real de Supabase.
+Etapa actual: STORY 4.2 COMPLETO — Sesión de Consejo con entregables dinámicos. 4 endpoints: start, question, resolve, GET. Framework Engine instalado. callClaude 3 tiers. Botones Cambiar conectados a Supabase.
 
 ---
 
@@ -63,6 +63,14 @@ Etapa actual: FRAMEWORK ENGINE instalado — Document Specification Library reem
 - CofoundersPropuesta — botón Cambiar conectado a CofounderSwapDrawer ✓
 - ConsejoPrincipalPropuesta — botón Cambiar por card conectado a AdvisorSwapDrawer ✓
 - "Ver perfil" ya funcional en ConsejoPrincipalPropuesta, EspecialistasPropuesta, ICPsPropuesta ✓
+- Story 4.2 — Sesión de Consejo endpoints ✓
+  - POST /api/session/start — crea session + session_phases desde project_documents pendientes
+  - POST /api/session/question — Nexo Dual por pregunta (constructive/critical + NexoDualResponse)
+  - POST /api/session/resolve — resuelve debate, genera documento final, avanza a siguiente fase
+  - GET /api/session/[sessionId] — estado completo: session + fases + dual_responses fase actual
+  - SESSION_QUESTION_PROMPT agregado a src/lib/prompts.ts
+  - TypeScript: clean (solo errores pre-existentes en e2e tests)
+
 - Story 4.1 — EntregablesPropuesta dinámica — conectada a /api/compose ✓
   - Fetch automático al montar (useEffect + compose())
   - Loading: skeleton 3 cards + mensaje Nexo

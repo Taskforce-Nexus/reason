@@ -61,6 +61,10 @@ STRIPE_WEBHOOK_SECRET=         # whsec_... — webhook signing secret
 | Ruta | Responsabilidad |
 |------|-----------------|
 | `POST /api/compose` | Composición dinámica de entregables — lee founder_brief, llama Claude con Framework Engine, guarda ProjectDocuments |
+| `POST /api/session/start` | Inicia sesión de consejo — crea session + session_phases desde project_documents pendientes |
+| `POST /api/session/question` | Nexo Dual por pregunta — recibe user_response, retorna constructive/critical_content + guarda NexoDualResponse |
+| `POST /api/session/resolve` | Resuelve debate — guarda resolution, si fase completa genera documento final vía Claude |
+| `GET /api/session/[sessionId]` | Estado completo de sesión — session, fases, fase actual con preguntas + NexoDualResponses |
 | `POST /api/chat` | Chat principal — semilla 1:1 + consejo + auto-generación debate Nexo Dual |
 | `POST /api/chat/proxy` | Acciones de proxy: generar borrador, aprobar, descartar, elegir lado |
 | `POST /api/chat/brief` | Generar Resumen del Fundador desde conversación semilla |
