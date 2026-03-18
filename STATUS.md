@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: USAGE TRACKING COMPLETO (Story 5.1) — src/lib/usage.ts creado. checkBalance (blocking, 402) + trackUsage (non-blocking) integrado en 7 endpoints: /api/compose, /api/compose/edit, /api/session/question, /api/session/resolve, /api/seed-session/generate, /api/chat. Costos: compose $0.15, compose_edit $0.08, session_question $0.10, session_resolve $0.12, generate_specialist/persona $0.05, seed_chat $0.03, brief_generation $0.08.
+Etapa actual: BILLING UI COMPLETA (Story 5.2) — Settings Billing + Plans + header balance + LowBalanceBanner + InsufficientFundsModal + safeFetch/triggerInsufficientFunds.
 
 ---
 

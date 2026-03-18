@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { toast } from '@/components/ui/Toast'
 
 interface Subscription {
@@ -16,6 +17,7 @@ interface UsageRow {
   tokens_used: number
   cost_usd: number
   created_at: string
+  project?: { name: string } | null
 }
 
 interface Invoice {
@@ -23,6 +25,7 @@ interface Invoice {
   concept: string | null
   amount_usd: number
   status: string | null
+  pdf_url?: string | null
   created_at: string
 }
 
@@ -34,12 +37,20 @@ interface PaymentMethod {
   exp_year: number | null
 }
 
+interface PriceIds {
+  token10?: string
+  token25?: string
+  token50?: string
+  token100?: string
+}
+
 interface Props {
   balance: number
   subscription: Subscription | null
   usage: UsageRow[]
   invoices: Invoice[]
   paymentMethod: PaymentMethod | null
+  priceIds?: PriceIds
 }
 
 const PLAN_NAMES: Record<string, string> = {
@@ -54,7 +65,16 @@ const PLAN_PRICE: Record<string, string> = {
   enterprise: 'Personalizado',
 }
 
-const QUICK_AMOUNTS = [10, 25, 50, 100]
+const ACTIVITY_LABELS: Record<string, string> = {
+  compose: 'Composición',
+  compose_edit: 'Edición entregable',
+  session_question: 'Pregunta sesión',
+  session_resolve: 'Resolución sesión',
+  generate_specialist: 'Especialista',
+  generate_persona: 'Buyer persona',
+  seed_chat: 'Semilla chat',
+  brief_generation: 'Resumen fundador',
+}
 
 export default function SettingsBilling({
   balance,
@@ -62,14 +82,16 @@ export default function SettingsBilling({
   usage,
   invoices,
   paymentMethod,
+  priceIds,
 }: Props) {
   const [showFunds, setShowFunds] = useState(false)
   const [amount, setAmount] = useState('')
   const [loadingFunds, setLoadingFunds] = useState(false)
+  const [loadingPortal, setLoadingPortal] = useState(false)
 
-  const planId = subscription?.plan_id ?? 'core'
-  const planName = PLAN_NAMES[planId] ?? 'Plan Core'
-  const planPrice = PLAN_PRICE[planId] ?? '$29/mes'
+  const planId = subscription?.plan_id ?? null
+  const planName = planId ? (PLAN_NAMES[planId] ?? planId) : 'Plan Free'
+  const planPrice = planId ? (PLAN_PRICE[planId] ?? '') : 'Sin suscripción'
   const isActive = subscription?.status === 'activo' || subscription?.status === 'active'
   const periodEnd = subscription?.current_period_end
     ? new Date(subscription.current_period_end).toLocaleDateString('es', {
@@ -79,16 +101,23 @@ export default function SettingsBilling({
       })
     : null
 
-  async function handleAddFunds() {
-    const num = parseFloat(amount)
-    if (!num || num < 5) { toast('Monto mínimo: $5 USD'); return }
-    if (num > 1000) { toast('Monto máximo: $1,000 USD'); return }
+  const QUICK_AMOUNTS = [
+    { label: '$10', value: 10, priceId: priceIds?.token10 },
+    { label: '$25', value: 25, priceId: priceIds?.token25 },
+    { label: '$50', value: 50, priceId: priceIds?.token50 },
+    { label: '$100', value: 100, priceId: priceIds?.token100 },
+  ]
+
+  async function handleQuickRecharge(amountVal: number, priceId?: string) {
     setLoadingFunds(true)
     try {
+      const body = priceId
+        ? { price_id: priceId, mode: 'payment' }
+        : { amount: amountVal, mode: 'payment' }
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: num, mode: 'payment' }),
+        body: JSON.stringify(body),
       })
       const { url, error } = await res.json()
       if (error) { toast(error || 'Error al procesar'); return }
@@ -100,36 +129,51 @@ export default function SettingsBilling({
     }
   }
 
+  async function handleCustomRecharge() {
+    const num = parseFloat(amount)
+    if (!num || num < 5) { toast('Monto mínimo: $5 USD'); return }
+    if (num > 1000) { toast('Monto máximo: $1,000 USD'); return }
+    await handleQuickRecharge(num)
+  }
+
+  async function handlePortal() {
+    setLoadingPortal(true)
+    try {
+      const res = await fetch('/api/stripe/portal', { method: 'POST' })
+      const { url, error } = await res.json()
+      if (error) { toast(error || 'Error abriendo portal'); return }
+      if (url) window.location.href = url
+    } catch {
+      toast('Error abriendo portal. Intenta de nuevo.')
+    } finally {
+      setLoadingPortal(false)
+    }
+  }
+
   return (
     <div className="space-y-8">
       {/* TU SALDO */}
       <section className="space-y-3">
         <p className="text-[11px] text-[#B8860B] uppercase tracking-[2px] font-semibold">Tu saldo</p>
-        <div className="bg-[#0D1535] border border-[#B8860B] rounded-lg p-6 flex items-start justify-between">
+        <div className="bg-[#0D1535] border border-[#B8860B] rounded-lg p-6 flex items-start justify-between gap-6">
           <div>
             <p className="text-[36px] text-white font-bold font-outfit">
               ${Number(balance).toFixed(2)}
             </p>
-            <p className="text-[12px] text-[#4A5568] mt-1">
-              disponible
-              {usage.length > 0 && ` · ${usage.reduce((s, u) => s + u.tokens_used, 0).toLocaleString()} tokens usados`}
-            </p>
+            <p className="text-[12px] text-[#4A5568] mt-1">disponible en USD</p>
           </div>
           {showFunds ? (
             <div className="flex flex-col gap-3 min-w-[220px]">
-              <div className="flex gap-2">
-                {QUICK_AMOUNTS.map(val => (
+              <div className="flex gap-2 flex-wrap">
+                {QUICK_AMOUNTS.map(({ label, value, priceId }) => (
                   <button
-                    key={val}
+                    key={value}
                     type="button"
-                    onClick={() => setAmount(String(val))}
-                    className={`px-3 py-1.5 rounded-lg text-[12px] transition-colors ${
-                      amount === String(val)
-                        ? 'bg-[#B8860B] text-black font-semibold'
-                        : 'border border-[#1E2A4A] text-[#8892A4] hover:bg-[#1E2A4A]'
-                    }`}
+                    disabled={loadingFunds}
+                    onClick={() => handleQuickRecharge(value, priceId)}
+                    className="px-3 py-1.5 rounded-lg text-[12px] transition-colors border border-[#1E2A4A] text-[#8892A4] hover:bg-[#B8860B] hover:text-black hover:border-[#B8860B] disabled:opacity-50"
                   >
-                    ${val}
+                    {loadingFunds ? '...' : label}
                   </button>
                 ))}
               </div>
@@ -149,7 +193,7 @@ export default function SettingsBilling({
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={handleAddFunds}
+                  onClick={handleCustomRecharge}
                   disabled={loadingFunds || !amount}
                   className="flex-1 py-2 bg-[#B8860B] hover:bg-[#A07710] disabled:opacity-50 text-black font-semibold text-[13px] rounded-lg transition-colors"
                 >
@@ -189,29 +233,40 @@ export default function SettingsBilling({
                     Activo
                   </span>
                 )}
+                {!subscription && (
+                  <span className="text-[10px] text-[#4A5568] font-semibold px-2 py-0.5 bg-[#1E2A4A] rounded uppercase tracking-wider">
+                    Sin plan
+                  </span>
+                )}
               </div>
               <p className="text-[22px] text-[#B8860B] font-semibold">{planPrice}</p>
               {periodEnd && (
                 <p className="text-[12px] text-[#4A5568]">Próxima renovación: {periodEnd}</p>
               )}
+              {!subscription && (
+                <p className="text-[12px] text-[#4A5568]">Sin suscripción activa</p>
+              )}
             </div>
           </div>
 
           <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => toast('Próximamente — el cambio de plan estará disponible pronto.')}
-              className="px-4 py-2 border border-[#1E2A4A] hover:border-[#4A5568] text-[13px] text-[#8892A4] hover:text-white rounded-lg transition-colors"
-            >
-              Cambiar plan
-            </button>
-            <button
-              type="button"
-              onClick={() => toast('Próximamente — escríbenos a hola@reason.dev para hablar con ventas.')}
-              className="px-4 py-2 border border-[#1E2A4A] hover:border-[#4A5568] text-[13px] text-[#8892A4] hover:text-white rounded-lg transition-colors"
-            >
-              Hablar con ventas
-            </button>
+            {subscription ? (
+              <button
+                type="button"
+                onClick={handlePortal}
+                disabled={loadingPortal}
+                className="px-4 py-2 bg-[#B8860B] hover:bg-[#A07710] disabled:opacity-50 text-black font-semibold text-[13px] rounded-lg transition-colors"
+              >
+                {loadingPortal ? 'Abriendo...' : 'Gestionar suscripción'}
+              </button>
+            ) : (
+              <Link
+                href="/settings/planes"
+                className="px-4 py-2 bg-[#B8860B] hover:bg-[#A07710] text-black font-semibold text-[13px] rounded-lg transition-colors"
+              >
+                Ver planes →
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -220,21 +275,28 @@ export default function SettingsBilling({
       <section className="space-y-3">
         <p className="text-[11px] text-[#B8860B] uppercase tracking-[2px] font-semibold">Historial de consumo</p>
         <div className="bg-[#0D1535] border border-[#1E2A40] rounded-lg overflow-hidden">
-          <div className="flex items-center gap-4 px-5 py-3 border-b border-[#1E2A4A]">
-            <span className="w-24 text-[10px] text-[#4A5568] uppercase tracking-wider">Fecha</span>
-            <span className="flex-1 text-[10px] text-[#4A5568] uppercase tracking-wider">Proyecto · Actividad · Tokens</span>
-            <span className="w-16 text-[10px] text-[#4A5568] uppercase tracking-wider text-right">Costo</span>
+          <div className="grid grid-cols-[80px_1fr_120px_64px] gap-0 px-5 py-3 border-b border-[#1E2A4A]">
+            <span className="text-[10px] text-[#4A5568] uppercase tracking-wider">Fecha</span>
+            <span className="text-[10px] text-[#4A5568] uppercase tracking-wider">Actividad</span>
+            <span className="text-[10px] text-[#4A5568] uppercase tracking-wider">Proyecto</span>
+            <span className="text-[10px] text-[#4A5568] uppercase tracking-wider text-right">Costo</span>
           </div>
           {usage.length > 0 ? (
             usage.map(row => (
-              <div key={row.id} className="flex items-center gap-4 px-5 py-3 border-b border-[#1E2A4A]/50 last:border-b-0">
-                <span className="w-24 text-[12px] text-[#4A5568]">
+              <div
+                key={row.id}
+                className="grid grid-cols-[80px_1fr_120px_64px] gap-0 px-5 py-3 border-b border-[#1E2A4A]/50 last:border-b-0 hover:bg-[#0D1535]/80"
+              >
+                <span className="text-[12px] text-[#4A5568]">
                   {new Date(row.created_at).toLocaleDateString('es', { month: 'short', day: 'numeric' })}
                 </span>
-                <span className="flex-1 text-[12px] text-[#8892A4]">
-                  {row.activity ?? 'Actividad'} · {row.tokens_used.toLocaleString()} tokens
+                <span className="text-[12px] text-[#8892A4]">
+                  {ACTIVITY_LABELS[row.activity ?? ''] ?? row.activity ?? 'Actividad'}
                 </span>
-                <span className="w-16 text-[12px] text-[#8892A4] text-right">
+                <span className="text-[12px] text-[#4A5568] truncate">
+                  {row.project?.name ?? '—'}
+                </span>
+                <span className="text-[12px] text-[#8892A4] text-right">
                   ${Number(row.cost_usd).toFixed(2)}
                 </span>
               </div>
@@ -244,8 +306,8 @@ export default function SettingsBilling({
           )}
         </div>
         {usage.length > 0 && (
-          <p className="text-[12px] text-[#8B9DB7]">
-            Mostrando 1-{usage.length} · ← →
+          <p className="text-[12px] text-[#4A5568]">
+            Mostrando {usage.length} registro{usage.length !== 1 ? 's' : ''}
           </p>
         )}
       </section>
@@ -267,61 +329,78 @@ export default function SettingsBilling({
               </span>
             </div>
           ) : (
-            <span className="text-[14px] text-[#4A5568]">Sin método de pago registrado</span>
+            <span className="text-[14px] text-[#4A5568]">
+              {subscription ? 'Sin método de pago registrado' : 'Agrega un método de pago al suscribirte a un plan'}
+            </span>
           )}
-          <button
-            type="button"
-            onClick={() => toast(paymentMethod ? 'Próximamente — la cancelación de suscripción estará disponible pronto.' : 'Próximamente — los métodos de pago se configurarán en la siguiente versión.')}
-            className="text-[13px] text-[#E53E3E] hover:text-red-300 transition-colors"
-          >
-            {paymentMethod ? 'Cancelar suscripción' : 'Agregar método'}
-          </button>
+          {subscription && (
+            <button
+              type="button"
+              onClick={handlePortal}
+              disabled={loadingPortal}
+              className="text-[13px] text-[#8892A4] hover:text-white border border-[#1E2A4A] hover:border-[#4A5568] rounded-lg px-3 py-1.5 transition-colors disabled:opacity-50"
+            >
+              {loadingPortal ? 'Abriendo...' : 'Gestionar método de pago'}
+            </button>
+          )}
         </div>
-        {!paymentMethod && (
-          <button
-            type="button"
-            onClick={() => toast('Próximamente — los métodos de pago se configurarán en la siguiente versión.')}
-            className="text-[13px] text-[#B8860B] hover:text-[#D4A017] transition-colors"
-          >
-            + Agregar método de pago
-          </button>
-        )}
       </section>
 
       {/* FACTURAS */}
-      {invoices.length > 0 && (
-        <section className="space-y-3">
-          <p className="text-[11px] text-[#B8860B] uppercase tracking-[2px] font-semibold">Facturas</p>
-          <div className="bg-[#0D1535] border border-[#1E2A40] rounded-lg overflow-hidden">
-            <div className="flex items-center gap-4 px-5 py-3 border-b border-[#1E2A4A]">
-              <span className="w-24 text-[10px] text-[#4A5568] uppercase tracking-wider">Fecha</span>
-              <span className="flex-1 text-[10px] text-[#4A5568] uppercase tracking-wider">Concepto</span>
-              <span className="w-20 text-[10px] text-[#4A5568] uppercase tracking-wider text-right">Monto</span>
-              <span className="w-24 text-[10px] text-[#4A5568] uppercase tracking-wider text-right">Estado</span>
-            </div>
-            {invoices.map(inv => (
-              <div key={inv.id} className="flex items-center gap-4 px-5 py-3 border-b border-[#1E2A4A]/50 last:border-b-0">
-                <span className="w-24 text-[12px] text-[#4A5568]">
-                  {new Date(inv.created_at).toLocaleDateString('es', { day: 'numeric', month: 'short', year: '2-digit' })}
-                </span>
-                <span className="flex-1 text-[12px] text-[#8892A4]">{inv.concept ?? 'Suscripción'}</span>
-                <span className="w-20 text-[12px] text-white text-right">${Number(inv.amount_usd).toFixed(2)}</span>
-                <span className={`w-24 text-[11px] font-medium text-right ${
-                  inv.status === 'pagada' || inv.status === 'paid'
-                    ? 'text-green-400'
-                    : inv.status === 'pendiente' || inv.status === 'pending'
-                      ? 'text-[#B8860B]'
-                      : 'text-[#4A5568]'
-                }`}>
-                  {inv.status === 'pagada' || inv.status === 'paid' ? 'Pagada' :
-                   inv.status === 'pendiente' || inv.status === 'pending' ? 'Pendiente' :
-                   inv.status ?? '—'}
-                </span>
+      <section className="space-y-3">
+        <p className="text-[11px] text-[#B8860B] uppercase tracking-[2px] font-semibold">Facturas</p>
+        <div className="bg-[#0D1535] border border-[#1E2A40] rounded-lg overflow-hidden">
+          {invoices.length > 0 ? (
+            <>
+              <div className="grid grid-cols-[80px_1fr_72px_80px_40px] gap-0 px-5 py-3 border-b border-[#1E2A4A]">
+                <span className="text-[10px] text-[#4A5568] uppercase tracking-wider">Fecha</span>
+                <span className="text-[10px] text-[#4A5568] uppercase tracking-wider">Concepto</span>
+                <span className="text-[10px] text-[#4A5568] uppercase tracking-wider text-right">Monto</span>
+                <span className="text-[10px] text-[#4A5568] uppercase tracking-wider text-right">Estado</span>
+                <span className="w-10" />
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+              {invoices.map(inv => (
+                <div
+                  key={inv.id}
+                  className="grid grid-cols-[80px_1fr_72px_80px_40px] gap-0 px-5 py-3 border-b border-[#1E2A4A]/50 last:border-b-0 hover:bg-[#0D1535]/80"
+                >
+                  <span className="text-[12px] text-[#4A5568]">
+                    {new Date(inv.created_at).toLocaleDateString('es', { day: 'numeric', month: 'short', year: '2-digit' })}
+                  </span>
+                  <span className="text-[12px] text-[#8892A4]">{inv.concept ?? 'Suscripción'}</span>
+                  <span className="text-[12px] text-white text-right">${Number(inv.amount_usd).toFixed(2)}</span>
+                  <span className={`text-[11px] font-medium text-right ${
+                    inv.status === 'pagada' || inv.status === 'paid'
+                      ? 'text-green-400'
+                      : inv.status === 'pendiente' || inv.status === 'pending'
+                        ? 'text-[#B8860B]'
+                        : 'text-[#4A5568]'
+                  }`}>
+                    {inv.status === 'pagada' || inv.status === 'paid' ? 'Pagada' :
+                     inv.status === 'pendiente' || inv.status === 'pending' ? 'Pendiente' :
+                     inv.status ?? '—'}
+                  </span>
+                  <div className="flex items-center justify-end">
+                    {inv.pdf_url && (
+                      <a
+                        href={inv.pdf_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] text-[#B8860B] hover:text-[#D4A017] transition-colors"
+                        title="Descargar PDF"
+                      >
+                        PDF
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <div className="px-5 py-6 text-center text-[13px] text-[#4A5568]">Sin facturas</div>
+          )}
+        </div>
+      </section>
     </div>
   )
 }

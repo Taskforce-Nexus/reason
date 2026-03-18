@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import UserMenu from '@/components/dashboard/UserMenu'
+import LowBalanceBanner from '@/components/dashboard/LowBalanceBanner'
+import InsufficientFundsModal from '@/components/dashboard/InsufficientFundsModal'
 
 export default async function DashboardLayout({
   children,
@@ -19,9 +21,8 @@ export default async function DashboardLayout({
       .eq('user_id', user.id).eq('is_read', false),
   ])
 
-  const balanceFormatted = balance?.balance_usd != null
-    ? `$${Number(balance.balance_usd).toFixed(2)}`
-    : '$0.00'
+  const balanceValue = balance?.balance_usd != null ? Number(balance.balance_usd) : 0
+  const balanceFormatted = `$${balanceValue.toFixed(2)}`
 
   return (
     <div className="min-h-screen bg-[#0A1128]">
@@ -52,11 +53,16 @@ export default async function DashboardLayout({
             )}
           </button>
 
-          {/* Token balance */}
-          <div className="hidden sm:flex flex-col items-end">
-            <span className="text-white font-medium text-sm">{balanceFormatted}</span>
+          {/* Token balance — clickable, red if low */}
+          <Link
+            href="/settings/facturacion"
+            className="hidden sm:flex flex-col items-end hover:opacity-80 transition-opacity"
+          >
+            <span className={`font-medium text-sm ${balanceValue < 5 ? 'text-red-400' : 'text-white'}`}>
+              {balanceFormatted}
+            </span>
             <span className="text-[10px] text-[#8892A4]">disponible</span>
-          </div>
+          </Link>
 
           {/* User menu */}
           <UserMenu
@@ -68,8 +74,12 @@ export default async function DashboardLayout({
 
       {/* Content with header offset */}
       <div className="pt-14">
+        <LowBalanceBanner balance={balanceValue} />
         {children}
       </div>
+
+      {/* Global 402 modal */}
+      <InsufficientFundsModal />
     </div>
   )
 }
