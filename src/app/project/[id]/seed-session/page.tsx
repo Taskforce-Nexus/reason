@@ -3,7 +3,12 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import IncubadoraChat from '@/components/incubadora/IncubadoraChat'
 import SeedSessionFlow from '@/components/seed-session/SeedSessionFlow'
-import type { Project, Advisor, Cofounder } from '@/lib/types'
+import type { Project, Cofounder } from '@/lib/types'
+import type { SeedStep } from '@/components/seed-session/SeedSessionFlow'
+
+const VALID_SEED_STEPS: SeedStep[] = [
+  'entregables', 'cofounders', 'consejo_principal', 'especialistas', 'icps', 'consejo_listo',
+]
 
 export default async function SeedSessionPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -22,17 +27,21 @@ export default async function SeedSessionPage({ params }: { params: Promise<{ id
 
   // Si ya tiene founder_brief → SeedSessionFlow (Sesión de Consejo, pasos 2-7)
   if (project.founder_brief) {
-    const [{ data: advisors }, { data: cofounders }] = await Promise.all([
-      supabase.from('advisors').select('*').eq('is_native', true).order('created_at'),
-      supabase.from('cofounders').select('*').eq('is_native', true).order('created_at'),
-    ])
+    const { data: cofounders } = await supabase
+      .from('cofounders').select('*').eq('is_native', true).order('created_at')
+
+    // Determine initial step from persisted current_phase
+    const phase = (project as Project & { current_phase?: string }).current_phase
+    const initialStep: SeedStep = VALID_SEED_STEPS.includes(phase as SeedStep)
+      ? (phase as SeedStep)
+      : 'entregables'
 
     return (
       <SeedSessionFlow
         project={project as Project}
-        advisors={(advisors ?? []) as Advisor[]}
         cofounders={(cofounders ?? []) as Cofounder[]}
         userEmail={user.email ?? ''}
+        initialStep={initialStep}
       />
     )
   }

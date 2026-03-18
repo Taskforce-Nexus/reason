@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: STORY 4.4 COMPLETO — Export Center integrado con content_json. Flujo core completo: Semilla → Entregables → Sesión de Consejo → Export Center.
+Etapa actual: FIXES CRÍTICOS COMPLETOS — SeedSession: consejo auto-select, persistencia de paso en Supabase, ConsejoListo → sesion-consejo, botones primarios correctos en todos los pasos.
 
 ---
 
@@ -63,6 +63,19 @@ Etapa actual: STORY 4.4 COMPLETO — Export Center integrado con content_json. F
 - CofoundersPropuesta — botón Cambiar conectado a CofounderSwapDrawer ✓
 - ConsejoPrincipalPropuesta — botón Cambiar por card conectado a AdvisorSwapDrawer ✓
 - "Ver perfil" ya funcional en ConsejoPrincipalPropuesta, EspecialistasPropuesta, ICPsPropuesta ✓
+- Fix Part A — ConsejoPrincipalPropuesta muestra solo advisors del council (auto-select) ✓
+  - /api/council/auto-select: lee advisors_needed de entregables, mapea categorías, selecciona 5-7 nativos con niveles
+  - EntregablesPropuesta: llama auto-select al aprobar, pasa resultado via onCouncilReady
+  - SeedSessionFlow: councilAdvisors state, sin prop advisors de página
+  - seed-session/page.tsx: ya no carga todos los advisors del marketplace
+
+- Fix Part A+B — Persistencia de paso SeedSession + fixes críticos ✓
+  - SeedSessionFlow.advance(): actualiza projects.current_phase en Supabase con el siguiente paso
+  - seed-session/page.tsx: lee current_phase y pasa initialStep a SeedSessionFlow
+  - SeedSessionFlow: inicializa con initialStep (sin localStorage)
+  - ConsejoListo: router.push a /project/[id]/sesion-consejo (no a /project/[id])
+  - Botones primarios: CofoundersPropuesta, ConsejoPrincipalPropuesta, EspecialistasPropuesta, ICPsPropuesta → "Siguiente →"
+
 - Story 4.4 — Export Center integrado con content_json ✓
   - page.tsx: query actualizada (key_question, composition, deliverable_index, sin document_specs)
   - ExportCenter.tsx reescrito: tabla, drawer preview, Copiar JSON, estado vacío

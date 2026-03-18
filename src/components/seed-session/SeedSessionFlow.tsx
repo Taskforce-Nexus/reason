@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import type { Project, DocumentSpec, Advisor, Cofounder } from '@/lib/types'
+import { createClient } from '@/lib/supabase/client'
 import EntregablesPropuesta from './EntregablesPropuesta'
 import CofoundersPropuesta from './CofoundersPropuesta'
 import ConsejoPrincipalPropuesta from './ConsejoPrincipalPropuesta'
@@ -38,9 +39,9 @@ const STEP_NUMBERS: Record<SeedStep, number> = {
 
 interface Props {
   project: Project
-  advisors: Advisor[]
   cofounders: Cofounder[]
   userEmail: string
+  initialStep?: SeedStep
 }
 
 // Hat colors
@@ -54,48 +55,45 @@ export const HAT_COLORS: Record<string, string> = {
   naranja:  'bg-orange-500',
 }
 
-export default function SeedSessionFlow({ project, advisors, cofounders, userEmail }: Props) {
-  const STORAGE_KEY = `sesion_consejo_${project.id}`
+export default function SeedSessionFlow({ project, cofounders, userEmail, initialStep }: Props) {
+  const [currentStep, setCurrentStep] = useState<SeedStep>(initialStep ?? 'entregables')
 
-  const [currentStep, setCurrentStep] = useState<SeedStep>('entregables')
+  // Council advisors — populated by auto-select after approving deliverables
+  const [councilAdvisors, setCouncilAdvisors] = useState<Advisor[]>([])
 
   // Composed deliverables (set after /api/compose runs in EntregablesPropuesta)
   const [composedDeliverables, setComposedDeliverables] = useState<{ id: string; name: string }[]>([])
 
   // Selections across steps
-  const [acceptedDocIds,     setAcceptedDocIds]     = useState<string[]>([])
-  const [acceptedAdvIds,     setAcceptedAdvIds]     = useState<string[]>(advisors.map(a => a.id))
+  const [acceptedAdvIds,     setAcceptedAdvIds]     = useState<string[]>([])
   const [acceptedCofIds,     setAcceptedCofIds]     = useState<string[]>(
     cofounders.filter(c => c.role === 'constructivo' || c.role === 'critico').slice(0, 2).map(c => c.id)
   )
   const [acceptedSpecIds,    setAcceptedSpecIds]    = useState<string[]>(EXAMPLE_SPECIALISTS.map(s => s.id))
   const [acceptedPersonaIds, setAcceptedPersonaIds] = useState<string[]>(EXAMPLE_PERSONAS.map(p => p.id))
 
-  // Restore persisted step from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(`${STORAGE_KEY}_step`)
-      if (saved && STEPS.includes(saved as SeedStep)) {
-        setCurrentStep(saved as SeedStep)
-      }
-    } catch { /* localStorage unavailable */ }
-  }, [])
-
-  // Persist step on every change
-  useEffect(() => {
-    try { localStorage.setItem(`${STORAGE_KEY}_step`, currentStep) } catch { /* ignore */ }
-  }, [currentStep])
+  function handleCouncilReady(advisors: Advisor[]) {
+    setCouncilAdvisors(advisors)
+    setAcceptedAdvIds(advisors.map(a => a.id))
+  }
 
   const stepNum = STEP_NUMBERS[currentStep]
 
-  function advance() {
+  async function advance() {
     const idx = STEPS.indexOf(currentStep)
-    if (idx < STEPS.length - 1) setCurrentStep(STEPS[idx + 1])
+    if (idx < STEPS.length - 1) {
+      const nextStep = STEPS[idx + 1]
+      setCurrentStep(nextStep)
+      // Persist to Supabase so page reload resumes at correct step
+      try {
+        const supabase = createClient()
+        await supabase.from('projects').update({ current_phase: nextStep }).eq('id', project.id)
+      } catch { /* non-blocking */ }
+    }
   }
 
-  function clearStorage() {
-    try { localStorage.removeItem(`${STORAGE_KEY}_step`) } catch { /* ignore */ }
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  function clearStorage() {}
 
   const sharedProps = { project, stepNumber: stepNum, onNext: advance }
 
@@ -187,6 +185,7 @@ export default function SeedSessionFlow({ project, advisors, cofounders, userEma
           <EntregablesPropuesta
             {...sharedProps}
             onDeliverablesComposed={setComposedDeliverables}
+            onCouncilReady={handleCouncilReady}
           />
         )}
         {currentStep === 'cofounders' && (
@@ -200,7 +199,7 @@ export default function SeedSessionFlow({ project, advisors, cofounders, userEma
         {currentStep === 'consejo_principal' && (
           <ConsejoPrincipalPropuesta
             {...sharedProps}
-            advisors={advisors}
+            advisors={councilAdvisors}
             acceptedIds={acceptedAdvIds}
             onAcceptedChange={setAcceptedAdvIds}
           />
@@ -223,7 +222,7 @@ export default function SeedSessionFlow({ project, advisors, cofounders, userEma
           <ConsejoListo
             {...sharedProps}
             documentSpecs={composedDeliverables as unknown as DocumentSpec[]}
-            advisors={advisors.filter(a => acceptedAdvIds.includes(a.id))}
+            advisors={councilAdvisors.filter(a => acceptedAdvIds.includes(a.id))}
             cofounders={cofounders.filter(c => acceptedCofIds.includes(c.id))}
             specialistCount={acceptedSpecIds.length}
             personaCount={acceptedPersonaIds.length}

@@ -33,7 +33,7 @@ export default function ConsejoListo({ project, documentSpecs, advisors, cofound
       })
     } catch { /* non-blocking */ }
     onComplete?.()
-    router.push(`/project/${project.id}`)
+    router.push(`/project/${project.id}/sesion-consejo`)
   }
 
   const cofounderPair = [

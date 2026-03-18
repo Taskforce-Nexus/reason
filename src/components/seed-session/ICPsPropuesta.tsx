@@ -192,7 +192,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
           disabled={loading}
           className="flex-1 bg-[#B8860B] hover:bg-[#b8963f] text-[#0A1128] font-semibold text-sm py-3 rounded-xl transition-colors disabled:opacity-40"
         >
-          {loading ? 'Guardando...' : 'Agregar perspectivas →'}
+          {loading ? 'Guardando...' : 'Siguiente →'}
         </button>
         <button
           type="button"

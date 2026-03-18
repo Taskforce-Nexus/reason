@@ -175,7 +175,7 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
           disabled={loading}
           className="w-full bg-[#B8860B] hover:bg-[#b8963f] text-[#0A1128] font-semibold text-sm py-3 rounded-xl transition-colors disabled:opacity-40"
         >
-          {loading ? 'Guardando...' : 'Entendido, continuar →'}
+          {loading ? 'Guardando...' : 'Siguiente →'}
         </button>
       </div>
     </main>
