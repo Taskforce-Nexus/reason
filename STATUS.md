@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: TESTS E2E COMPLETOS — Story 4.8 ejecutada. 9/9 tests PASS en full-flow.spec.ts. Playwright 1.58.2 con Chromium. Usuario test: e2e@reason.test. Screenshots generados para todos los pasos. 2 warnings documentados (no son bugs de código).
+Etapa actual: FIX 5 BUGS BLOQUEANTES — ConsejoListo lee Supabase directo (advisors/cofounders/specialists/personas/deliverables). generate route max_tokens 4000 para batch. ICPsPropuesta error state + retry. EntregablesPropuesta handleAdd muestra error. Botones "Pedir otro" con estilo gold ghost.
 
 ---
 

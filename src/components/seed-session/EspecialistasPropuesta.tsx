@@ -195,7 +195,7 @@ export default function EspecialistasPropuesta({ project, acceptedIds, onAccepte
                 type="button"
                 onClick={handleRequestMore}
                 disabled={generating}
-                className="mt-3 text-xs text-[#8892A4] hover:text-[#B8860B] transition-colors disabled:opacity-50"
+                className="mt-3 text-xs text-[#B8860B] border border-[#B8860B]/30 rounded px-3 py-1.5 hover:bg-[#B8860B]/10 transition-colors disabled:opacity-50"
               >
                 {generating ? 'Generando...' : '+ Pedir otro especialista'}
               </button>

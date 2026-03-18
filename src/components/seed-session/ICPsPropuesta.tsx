@@ -34,28 +34,38 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
   const [loading, setLoading] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
+  const [initError, setInitError] = useState(false)
   const [personas, setPersonas] = useState<PersonaItem[]>([])
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
-  // Generate initial set on mount
-  useEffect(() => {
-    async function generateInitial() {
-      setInitialLoading(true)
-      try {
-        const res = await fetch('/api/seed-session/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'buyer_persona', projectId: project.id, count: 4 }),
-        })
-        const data = await res.json()
+  // Generate initial set on mount (also used for retry)
+  async function generateInitial() {
+    setInitialLoading(true)
+    setInitError(false)
+    try {
+      const res = await fetch('/api/seed-session/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'buyer_persona', projectId: project.id, count: 4 }),
+      })
+      const data = await res.json()
+      if (data.error || !data.items) {
+        console.error('[ICPsPropuesta] generate error:', data.error)
+        setInitError(true)
+      } else {
         const items: PersonaItem[] = data.items ?? []
         setPersonas(items)
-        // Start with all accepted
         onAcceptedChange(items.map(p => p.id))
-      } catch { /* non-blocking */ }
-      setInitialLoading(false)
+      }
+    } catch (e) {
+      console.error('[ICPsPropuesta] fetch error:', e)
+      setInitError(true)
     }
-    generateInitial()
+    setInitialLoading(false)
+  }
+
+  useEffect(() => {
+    void generateInitial()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.id])
 
@@ -133,7 +143,9 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
           <div className="max-w-2xl bg-[#0D1535] border border-[#1E2A4A] rounded-2xl rounded-tl-sm px-5 py-4 text-sm text-[#e0e0e5] leading-relaxed">
             {initialLoading
               ? 'Construyendo los perfiles de clientes relevantes para tu proyecto...'
-              : `Construí estos perfiles de cliente basándome en tu proyecto. Representan los arquetipos más relevantes para tu mercado objetivo. Confirma los que apliquen o descarta los que no encajen. Haz clic en "Ver perfil completo" para ver jobs-to-be-done, pains y más.`}
+              : initError
+              ? 'Hubo un problema al generar los perfiles. Puedes reintentar a continuación.'
+              : `Construí estos perfiles de cliente basándome en tu proyecto. Representan los arquetipos más relevantes para tu mercado objetivo. Confirma los que apliquen o descarta los que no encajen. Haz clic en "Ver perfil" para ver jobs-to-be-done, pains y más.`}
           </div>
         </div>
 
@@ -150,8 +162,22 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
           </div>
         )}
 
+        {/* Error state with retry */}
+        {!initialLoading && initError && (
+          <div className="bg-[#0D1535] border border-red-500/20 rounded-xl px-5 py-6 text-center space-y-3">
+            <p className="text-sm text-[#8892A4]">No pudimos generar las perspectivas de cliente.</p>
+            <button
+              type="button"
+              onClick={() => void generateInitial()}
+              className="text-xs text-[#B8860B] border border-[#B8860B]/30 rounded px-3 py-1.5 hover:bg-[#B8860B]/10 transition-colors"
+            >
+              Reintentar
+            </button>
+          </div>
+        )}
+
         {/* Personas list */}
-        {!initialLoading && (
+        {!initialLoading && !initError && (
           <div>
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs text-[#B8860B] uppercase tracking-wider font-medium">
@@ -270,7 +296,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
                 type="button"
                 onClick={handleRequestMore}
                 disabled={generating}
-                className="mt-3 text-xs text-[#8892A4] hover:text-[#B8860B] transition-colors disabled:opacity-50"
+                className="mt-3 text-xs text-[#B8860B] border border-[#B8860B]/30 rounded px-3 py-1.5 hover:bg-[#B8860B]/10 transition-colors disabled:opacity-50"
               >
                 {generating ? 'Generando...' : '+ Pedir otra perspectiva'}
               </button>

@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
 
     const system = type === 'specialist' ? SPECIALIST_SYSTEM : PERSONA_SYSTEM
 
-    const maxTokens = batchCount === 1 ? 500 : 1800
+    const maxTokens = batchCount === 1 ? 600 : 4000
 
     const raw = await callClaude({
       system,

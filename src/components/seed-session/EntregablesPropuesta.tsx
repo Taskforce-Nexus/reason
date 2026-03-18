@@ -50,6 +50,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
   const [addingOpen, setAddingOpen] = useState(false)
   const [addText, setAddText] = useState('')
   const [addLoading, setAddLoading] = useState(false)
+  const [addError, setAddError] = useState<string | null>(null)
 
   // Recompose all
   const [recomposeOpen, setRecomposeOpen] = useState(false)
@@ -171,6 +172,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
     if (!text) return
     setAddLoading(true)
     setAddingOpen(false)
+    setAddError(null)
     try {
       const res = await fetch('/api/compose/edit', {
         method: 'POST',
@@ -186,8 +188,14 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
       if (data.deliverable) {
         setDeliverables(prev => [...prev, data.deliverable])
         setExpanded(data.deliverable.id)
+      } else {
+        console.error('[EntregablesPropuesta] handleAdd error:', data.error)
+        setAddError(data.error ?? 'No se pudo agregar el entregable. Intenta de nuevo.')
       }
-    } catch { /* non-blocking */ }
+    } catch (e) {
+      console.error('[EntregablesPropuesta] handleAdd fetch error:', e)
+      setAddError('Error de conexión. Intenta de nuevo.')
+    }
     setAddLoading(false)
     setAddText('')
   }
@@ -426,6 +434,20 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
                 </div>
               )}
             </div>
+
+            {/* Add error */}
+            {addError && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2.5 flex items-center justify-between gap-3">
+                <p className="text-xs text-red-400">{addError}</p>
+                <button
+                  type="button"
+                  onClick={() => setAddError(null)}
+                  className="text-xs text-red-400/60 hover:text-red-400 transition-colors shrink-0"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
 
             {/* ── Add entregable ────────────────────────────────────── */}
             <div className="mt-3 space-y-2">
