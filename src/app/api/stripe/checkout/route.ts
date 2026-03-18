@@ -1,5 +1,6 @@
 import { getStripe } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
@@ -8,42 +9,79 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: 'No auth' }, { status: 401 })
 
   const body = await req.json()
-  const { mode, priceId, amount } = body
+  // Support both naming conventions: price_id (spec) and priceId (legacy)
+  const { mode, price_id, priceId, amount } = body
+  const resolvedPriceId: string | undefined = price_id || priceId
   const stripe = getStripe()
+  const admin = createAdminClient()
+
+  // Buscar o crear Stripe customer usando profiles.stripe_customer_id
+  const { data: profile } = await admin
+    .from('profiles')
+    .select('stripe_customer_id')
+    .eq('id', user.id)
+    .single()
+
+  let customerId = profile?.stripe_customer_id as string | undefined
+  if (!customerId) {
+    const customer = await stripe.customers.create({
+      email: user.email!,
+      metadata: { supabase_user_id: user.id },
+    })
+    customerId = customer.id
+    await admin.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id)
+  }
 
   let session
 
   if (mode === 'payment') {
-    const num = parseFloat(amount)
-    if (!num || num < 5 || num > 1000) {
-      return NextResponse.json({ error: 'Monto entre $5 y $1,000' }, { status: 400 })
+    if (resolvedPriceId) {
+      // Recarga con precio predefinido (token_10, token_25, etc.)
+      session = await stripe.checkout.sessions.create({
+        customer: customerId,
+        mode: 'payment',
+        line_items: [{ price: resolvedPriceId, quantity: 1 }],
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+        metadata: { supabase_user_id: user.id },
+      })
+    } else {
+      // Recarga con monto libre (legacy — $5–$1,000)
+      const num = parseFloat(amount)
+      if (!num || num < 5 || num > 1000) {
+        return NextResponse.json({ error: 'Monto entre $5 y $1,000' }, { status: 400 })
+      }
+      session = await stripe.checkout.sessions.create({
+        customer: customerId,
+        mode: 'payment',
+        line_items: [{
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: `Créditos Reason — $${num} USD`,
+              description: 'Saldo para usar en sesiones, consultoría y documentos.',
+            },
+            unit_amount: Math.round(num * 100),
+          },
+          quantity: 1,
+        }],
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true&amount=${num}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+        metadata: { supabase_user_id: user.id },
+      })
+    }
+  } else {
+    // Suscripción
+    if (!resolvedPriceId) {
+      return NextResponse.json({ error: 'price_id required for subscription' }, { status: 400 })
     }
     session = await stripe.checkout.sessions.create({
-      customer_email: user.email!,
-      mode: 'payment',
-      line_items: [{
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: `Créditos Reason — $${num} USD`,
-            description: 'Saldo para usar en sesiones, consultoría y documentos.',
-          },
-          unit_amount: Math.round(num * 100),
-        },
-        quantity: 1,
-      }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success&amount=${num}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/facturacion?checkout=cancel`,
-      metadata: { userId: user.id, plan: 'tokens', amount: String(num) },
-    })
-  } else {
-    session = await stripe.checkout.sessions.create({
-      customer_email: user.email!,
+      customer: customerId,
       mode: 'subscription',
-      line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?checkout=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/planes?checkout=cancel`,
-      metadata: { userId: user.id, plan: 'pro' },
+      line_items: [{ price: resolvedPriceId, quantity: 1 }],
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing?canceled=true`,
+      metadata: { supabase_user_id: user.id },
     })
   }
 

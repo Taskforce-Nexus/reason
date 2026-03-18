@@ -71,8 +71,10 @@ STRIPE_WEBHOOK_SECRET=         # whsec_... — webhook signing secret
 | `POST /api/extract` | Extraer 5 documentos Reason Framework (5 llamadas Claude en oleadas de 2) |
 | `GET/POST /api/advisors` | CRUD de asesores |
 | `POST /api/voice/correct` | Corrección de transcripción española con Haiku — recibe `{ text }`, devuelve `{ corrected }` |
-| `POST /api/stripe/checkout` | Crea sesión Stripe Checkout (subscription o payment) |
-| `POST /api/stripe/webhook` | Webhook Stripe — actualiza subscriptions + token_balances |
+| `POST /api/stripe/checkout` | Crea sesión Stripe Checkout (subscription o payment) — busca o crea customer en profiles |
+| `POST /api/stripe/webhook` | Webhook Stripe — checkout.session.completed, subscription.updated/deleted, invoice.paid |
+| `POST /api/stripe/portal` | Stripe Billing Portal — gestión de suscripción por el usuario |
+| `POST /api/stripe/usage` | Trackeo interno de consumo de tokens — descuenta de token_balances + registra en token_usages |
 
 ---
 

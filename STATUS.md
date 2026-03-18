@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: FIX 5 BUGS BLOQUEANTES — ConsejoListo lee Supabase directo (advisors/cofounders/specialists/personas/deliverables). generate route max_tokens 4000 para batch. ICPsPropuesta error state + retry. EntregablesPropuesta handleAdd muestra error. Botones "Pedir otro" con estilo gold ghost.
+Etapa actual: STRIPE BACKEND COMPLETO (Story 5.0) — lib/stripe.ts + PRICE_IDS + PLAN_LIMITS. checkout actualizado con profiles lookup. webhook con invoice.paid + plan desde metadata. portal route. usage route. Migration token_usages. .env.example con STRIPE_PRICE_*.
 
 ---
 

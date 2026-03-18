@@ -21,23 +21,42 @@ export async function POST(req: Request) {
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object as Stripe.Checkout.Session
-      const userId = session.metadata?.userId
+      const userId = session.metadata?.supabase_user_id || session.metadata?.userId
       if (!userId) break
 
-      if (session.mode === 'subscription') {
+      if (session.mode === 'subscription' && session.subscription) {
+        // Fetch actual subscription to get period dates and tier from price metadata
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const sub = await stripe.subscriptions.retrieve(session.subscription as string) as any
+        const tier = sub.items?.data[0]?.price?.metadata?.tier || 'core'
+        const periodStart = sub.current_period_start
+          ? new Date(sub.current_period_start * 1000).toISOString()
+          : new Date().toISOString()
+        const periodEnd = sub.current_period_end
+          ? new Date(sub.current_period_end * 1000).toISOString()
+          : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+
         await admin.from('subscriptions').upsert({
           user_id: userId,
-          plan: session.metadata?.plan || 'core',
+          plan: tier,
           status: 'activa',
           stripe_subscription_id: session.subscription as string,
           stripe_customer_id: session.customer as string,
-          current_period_start: new Date().toISOString(),
-          current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          current_period_start: periodStart,
+          current_period_end: periodEnd,
+          price_monthly: (sub.items?.data[0]?.price?.unit_amount ?? 0) / 100,
         }, { onConflict: 'user_id' })
+
+        // Save stripe_customer_id to profiles for future checkout sessions
+        await admin.from('profiles')
+          .update({ stripe_customer_id: session.customer as string })
+          .eq('id', userId)
       }
 
       if (session.mode === 'payment') {
         const amount = (session.amount_total || 0) / 100
+
+        // Actualizar saldo de tokens
         const { data: balance } = await admin.from('token_balances')
           .select('balance_usd')
           .eq('user_id', userId)
@@ -47,14 +66,51 @@ export async function POST(req: Request) {
           user_id: userId,
           balance_usd: (balance?.balance_usd || 0) + amount,
         }, { onConflict: 'user_id' })
+
+        // Registrar invoice
+        await admin.from('invoices').insert({
+          user_id: userId,
+          concept: `Recarga de saldo — $${amount} USD`,
+          amount_usd: amount,
+          status: 'pagada',
+        })
       }
       break
     }
 
-    case 'customer.subscription.updated':
+    case 'customer.subscription.updated': {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const sub = event.data.object as any
+      const { data: existing } = await admin.from('subscriptions')
+        .select('user_id')
+        .eq('stripe_subscription_id', sub.id)
+        .single()
+
+      if (existing) {
+        await admin.from('subscriptions').update({
+          status: sub.status === 'active' ? 'activa' : sub.status === 'canceled' ? 'cancelada' : sub.status,
+          current_period_start: sub.current_period_start
+            ? new Date(sub.current_period_start * 1000).toISOString() : undefined,
+          current_period_end: sub.current_period_end
+            ? new Date(sub.current_period_end * 1000).toISOString() : undefined,
+          cancel_at: sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null,
+        }).eq('stripe_subscription_id', sub.id)
+      }
+      break
+    }
+
     case 'customer.subscription.deleted': {
       const sub = event.data.object as Stripe.Subscription
-      const customerId = sub.customer as string
+      await admin.from('subscriptions').update({
+        status: 'cancelada',
+        cancel_at: new Date().toISOString(),
+      }).eq('stripe_subscription_id', sub.id)
+      break
+    }
+
+    case 'invoice.paid': {
+      const inv = event.data.object as Stripe.Invoice
+      const customerId = inv.customer as string
 
       const { data: subscription } = await admin.from('subscriptions')
         .select('user_id')
@@ -62,10 +118,13 @@ export async function POST(req: Request) {
         .single()
 
       if (subscription) {
-        await admin.from('subscriptions').update({
-          status: sub.status === 'active' ? 'activa' : 'cancelada',
-          cancel_at: sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null,
-        }).eq('user_id', subscription.user_id)
+        await admin.from('invoices').insert({
+          user_id: subscription.user_id,
+          concept: `Suscripción Reason — ${inv.lines?.data[0]?.description || 'mensual'}`,
+          amount_usd: (inv.amount_paid || 0) / 100,
+          status: 'pagada',
+          pdf_url: inv.invoice_pdf,
+        })
       }
       break
     }
