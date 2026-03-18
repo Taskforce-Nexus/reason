@@ -25,9 +25,9 @@ export async function POST(req: NextRequest) {
     { onConflict: 'id' }
   )
 
-  // Create token_balances — column is `balance_usd`
+  // Create token_balances — column is `balance_usd`; $5 welcome credit
   await supabase.from('token_balances').upsert(
-    { user_id, balance_usd: 0 },
+    { user_id, balance_usd: 5.00 },
     { onConflict: 'user_id' }
   )
 

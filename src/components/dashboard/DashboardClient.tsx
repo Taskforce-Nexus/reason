@@ -54,16 +54,51 @@ export default function DashboardClient({ projects }: Props) {
       </div>
 
       {projects.length === 0 ? (
-        <div className="text-center py-24 border border-dashed border-[#1E2A4A] rounded-xl">
-          <p className="text-[#8892A4] mb-2">Aún no tienes proyectos.</p>
-          <p className="text-sm text-[#4A5568] mb-6">Crea tu primero y deja que Nexo te guíe.</p>
+        <div className="flex flex-col items-center py-20">
+          {/* Welcome headline */}
+          <h1 className="font-outfit font-bold text-[32px] text-white text-center mb-3">
+            Bienvenido a Reason
+          </h1>
+          <p className="text-[15px] text-[#8892A4] text-center max-w-md mb-8 leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+            Tu consultor estratégico con consejo IA. Crea tu primer proyecto para empezar.
+          </p>
           <button
             type="button"
             onClick={() => setShowModal(true)}
-            className="bg-[#B8860B] hover:bg-[#a07509] text-white font-semibold px-5 h-10 rounded-lg text-sm transition-colors font-outfit"
+            className="bg-[#B8860B] hover:bg-[#a07509] text-[#0A1128] font-bold px-8 h-12 rounded-xl text-[15px] transition-colors font-outfit mb-14"
           >
-            + Nuevo Proyecto
+            Crear mi primer proyecto →
           </button>
+
+          {/* Use cases */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl">
+            {[
+              {
+                icon: '🚀',
+                title: 'Lanzar un negocio',
+                desc: 'De la idea al plan estructurado. Nexo extrae tu visión y compone los entregables que necesitas para arrancar.',
+              },
+              {
+                icon: '📈',
+                title: 'Estrategia de crecimiento',
+                desc: 'Define el siguiente movimiento con tu consejo IA. Analiza opciones, identifica riesgos y toma decisiones con claridad.',
+              },
+              {
+                icon: '🔍',
+                title: 'Evaluar una oportunidad',
+                desc: 'Somete una idea o mercado a debate. Tu consejo analiza desde múltiples ángulos antes de que inviertas tiempo o capital.',
+              },
+            ].map(item => (
+              <div
+                key={item.title}
+                className="bg-[#0D1535] border border-[#1E2A4A] rounded-xl px-5 py-5 space-y-2"
+              >
+                <span className="text-2xl">{item.icon}</span>
+                <p className="font-outfit font-semibold text-[14px] text-white">{item.title}</p>
+                <p className="text-[12px] text-[#8892A4] leading-relaxed" style={{ fontFamily: 'Open Sans, sans-serif' }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <div className="flex flex-col gap-3">

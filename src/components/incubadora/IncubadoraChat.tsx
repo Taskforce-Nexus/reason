@@ -59,6 +59,7 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   const [semillaComplete, setSemillaComplete] = useState(!!project.founder_brief)
   const [briefExpanded, setBriefExpanded] = useState(false)
   const [coveredTopics, setCoveredTopics] = useState<number[]>([])
+  const [showOnboardingTip, setShowOnboardingTip] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<any>(null)
@@ -68,6 +69,19 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !localStorage.getItem('nexo-onboarding-tip-seen')) {
+      setShowOnboardingTip(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showOnboardingTip && messages.some(m => m.role === 'user')) {
+      localStorage.setItem('nexo-onboarding-tip-seen', '1')
+      setShowOnboardingTip(false)
+    }
+  }, [messages, showOnboardingTip])
 
   useEffect(() => {
     // Server page is dynamic — it always passes fresh messages from DB.
@@ -532,6 +546,24 @@ export default function IncubadoraChat({ project, conversation, userEmail }: Pro
         ) : (
         <main className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-8 py-6 space-y-6">
+            {showOnboardingTip && (
+              <div className="flex items-start gap-3 bg-[#1E2A4A] border border-[#B8860B]/30 rounded-xl px-4 py-3">
+                <div className="w-7 h-7 rounded-full bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] text-xs font-bold shrink-0 mt-0.5">N</div>
+                <p className="flex-1 text-[13px] text-[#F8F8F8] leading-relaxed">
+                  Cuéntale a Nexo sobre tu proyecto o decisión. Entre más contexto le des, mejores serán los entregables que componga para ti.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    localStorage.setItem('nexo-onboarding-tip-seen', '1')
+                    setShowOnboardingTip(false)
+                  }}
+                  className="text-[#4A5568] hover:text-[#8892A4] transition-colors text-sm leading-none mt-0.5 shrink-0"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
             {messages.map((msg, i) => (
               <div key={i} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {msg.role === 'assistant' && (
