@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: STORY 4.7 COMPLETO — ProjectView tiles reflejan estado real del proyecto. Pipeline progress visual. Sin datos hardcodeados. Flujo core completo: Semilla → Entregables → Consejo → Sesión → Export.
+Etapa actual: BUGS CRÍTICOS POST-DEMO CORREGIDOS — 5 fixes aplicados tras demo con Porfirio (Motive). Auto-select funcional. ConsejoListo con cards estructuradas. Sesión de Consejo guarda contra docs sin composition. ProjectView navega correctamente.
 
 ---
 
