@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-18
-Etapa actual: STORY 5.8 COMPLETO + BUG-C FIXED. safeFetch en 6 componentes. Decisions 50-55 en aurum_decisions.md. Entidades actualizadas en reason_entities.md. Specialists: 479→214 (265 eliminados). Cofounders: 124 (todos en uso por councils, sin cambio). BUG-C fixed: checkout redirect → /settings/facturacion. Pendiente: BUG-A (Restricted Key), BUG-B (STRIPE_PRICE_* env vars).
+Etapa actual: STORY 5.9 COMPLETO. Marketplace: advisors=1371, cofounders=124, specialists=325, buyer_personas=338, total=2158 (todos superan targets). Onboarding: empty state Dashboard rediseñado, tip banner en SeedSession, $5 welcome credit, profile creation verificado. Pendiente: BUG-A (Restricted Key), BUG-B (STRIPE_PRICE_* env vars).
 
 ---
 

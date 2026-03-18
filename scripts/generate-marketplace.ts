@@ -91,7 +91,7 @@ const PERSONA_SEGMENTS = [
   { segment: 'CTO / Tech Lead', count: 15, context: 'Architecture decisions, team scaling, build vs buy' },
   { segment: 'CMO / Marketing Lead', count: 15, context: 'Growth strategy, brand, channels, budget allocation' },
   { segment: 'CFO / Finance Lead', count: 10, context: 'Fundraising, financial planning, cost optimization' },
-  { segment: 'Consumidor B2C', count: 40, context: 'End users across verticals: fintech, health, education, ecommerce, food, travel, entertainment' },
+  { segment: 'Consumidor B2C', count: 20, context: 'End users across verticals: fintech, health, education, ecommerce, food, travel, entertainment' },
   { segment: 'Comprador B2B enterprise', count: 20, context: 'VP/Director level buying software, services, or solutions for their org' },
   { segment: 'Freelancer / Independiente', count: 15, context: 'Solo operator, multiple clients, managing own business' },
 ]

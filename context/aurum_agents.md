@@ -33,11 +33,11 @@ Nexo filtra y recomienda según propósito + Resumen del usuario.
 
 | Tabla | Objetivo | Estado DB (2026-03-18) |
 |---|---|---|
-| `advisors` | 1,000 | **340** — estrategia completa, resto parcial |
+| `advisors` | 1,000 | **1,371** — COMPLETO (excede objetivo por runs concurrentes) |
 | `cofounders` | 40 (20+20) | **124** — todos en uso por councils activos, no recortados |
-| `specialists` | 200 | **214** — 200 templates libres + 14 project-linked/confirmed |
-| `buyer_personas` | 200 | **0** — pendiente |
-| **Total** | **1,440** | **678** |
+| `specialists` | 200 | **325** — COMPLETO (excede objetivo) |
+| `buyer_personas` | 200 | **338** — COMPLETO (excede objetivo, B2C reintentado con count=20) |
+| **Total** | **1,440** | **2,158** |
 
 Script: `scripts/generate-marketplace.ts`
 Modelo: `claude-sonnet-4-20250514` (strong tier)
