@@ -59,13 +59,14 @@ export async function POST(req: NextRequest) {
   // Fallback: if fewer than 5, pull any native advisors to fill
   if ((advisors ?? []).length < 5) {
     const existingIds = (advisors ?? []).map(a => a.id)
-    const { data: fallback } = await supabase
+    let fallbackQuery = supabase
       .from('advisors')
       .select('*')
       .eq('is_native', true)
-      .not('id', 'in', existingIds.length > 0 ? `(${existingIds.join(',')})` : '(null)')
-      .limit(7 - (advisors ?? []).length)
-
+    if (existingIds.length > 0) {
+      fallbackQuery = fallbackQuery.not('id', 'in', `(${existingIds.join(',')})`)
+    }
+    const { data: fallback } = await fallbackQuery.limit(7 - (advisors ?? []).length)
     advisors = [...(advisors ?? []), ...(fallback ?? [])]
   }
 

@@ -32,10 +32,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
       .select('id, status, council_advisors(level, advisors(id, name, specialty))')
       .eq('project_id', id)
       .maybeSingle(),
-    // Documents with status (content_json omitted — use status to infer)
+    // Documents with status and composition presence
     supabase
       .from('project_documents')
-      .select('id, name, status, deliverable_index, key_question')
+      .select('id, name, status, deliverable_index, key_question, composition')
       .eq('project_id', id)
       .order('deliverable_index', { ascending: true }),
     // Most recent session
@@ -64,10 +64,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   const docsTotal = docs.length
   const docsPendiente = docs.filter(d => d.status === 'pendiente').length
   const docsReady = docs.filter(d => d.status === 'generado' || d.status === 'aprobado').length
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const docsWithComposition = docs.filter(d => !!(d as any).composition).length
 
   // Pipeline state
   const hasSemilla = !!p.founder_brief
-  const hasEntregables = docsTotal > 0
+  const hasEntregables = docsWithComposition > 0
   const hasCouncil = councilAdvisors.length > 0
   const sessionActiva = session?.status === 'activa'
   const sessionCompleta = session?.status === 'completada'

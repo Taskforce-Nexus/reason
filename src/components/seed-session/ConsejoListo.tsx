@@ -56,10 +56,40 @@ export default function ConsejoListo({ project, documentSpecs, advisors, cofound
         <div className="bg-[#0D1535] border border-[#1E2A4A] rounded-xl divide-y divide-[#1E2A4A]">
           {/* Consejo principal */}
           <div className="px-5 py-4">
-            <p className="text-xs text-[#B8860B] uppercase tracking-wider font-medium mb-2">Tu Consejo</p>
-            <p className="text-xs text-[#8892A4] leading-relaxed">
-              {advisors.map(a => a.name).join(', ')}
+            <p className="text-xs text-[#B8860B] uppercase tracking-wider font-medium mb-3">
+              Tu Consejo <span className="text-[#8892A4] font-normal normal-case">({advisors.length} consejeros)</span>
             </p>
+            {advisors.length === 0 ? (
+              <p className="text-xs text-[#3A4560] italic">Sin consejeros seleccionados</p>
+            ) : (
+              <div className="space-y-2">
+                {(['lidera', 'apoya', 'observa'] as const).map(level => {
+                  const group = advisors.filter(a => a.level === level)
+                  if (!group.length) return null
+                  const levelLabel = level === 'lidera' ? 'LIDERA' : level === 'apoya' ? 'APOYA' : 'OBSERVA'
+                  const levelColor = level === 'lidera'
+                    ? 'bg-[#B8860B]/20 text-[#B8860B] border-[#B8860B]/30'
+                    : level === 'apoya'
+                    ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                    : 'bg-[#1E2A4A] text-[#8892A4] border-[#1E2A4A]'
+                  return (
+                    <div key={level}>
+                      {group.map(a => (
+                        <div key={a.id} className="flex items-center gap-2 py-1">
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded border font-medium shrink-0 ${levelColor}`}>
+                            {levelLabel}
+                          </span>
+                          <span className="text-xs text-white font-medium truncate">{a.name}</span>
+                          {a.specialty && (
+                            <span className="text-xs text-[#8892A4] truncate">{a.specialty}</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
 
           {/* Liderazgo / cofounders */}
@@ -97,10 +127,28 @@ export default function ConsejoListo({ project, documentSpecs, advisors, cofound
 
           {/* Entregables */}
           <div className="px-5 py-4">
-            <p className="text-xs text-[#B8860B] uppercase tracking-wider font-medium mb-2">Entregables</p>
-            <p className="text-xs text-[#8892A4]">
-              {documentSpecs.map(d => d.name).join(', ')}
+            <p className="text-xs text-[#B8860B] uppercase tracking-wider font-medium mb-2">
+              Entregables <span className="text-[#8892A4] font-normal normal-case">({documentSpecs.length})</span>
             </p>
+            {documentSpecs.length === 0 ? (
+              <p className="text-xs text-[#3A4560] italic">Sin entregables definidos</p>
+            ) : (
+              <div className="space-y-1.5">
+                {documentSpecs.map((d, i) => (
+                  <div key={d.id ?? i} className="flex items-start gap-2">
+                    <span className="text-[10px] text-[#B8860B] border border-[#B8860B]/30 rounded px-1 py-0.5 shrink-0 mt-0.5">{i + 1}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-white font-medium truncate">{d.name}</p>
+                      {'key_question' in d && (d as { key_question?: string }).key_question && (
+                        <p className="text-[10px] text-[#8892A4] leading-relaxed line-clamp-1 italic">
+                          {(d as { key_question: string }).key_question}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

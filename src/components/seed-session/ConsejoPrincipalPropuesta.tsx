@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Advisor, Project } from '@/lib/types'
 import { HAT_COLORS } from './SeedSessionFlow'
 import AdvisorProfileDrawer from './AdvisorProfileDrawer'
@@ -34,6 +34,11 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
   const [swapDrawer, setSwapDrawer] = useState<{ open: boolean; currentId: string }>({
     open: false, currentId: '',
   })
+
+  // Sync localAdvisors when prop updates (e.g., after page refresh loads from DB)
+  useEffect(() => {
+    if (advisors.length > 0) setLocalAdvisors(advisors)
+  }, [advisors])
 
   function handleAdvisorSwap(newAdvisor: Advisor) {
     setLocalAdvisors(prev => {

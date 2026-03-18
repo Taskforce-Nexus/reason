@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { Project, DocumentSpec, Advisor, Cofounder } from '@/lib/types'
 import { createClient } from '@/lib/supabase/client'
@@ -76,6 +76,30 @@ export default function SeedSessionFlow({ project, cofounders, userEmail, initia
     setCouncilAdvisors(advisors)
     setAcceptedAdvIds(advisors.map(a => a.id))
   }
+
+  // Load council from DB on mount — handles page refreshes mid-flow
+  useEffect(() => {
+    const supabase = createClient()
+    void (async () => {
+      try {
+        const { data: council } = await supabase
+          .from('councils')
+          .select('id, council_advisors(level, advisors(id, name, specialty, category, element, hats, bio, language, is_native, advisor_type, communication_style, created_at))')
+          .eq('project_id', project.id)
+          .maybeSingle()
+        if (!council) return
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const loaded = ((council as any).council_advisors ?? []).map((ca: any) => ({
+          ...(ca.advisors ?? {}),
+          level: ca.level as 'lidera' | 'apoya' | 'observa',
+        })) as Advisor[]
+        if (loaded.length > 0) {
+          setCouncilAdvisors(loaded)
+          setAcceptedAdvIds(loaded.map(a => a.id))
+        }
+      } catch { /* non-blocking */ }
+    })()
+  }, [project.id])
 
   const stepNum = STEP_NUMBERS[currentStep]
 
