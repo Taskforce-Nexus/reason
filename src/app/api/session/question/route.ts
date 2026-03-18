@@ -70,11 +70,11 @@ export async function POST(req: NextRequest) {
   const projectId = (phase.session as { project_id: string })?.project_id
   const { data: project } = await supabase
     .from('projects')
-    .select('founder_brief')
+    .select('founder_brief, nexo_custom_prompt')
     .eq('id', projectId)
     .single()
 
-  // 4. Load active advisors from council
+  // 4. Load active advisors from council (with system_prompts)
   const { data: councils } = await supabase
     .from('councils')
     .select('id')
@@ -82,28 +82,54 @@ export async function POST(req: NextRequest) {
     .single()
 
   let activeAdvisorsText = 'Sin consejeros activos en este turno.'
+  let cofoundersContext = ''
   if (councils) {
     const composition = doc.composition as { advisors_needed?: string[] } | null
     const advisorsNeeded = composition?.advisors_needed ?? []
 
     const { data: councilAdvisors } = await supabase
       .from('council_advisors')
-      .select('advisor:advisors(name, specialty, communication_style, bio)')
+      .select('advisor:advisors(id, name, specialty, communication_style, element, hats, system_prompt)')
       .eq('council_id', councils.id)
       .limit(3)
 
     if (councilAdvisors && councilAdvisors.length > 0) {
-      const advisorList = councilAdvisors
+      const advisorContexts = councilAdvisors
         .map(ca => {
-          const a = ca.advisor as unknown as { name: string; specialty: string; communication_style: string; bio: string } | null
+          const a = ca.advisor as unknown as { id: string; name: string; specialty: string; communication_style: string; element: string; hats: string[]; system_prompt: string | null } | null
           if (!a) return null
-          // Prefer advisors matching needed categories
-          return `- ${a.name} (${a.specialty}): ${a.communication_style}`
+          if (a.system_prompt) {
+            return `[CONSEJERO: ${a.name} — ${a.specialty}]\n${a.system_prompt}`
+          }
+          return `[CONSEJERO: ${a.name}]\nEspecialidad: ${a.specialty}. Estilo: ${a.communication_style}. Elemento: ${a.element}. Piensa desde: ${(a.hats || []).join(', ')}.`
         })
         .filter(Boolean)
-      activeAdvisorsText = advisorList.join('\n')
+      activeAdvisorsText = advisorContexts.join('\n\n---\n\n')
     } else if (advisorsNeeded.length > 0) {
       activeAdvisorsText = `Consejeros necesarios para este entregable: ${advisorsNeeded.join(', ')}`
+    }
+
+    // Load cofounders with system_prompts
+    const { data: councilCofounders } = await supabase
+      .from('council_cofounders')
+      .select('role, cofounder:cofounders(name, specialty, system_prompt)')
+      .eq('council_id', councils.id)
+
+    if (councilCofounders && councilCofounders.length > 0) {
+      const cfContexts = councilCofounders.map(cc => {
+        const cf = cc.cofounder as unknown as { name: string; specialty: string; system_prompt: string | null } | null
+        if (!cf) return null
+        if (cf.system_prompt) {
+          return `[COFUNDADOR ${(cc.role as string).toUpperCase()}: ${cf.name}]\n${cf.system_prompt}`
+        }
+        const roleDesc = cc.role === 'constructivo'
+          ? 'Rol: construir sobre ideas, encontrar caminos viables.'
+          : 'Rol: identificar riesgos, cuestionar supuestos.'
+        return `[COFUNDADOR ${(cc.role as string).toUpperCase()}: ${cf.name}]\nEspecialidad: ${cf.specialty}. ${roleDesc}`
+      }).filter(Boolean)
+      if (cfContexts.length > 0) {
+        cofoundersContext = `\n\nCOFUNDADORES ACTIVOS:\n${cfContexts.join('\n\n---\n\n')}`
+      }
     }
   }
 
@@ -129,6 +155,9 @@ export async function POST(req: NextRequest) {
   }
 
   // 7. Build the prompt with template substitution
+  const nexoCustom = (project as { founder_brief: string | null; nexo_custom_prompt?: string | null } | null)?.nexo_custom_prompt
+  const nexoCustomBlock = nexoCustom ? `\n\nINSTRUCCIONES ADICIONALES DEL USUARIO PARA NEXO:\n${nexoCustom}` : ''
+
   const systemPrompt = SESSION_QUESTION_PROMPT
     .replace('{deliverable_name}', doc.name)
     .replace('{key_question}', doc.key_question ?? '')
@@ -136,7 +165,7 @@ export async function POST(req: NextRequest) {
     .replace('{section_description}', currentQ.section_description)
     .replace('{founder_brief}', project?.founder_brief ?? 'No disponible')
     .replace('{previous_responses}', previousResponsesText)
-    .replace('{active_advisors}', activeAdvisorsText)
+    .replace('{active_advisors}', activeAdvisorsText + cofoundersContext + nexoCustomBlock)
     .replace('{current_question}', currentQ.question)
     .replace('{user_response}', user_response)
 

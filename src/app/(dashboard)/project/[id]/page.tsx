@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 import type { Project } from '@/lib/types'
+import NexoCustomPromptEditor from '@/components/project/NexoCustomPromptEditor'
 
 const PIPELINE_STAGES = ['Semilla', 'Entregables', 'Consejo', 'Sesión', 'Entrega'] as const
 
@@ -463,6 +464,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* ── Nexo Customization ─────────────────────────────── */}
+        <div className="mt-4">
+          <NexoCustomPromptEditor projectId={p.id} initialPrompt={(p as Project & { nexo_custom_prompt?: string | null }).nexo_custom_prompt} />
         </div>
 
         {/* ── Consultoría tile ─────────────────────────────── */}

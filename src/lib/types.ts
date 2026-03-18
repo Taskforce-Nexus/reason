@@ -38,6 +38,7 @@ export type Project = {
     incentives: { alignments: string[]; conflicts: string[]; opportunities: string[] }
     key_tensions: Array<{ tension: string; why_it_matters: string; related_players: string[] }>
   } | null
+  nexo_custom_prompt?: string | null
   created_at: string
   updated_at: string
 }
@@ -86,6 +87,10 @@ export type Advisor = {
   language: string | null
   is_native: boolean
   advisor_type: string | null
+  system_prompt?: string | null
+  specialties_tags?: string[] | null
+  industries_tags?: string[] | null
+  experience?: string[] | null
   created_at: string
 }
 
@@ -100,5 +105,9 @@ export type Cofounder = {
   bio: string | null
   language: string | null
   is_native: boolean
+  system_prompt?: string | null
+  specialties_tags?: string[] | null
+  industries_tags?: string[] | null
+  experience?: string[] | null
   created_at: string
 }

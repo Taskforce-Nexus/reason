@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react'
 import type { Project } from '@/lib/types'
 import { safeFetch } from '@/lib/fetch402'
+import { createClient } from '@/lib/supabase/client'
 
 const MAX_ACCEPTED = 5
 
 interface PersonaItem {
-  id: string
+  id: string        // Claude-generated fake id (used as React key)
+  dbId?: string     // Real Supabase UUID
   name: string
   archetype: string
   demographics: string
@@ -39,11 +41,59 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
   const [personas, setPersonas] = useState<PersonaItem[]>([])
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
+  async function savePersonaToDB(persona: PersonaItem): Promise<string | null> {
+    const supabase = createClient()
+    const { data } = await supabase.from('buyer_personas').insert({
+      project_id: project.id,
+      name: persona.name,
+      archetype_label: persona.archetype,
+      demographics: persona.demographics,
+      quote: persona.quote,
+      needs: persona.jobs_to_be_done ?? [],
+      fears_objections: persona.fears_objections ?? [],
+      discovery_channels: persona.discovery_channels ?? [],
+      current_alternatives: persona.current_alternatives ?? [],
+      behavior_tags: persona.behavior_tags ?? [],
+      is_confirmed: false,
+    }).select('id').single()
+    return data?.id ?? null
+  }
+
   // Generate initial set on mount (also used for retry)
   async function generateInitial() {
     setInitialLoading(true)
     setInitError(false)
     try {
+      // First: load existing from Supabase
+      const supabase = createClient()
+      const { data: existing } = await supabase
+        .from('buyer_personas')
+        .select('*')
+        .eq('project_id', project.id)
+        .order('created_at', { ascending: true })
+
+      if (existing && existing.length > 0) {
+        const items: PersonaItem[] = existing.map((p: Record<string, unknown>) => ({
+          id: p.id as string,
+          dbId: p.id as string,
+          name: p.name as string,
+          archetype: (p.archetype_label ?? '') as string,
+          demographics: (p.demographics ?? '') as string,
+          quote: (p.quote ?? '') as string,
+          jobs_to_be_done: (p.needs as string[]) ?? [],
+          fears_objections: (p.fears_objections as string[]) ?? [],
+          current_alternatives: (p.current_alternatives as string[]) ?? [],
+          discovery_channels: (p.discovery_channels as string[]) ?? [],
+          behavior_tags: (p.behavior_tags as string[]) ?? [],
+        }))
+        setPersonas(items)
+        const confirmed = existing.filter(p => p.is_confirmed).map(p => p.id as string)
+        onAcceptedChange(confirmed.length > 0 ? confirmed : items.map(p => p.id))
+        setInitialLoading(false)
+        return
+      }
+
+      // No existing: generate with Claude
       const res = await safeFetch('/api/seed-session/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -55,8 +105,13 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
         setInitError(true)
       } else {
         const items: PersonaItem[] = data.items ?? []
-        setPersonas(items)
-        onAcceptedChange(items.map(p => p.id))
+        // Save each to Supabase
+        const savedItems = await Promise.all(items.map(async item => {
+          const dbId = await savePersonaToDB(item)
+          return { ...item, dbId: dbId ?? undefined, id: dbId ?? item.id }
+        }))
+        setPersonas(savedItems)
+        onAcceptedChange(savedItems.map(p => p.id))
       }
     } catch (e) {
       console.error('[ICPsPropuesta] fetch error:', e)
@@ -86,47 +141,41 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
       })
       const { item, error } = await res.json()
       if (error || !item) return
-      setPersonas(prev => [...prev, item])
-      onAcceptedChange([...acceptedIds, item.id])
+      const dbId = await savePersonaToDB(item)
+      const savedItem = { ...item, dbId: dbId ?? undefined, id: dbId ?? item.id }
+      setPersonas(prev => [...prev, savedItem])
+      onAcceptedChange([...acceptedIds, savedItem.id])
     } catch { /* non-blocking */ }
     setGenerating(false)
   }
 
-  function accept(id: string) {
+  async function accept(id: string) {
     if (acceptedIds.length >= MAX_ACCEPTED && !acceptedIds.includes(id)) return
-    if (!acceptedIds.includes(id)) onAcceptedChange([...acceptedIds, id])
+    if (!acceptedIds.includes(id)) {
+      const supabase = createClient()
+      await supabase.from('buyer_personas').update({ is_confirmed: true }).eq('id', id)
+      onAcceptedChange([...acceptedIds, id])
+    }
   }
 
-  function discard(id: string) {
+  async function discard(id: string) {
+    const supabase = createClient()
+    await supabase.from('buyer_personas').delete().eq('id', id)
+    setPersonas(prev => prev.filter(p => p.id !== id))
     onAcceptedChange(acceptedIds.filter(i => i !== id))
   }
 
   async function handleConfirm() {
     setLoading(true)
     try {
-      await fetch('/api/seed-session/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          step: 'icps',
-          projectId: project.id,
-          personas: personas.filter(p => acceptedIds.includes(p.id)).map(p => ({
-            name: p.name,
-            archetype_label: p.archetype,
-            demographics: p.demographics,
-            quote: p.quote,
-            jobs_to_be_done: p.jobs_to_be_done,
-            pains: p.pains,
-            gains: p.gains,
-            fears_objections: p.fears_objections,
-            current_alternatives: p.current_alternatives,
-            discovery_channels: p.discovery_channels,
-            purchase_triggers: p.purchase_triggers,
-            decision_criteria: p.decision_criteria,
-            behavior_tags: p.behavior_tags,
-          })),
-        }),
-      })
+      // Mark all accepted as confirmed (in case some weren't)
+      const supabase = createClient()
+      if (acceptedIds.length > 0) {
+        await supabase
+          .from('buyer_personas')
+          .update({ is_confirmed: true })
+          .in('id', acceptedIds)
+      }
     } catch { /* non-blocking */ }
     setLoading(false)
     onNext()
@@ -207,7 +256,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
                             <span className="text-xs text-[#8892A4] bg-[#1E2A4A] px-2 py-0.5 rounded-full shrink-0">{persona.archetype}</span>
                           </div>
                           <p className="text-xs text-[#8892A4] leading-relaxed mb-2">{persona.demographics}</p>
-                          <p className="text-xs text-[#B8860B]/80 italic">"{persona.quote}"</p>
+                          <p className="text-xs text-[#B8860B]/80 italic">&ldquo;{persona.quote}&rdquo;</p>
 
                           {/* Behavior tags */}
                           {hasTags && (
@@ -224,7 +273,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
                           {isAccepted ? (
                             <button
                               type="button"
-                              onClick={() => discard(persona.id)}
+                              onClick={() => void discard(persona.id)}
                               className="text-xs px-2.5 py-1 rounded border text-[#8892A4] border-[#1E2A4A] hover:text-red-400 hover:border-red-500/30 transition-colors"
                             >
                               Quitar
@@ -232,7 +281,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
                           ) : (
                             <button
                               type="button"
-                              onClick={() => accept(persona.id)}
+                              onClick={() => void accept(persona.id)}
                               disabled={!canAddMore}
                               className="text-xs px-2.5 py-1 rounded border text-[#B8860B] border-[#B8860B]/30 hover:bg-[#B8860B]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                             >

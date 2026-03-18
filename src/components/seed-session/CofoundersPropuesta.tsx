@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Cofounder, Project } from '@/lib/types'
 import { HAT_COLORS } from './SeedSessionFlow'
 import CofounderSwapDrawer from './CofounderSwapDrawer'
+import { createClient } from '@/lib/supabase/client'
 
 interface Props {
   project: Project
@@ -38,6 +39,41 @@ export default function CofoundersPropuesta({ project, cofounders, acceptedIds, 
   const critico      = localCofounders.find(c => c.role === 'critico')
   const pair = [constructivo, critico].filter(Boolean) as Cofounder[]
 
+  // Auto-initialize council_cofounders on mount if not already set
+  useEffect(() => {
+    async function initCofounders() {
+      const supabase = createClient()
+
+      // Check if council already has cofounders
+      const { data: council } = await supabase
+        .from('councils')
+        .select('id, council_cofounders(id)')
+        .eq('project_id', project.id)
+        .maybeSingle()
+
+      if (council?.council_cofounders && (council.council_cofounders as unknown[]).length >= 2) {
+        return // Already initialized
+      }
+
+      // Need to create council and/or insert cofounders
+      const councilId = council?.id
+
+      if (!councilId) return // Council doesn't exist yet — will be created on save
+
+      // Select default cofounders if we have the current pair
+      if (constructivo && critico) {
+        // Delete existing (in case partial) and insert
+        await supabase.from('council_cofounders').delete().eq('council_id', councilId)
+        await supabase.from('council_cofounders').insert([
+          { council_id: councilId, cofounder_id: constructivo.id, role: 'constructivo' },
+          { council_id: councilId, cofounder_id: critico.id, role: 'critico' },
+        ])
+      }
+    }
+    void initCofounders()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project.id])
+
   function handleSwap(newCofounder: Cofounder) {
     setLocalCofounders(prev => {
       const updated = prev.filter(c => c.role !== newCofounder.role)
@@ -48,6 +84,26 @@ export default function CofoundersPropuesta({ project, cofounders, acceptedIds, 
         .filter(id => !pair.find(c => c.role === newCofounder.role && c.id === id))
         .concat(newCofounder.id)
     )
+
+    // Immediately update council_cofounders in Supabase
+    ;(async () => {
+      const supabase = createClient()
+      const { data: council } = await supabase
+        .from('councils')
+        .select('id')
+        .eq('project_id', project.id)
+        .maybeSingle()
+      if (council?.id) {
+        await supabase
+          .from('council_cofounders')
+          .delete()
+          .eq('council_id', council.id)
+          .eq('role', newCofounder.role)
+        await supabase
+          .from('council_cofounders')
+          .insert({ council_id: council.id, cofounder_id: newCofounder.id, role: newCofounder.role })
+      }
+    })()
   }
 
   async function handleConfirm() {

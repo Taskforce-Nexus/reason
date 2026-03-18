@@ -2,37 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { callClaude } from '@/lib/claude'
 import { checkBalance, trackUsage } from '@/lib/usage'
-
-const GENERATE_DOCUMENT_PROMPT = `Eres Nexo, consultor estratégico de Reason.
-
-Con base en las respuestas del fundador y las resoluciones del debate, genera el contenido final del entregable.
-
-ENTREGABLE: {deliverable_name}
-PREGUNTA CLAVE: {key_question}
-
-CONTEXTO DEL FUNDADOR:
-{founder_brief}
-
-RESPUESTAS Y RESOLUCIONES DE LA SESIÓN:
-{session_history}
-
-ESTRUCTURA DEL ENTREGABLE:
-{composition_sections}
-
-Genera el documento final en JSON con esta estructura:
-{
-  "title": "Título del entregable",
-  "key_question_answer": "Respuesta clara a la pregunta clave",
-  "sections": [
-    {
-      "title": "Nombre de sección",
-      "content": "Contenido detallado y estructurado de esta sección"
-    }
-  ],
-  "key_insights": ["Insight 1", "Insight 2", "Insight 3"],
-  "recommendations": ["Recomendación accionable 1", "Recomendación 2"],
-  "risks": ["Riesgo identificado 1", "Riesgo 2"]
-}`
+import { GENERATE_DOCUMENT_PROMPT } from '@/lib/prompts'
 
 export async function POST(req: NextRequest) {
   const { session_id, phase_id, dual_response_id, resolution, founder_response } = await req.json()
@@ -152,18 +122,15 @@ export async function POST(req: NextRequest) {
   const composition = (doc?.composition ?? {}) as {
     sections?: Array<{ title: string; description: string }>
   }
-  const sectionsText = (composition.sections ?? [])
-    .map(s => `- ${s.title}: ${s.description}`)
-    .join('\n')
 
   let contentJson: Record<string, unknown> = {}
   try {
+    const frameworksText = ((composition.sections ?? []) as Array<{ title: string; description: string }>).map(s => s.title).join(', ')
     const prompt = GENERATE_DOCUMENT_PROMPT
       .replace('{deliverable_name}', doc?.name ?? '')
       .replace('{key_question}', doc?.key_question ?? '')
-      .replace('{founder_brief}', project?.founder_brief ?? '')
-      .replace('{session_history}', sessionHistory)
-      .replace('{composition_sections}', sectionsText)
+      .replace('{frameworks}', frameworksText)
+      .replace('{session_transcript}', sessionHistory)
 
     const raw = await callClaude({
       system: prompt,

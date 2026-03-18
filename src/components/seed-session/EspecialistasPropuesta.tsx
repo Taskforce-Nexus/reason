@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react'
 import type { Project } from '@/lib/types'
 import { safeFetch } from '@/lib/fetch402'
+import { createClient } from '@/lib/supabase/client'
 
 const MAX_ACCEPTED = 5
 
 interface SpecialistItem {
   id: string
+  dbId?: string
   name: string
   specialty: string
   justification: string
@@ -27,11 +29,53 @@ export default function EspecialistasPropuesta({ project, acceptedIds, onAccepte
   const [initialLoading, setInitialLoading] = useState(true)
   const [specialists, setSpecialists] = useState<SpecialistItem[]>([])
 
+  async function saveSpecialistToDB(specialist: SpecialistItem): Promise<string | null> {
+    const supabase = createClient()
+    const { data } = await supabase.from('specialists').insert({
+      project_id: project.id,
+      name: specialist.name,
+      specialty: specialist.specialty,
+      justification: specialist.justification ?? '',
+      category_tag: '',
+      bio: '',
+      specialties_tags: [],
+      industries_tags: [],
+      experience: [],
+      language: 'Español',
+      is_confirmed: false,
+    }).select('id').single()
+    return data?.id ?? null
+  }
+
   // Generate initial set on mount
   useEffect(() => {
     async function generateInitial() {
       setInitialLoading(true)
       try {
+        // First: load existing from Supabase
+        const supabase = createClient()
+        const { data: existing } = await supabase
+          .from('specialists')
+          .select('id, name, specialty, justification, is_confirmed')
+          .eq('project_id', project.id)
+          .order('created_at', { ascending: true })
+
+        if (existing && existing.length > 0) {
+          const items: SpecialistItem[] = existing.map(s => ({
+            id: s.id,
+            dbId: s.id,
+            name: s.name,
+            specialty: s.specialty ?? '',
+            justification: s.justification ?? '',
+          }))
+          setSpecialists(items)
+          const confirmed = existing.filter(s => s.is_confirmed).map(s => s.id)
+          onAcceptedChange(confirmed.length > 0 ? confirmed : items.map(s => s.id))
+          setInitialLoading(false)
+          return
+        }
+
+        // Generate with Claude
         const res = await safeFetch('/api/seed-session/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -39,13 +83,16 @@ export default function EspecialistasPropuesta({ project, acceptedIds, onAccepte
         })
         const data = await res.json()
         const items: SpecialistItem[] = data.items ?? []
-        setSpecialists(items)
-        // Start with all accepted
-        onAcceptedChange(items.map(s => s.id))
+        const savedItems = await Promise.all(items.map(async item => {
+          const dbId = await saveSpecialistToDB(item)
+          return { ...item, dbId: dbId ?? undefined, id: dbId ?? item.id }
+        }))
+        setSpecialists(savedItems)
+        onAcceptedChange(savedItems.map(s => s.id))
       } catch { /* non-blocking */ }
       setInitialLoading(false)
     }
-    generateInitial()
+    void generateInitial()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.id])
 
@@ -65,37 +112,40 @@ export default function EspecialistasPropuesta({ project, acceptedIds, onAccepte
       })
       const { item, error } = await res.json()
       if (error || !item) return
-      setSpecialists(prev => [...prev, item])
-      onAcceptedChange([...acceptedIds, item.id])
+      const dbId = await saveSpecialistToDB(item)
+      const savedItem = { ...item, dbId: dbId ?? undefined, id: dbId ?? item.id }
+      setSpecialists(prev => [...prev, savedItem])
+      onAcceptedChange([...acceptedIds, savedItem.id])
     } catch { /* non-blocking */ }
     setGenerating(false)
   }
 
-  function accept(id: string) {
+  async function accept(id: string) {
     if (acceptedIds.length >= MAX_ACCEPTED && !acceptedIds.includes(id)) return
-    if (!acceptedIds.includes(id)) onAcceptedChange([...acceptedIds, id])
+    if (!acceptedIds.includes(id)) {
+      const supabase = createClient()
+      await supabase.from('specialists').update({ is_confirmed: true }).eq('id', id)
+      onAcceptedChange([...acceptedIds, id])
+    }
   }
 
   function discard(id: string) {
+    const supabase = createClient()
+    void supabase.from('specialists').delete().eq('id', id)
+    setSpecialists(prev => prev.filter(s => s.id !== id))
     onAcceptedChange(acceptedIds.filter(i => i !== id))
   }
 
   async function handleConfirm() {
     setLoading(true)
     try {
-      await fetch('/api/seed-session/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          step: 'especialistas',
-          projectId: project.id,
-          specialists: specialists.filter(s => acceptedIds.includes(s.id)).map(s => ({
-            name: s.name,
-            specialty: s.specialty,
-            justification: s.justification,
-          })),
-        }),
-      })
+      const supabase = createClient()
+      if (acceptedIds.length > 0) {
+        await supabase
+          .from('specialists')
+          .update({ is_confirmed: true })
+          .in('id', acceptedIds)
+      }
     } catch { /* non-blocking */ }
     setLoading(false)
     onNext()
@@ -167,7 +217,7 @@ export default function EspecialistasPropuesta({ project, acceptedIds, onAccepte
                         ) : (
                           <button
                             type="button"
-                            onClick={() => accept(specialist.id)}
+                            onClick={() => void accept(specialist.id)}
                             disabled={!canAddMore}
                             className="text-xs px-2.5 py-1 rounded border text-[#B8860B] border-[#B8860B]/30 hover:bg-[#B8860B]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                           >
