@@ -41,7 +41,7 @@ PROPÓSITO DEL CONSEJO — el usuario declara su decisión
 ↓
 MARKETPLACE — Nexo recomienda consejeros IA relevantes
 ↓
-DEFINICIÓN DE DOCUMENTOS — con Sesión de Clarificación si no hay spec
+DEFINICIÓN DE ENTREGABLES — Nexo compone dinámicamente con Framework Engine
 ↓
 SESIÓN DE CONSEJO — N fases, cada fase produce un documento
 ↓
@@ -61,19 +61,21 @@ Modelo tipo Zoho/Odoo: cada módulo funciona solo o como suite completa.
 
 ---
 
-## Document Specification Library
+## Framework Engine
 
-Biblioteca viva de specs técnicas por ICP y propósito.
-Nexo selecciona dinámicamente qué documentos proponer según el usuario.
-Si no existe spec para un ICP nuevo, se activa la Sesión de Clarificación
-y la spec resultante entra a la biblioteca.
+Nexo no elige documentos de un menú fijo. Nexo COMPONE entregables
+a la medida usando su conocimiento de frameworks estratégicos,
+modelos cuantitativos y metodologías de análisis.
 
-### Specs disponibles — ICP Founder
+Después de Semilla, Nexo diagnostica la situación, identifica
+las preguntas clave que el usuario necesita responder, y mapea
+cada pregunta a un entregable específico con los frameworks internos
+que lo resuelven.
 
-1. Value Proposition Canvas
-2. Business Model (incluye P&L Proforma + Business Model Canvas completo)
-3. Customer Journey (con loops de crecimiento)
-4. Business Plan (con impulsos estratégicos)
+Las preguntas de la Sesión de Consejo se generan dinámicamente
+según el entregable, el contexto y los consejeros activos.
+
+Fuente de verdad: /context/aurum_framework_engine.md
 
 ---
 

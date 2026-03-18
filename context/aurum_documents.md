@@ -1,110 +1,50 @@
 ﻿# Reason Document System
 
-Reason genera documentos estratégicos estructurados a través de la Sesión de Consejo.
-Los documentos se definen dinámicamente según el ICP y el propósito del usuario.
+Reason genera entregables estratégicos estructurados a través de la Sesión de Consejo.
+Los entregables se componen dinámicamente según el usuario y su decisión.
 
-La fuente de verdad es la Document Specification Library.
-
----
-
-## Document Specification Library
-
-Biblioteca viva de specs técnicas por ICP y propósito.
-Nexo selecciona qué documentos proponer según el usuario.
-Si no existe spec para un propósito nuevo, se activa la Sesión de Clarificación
-y la spec resultante entra a la biblioteca.
+La fuente de verdad es el Framework Engine.
 
 ---
 
-## Specs disponibles — ICP Founder
+## Dynamic Deliverables — Framework Engine
 
-### Documento 1 — Value Proposition Canvas
+Reason no genera documentos fijos. Nexo compone entregables dinámicamente
+usando frameworks estratégicos, modelos cuantitativos y metodologías
+de análisis según la situación del usuario.
 
-- Perfil del cliente: trabajos que hace, dolores, ganancias esperadas
-- Propuesta de valor: productos/servicios, aliviadores de dolor, creadores de ganancia
-- Encaje problema-solución
-- ICP definido
-- Hipótesis de valor a validar
-- 2-3 Customer Personas:
-  - Perfil detallado
-  - Lenguaje exacto que usan para describir el problema
-  - Next Best Alternatives actuales
-  - Mapa emocional y racional a través del proceso de compra
+Cada entregable tiene: nombre, pregunta clave que responde, frameworks
+internos, secciones con preguntas, consejeros necesarios y dependencias.
 
-### Documento 2 — Business Model
+La composición se almacena como JSON en `ProjectDocument.composition`.
 
-- Business Model Canvas completo:
-  - Segmentos de clientes
-  - Propuesta de valor
-  - Canales
-  - Relación con clientes
-  - Fuentes de ingresos
-  - Recursos clave
-  - Actividades clave
-  - Socios clave
-  - Estructura de costos
-- Modelo de pricing y esquemas de cobro
-- Economía unitaria: CAC, LTV, margen por cliente
-- Palancas de crecimiento
-- P&L Proforma:
-  - Ventas
-  - Costo del bien vendido (COGS)
-  - Utilidad bruta / Margen bruto
-  - Gastos de ventas desglosados
-  - Gastos generales desglosados
-  - Gastos administrativos desglosados
-  - Utilidad operativa / Margen operativo
-  - Impuestos
-  - Depreciación
-  - Utilidad neta / Margen neto
-  - Flujo de efectivo / Margen de flujo
-
-### Documento 3 — Customer Journey
-
-- Framework compartido por todos los ICPs y personas:
-  - Descubrimiento
-  - Evaluación
-  - Decisión
-  - Activación
-  - Retención
-  - Expansión
-- Anotaciones específicas por persona donde necesita refuerzo particular
-- Balancing loops y Reinforcing loops marcados explícitamente
-- Recomendaciones de cambios en el producto para resolver loops débiles
-
-### Documento 4 — Business Plan
-
-- Dirección estratégica
-- Evaluación de preparación — 8 dimensiones puntuadas 1-10
-- Riesgos clave y plan de mitigación
-- Decisión go / no-go con justificación
-- Impulsos estratégicos (no líneas de tiempo):
-  - Cada impulso: objetivo claro + acciones clave + condición de éxito
-  - El usuario avanza cuando cumple la condición del impulso anterior
-  - Típicamente 3-5 impulsos
+Detalle completo: /context/aurum_framework_engine.md
 
 ---
 
-## Specs pendientes — otros ICPs
+## Ejemplos de entregables por caso de uso
 
-Los siguientes ICPs tienen documentos identificados pero sin spec completa.
-Se co-construyen con el usuario vía Sesión de Clarificación cuando lleguen.
+Los siguientes son ejemplos de cómo Nexo compone entregables para distintos ICPs.
+No son specs fijas — son ilustraciones de la composición dinámica.
 
-### ICP: Dueño de empresa — estrategia de crecimiento
+### ICP: Founder lanzando negocio nuevo (SaaS)
+1. ¿A quién le resuelvo qué? — VPC + Buyer Personas
+2. ¿Cómo gano dinero? — BMC + Pricing + Unit Economics
+3. ¿Cómo llego al cliente? — Customer Journey + Growth Loops
+4. ¿Los números dan? — P&L + Break-even + Sensitivity
+5. ¿Arranco o no? — Evaluación + Riesgos + Plan de acción
 
-Documentos candidatos:
-- Modelo comercial optimizado
-- Estrategia de comunicación
-- Modelo de incentivos de ventas
-- Plan de implementación de sistemas de venta
+### ICP: Empresa abriendo vertical nueva
+1. Análisis de oportunidad — TAM/SAM/SOM + Five Forces
+2. Caso de inversión — P&L + DCF + Sensitivity
+3. Riesgo de canibalización — BCG + Scenario Planning
+4. Plan de entrada — GTM + Channel Strategy
 
-### ICP: Director de innovación — lanzar producto interno
-
-Documentos candidatos:
-- Product Concept
-- Business Case
-- Roadmap
-- Plan de adopción interna
+### ICP: Director de innovación — producto interno
+1. Business case — Problem + Market + Solution Concept
+2. Análisis de viabilidad — Tech Assessment + Resources + Timeline
+3. Caso financiero — Investment + ROI + Break-even
+4. Plan de adopción — Stakeholder Map + Change Management + KPIs
 
 ---
 

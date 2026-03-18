@@ -931,3 +931,36 @@ Implementación: `src/lib/claude.ts` — `interface CallClaudeOptions { system, 
 **Fecha:** 2026-03-17
 
 ---
+
+## 48. Framework Engine — reemplaza Document Specification Library
+
+La Document Specification Library estática (4 documentos fijos para ICP Founder)
+se reemplaza por el Framework Engine.
+
+Nexo ya no elige documentos de un menú. Nexo COMPONE entregables a la medida
+usando su conocimiento de frameworks estratégicos, modelos cuantitativos
+y metodologías de análisis.
+
+Qué muere:
+- Tabla document_specs en Supabase
+- Sesión de Clarificación como pantalla separada
+- 4 documentos fijos para founders
+- Campo spec_id en ProjectDocument
+- aurum_document_specs.md
+
+Qué cambia:
+- ProjectDocument lleva composition (JSON dinámico) en vez de spec_id
+- EntregablesPropuesta muestra propuesta dinámica de Nexo
+- Las preguntas de la Sesión de Consejo se generan por contexto
+
+Qué se mantiene:
+- Pipeline de usuario
+- Marketplace de consejeros
+- Nexo Dual
+- Export Center
+
+Fuente de verdad: /context/aurum_framework_engine.md
+
+**Fecha:** 2026-03-17
+
+---

@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: SESSION ENGINE REDESIGN — CofounderSwapDrawer + AdvisorSwapDrawer funcionales. callClaude 3 tiers (fast/strong/reasoning). Botones Cambiar conectados al catálogo real de Supabase.
+Etapa actual: FRAMEWORK ENGINE instalado — Document Specification Library reemplazada por composición dinámica de entregables. callClaude 3 tiers (fast/strong/reasoning). Botones Cambiar conectados al catálogo real de Supabase.
 
 ---
 
@@ -63,6 +63,10 @@ Etapa actual: SESSION ENGINE REDESIGN — CofounderSwapDrawer + AdvisorSwapDrawe
 - CofoundersPropuesta — botón Cambiar conectado a CofounderSwapDrawer ✓
 - ConsejoPrincipalPropuesta — botón Cambiar por card conectado a AdvisorSwapDrawer ✓
 - "Ver perfil" ya funcional en ConsejoPrincipalPropuesta, EspecialistasPropuesta, ICPsPropuesta ✓
+- Framework Engine instalado — aurum_framework_engine.md creado, aurum_document_specs.md eliminado ✓
+  - aurum_brain.md, aurum_incubadora.md, aurum_documents.md, CLAUDE.md actualizados ✓
+  - aurum_decisions.md: Decisión #48 agregada ✓
+
 - scripts/generate-marketplace.ts — resumable, Sonnet, skip logic por sección ✓
   - Estado DB actual (2026-03-17): Advisors 340/1,000 · Cofounders 124/40 · Specialists 431/200 · Personas 0/200
   - ⚠️ BLOQUEADO: API limit Anthropic — se renueva 2026-04-01 00:00 UTC

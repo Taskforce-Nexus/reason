@@ -33,20 +33,23 @@ El usuario declara para qué necesita su consejo. Ejemplos:
 Nexo recomienda perfiles IA relevantes basándose en propósito + Resumen.
 El usuario confirma o ajusta el consejo.
 
-### 4. Definición de Documentos
+### 4. Definición de Entregables
 
-Nexo revisa la Document Specification Library:
-- Si existe spec → propone documentos directamente
-- Si no existe spec → activa Sesión de Clarificación de Expectativas
+Nexo analiza el Resumen del Fundador y compone los entregables
+que el caso necesita. No hay menú fijo de documentos.
 
-#### Sesión de Clarificación de Expectativas
-Nexo co-construye la spec con el usuario:
-- ¿Qué decisión resuelve cada documento?
-- ¿Qué secciones necesita?
-- ¿Cómo se ve un output de calidad?
-La spec resultante entra a la biblioteca.
+Proceso interno de Nexo:
+1. Clasificar la decisión del usuario
+2. Identificar las 3-7 preguntas clave
+3. Mapear cada pregunta a un entregable con frameworks internos
+4. Ordenar por dependencia lógica
+5. Proponer al usuario en lenguaje claro
 
-El usuario valida los documentos propuestos antes de continuar.
+El usuario valida, ajusta o rechaza en lenguaje natural.
+La Sesión de Clarificación como pantalla separada ya no existe —
+Nexo clarifica inline dentro de Semilla si el diagnóstico es ambiguo.
+
+Detalle completo: /context/aurum_framework_engine.md
 
 ---
 

@@ -59,7 +59,8 @@ Lee estos archivos en este orden:
 - /context/aurum_pipeline.md — etapas del pipeline
 - /context/aurum_decisions.md — decisiones canónicas, no reabrir sin instrucción
 - /STATUS.md — estado actual del proyecto (fuente de verdad)
-- /context/aurum_documents.md — 15 documentos canónicos
+- /context/aurum_framework_engine.md — motor de inteligencia de Nexo, composición de entregables
+- /context/aurum_documents.md — sistema de documentos y entregables dinámicos
 - /context/aurum_default_frames.md — inventario de frames UI
 - /context/aurum_ui_architecture.md — arquitectura de la interfaz
 - /context/aurum_agents.md — definición de agentes
