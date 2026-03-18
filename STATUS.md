@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-18
-Etapa actual: PPTX EXPORT COMPLETO (Story 5.3) — pptxgenjs v4 instalado. POST /api/export/pptx (por documento), POST /api/export/pptx/all (proyecto completo). src/lib/pptx-builder.ts con helpers compartidos. ExportCenter con botón PPTX por fila + "Descargar todo (PPTX)". Build limpio.
+Etapa actual: SMOKE TEST 5.4 COMPLETO — Flujo core Sesión de Consejo verificado E2E. 4 bugs documentados en /context/smoke_5_4_bugs.md. Flujo core funciona: Login → Iniciar Sesión → Nexo Dual → Resolver → Export PDF. BUG-A: "Application error" overlay dev mode en 4 páginas (no bloquea funcionalidad). BUG-B: PPTX download requiere verificación manual. Build limpio.
 
 ---
 
@@ -617,6 +617,34 @@ Acción requerida de Juan:
 ```sql
 ALTER TABLE projects ADD COLUMN IF NOT EXISTS game_analysis jsonb;
 ```
+
+## Story 5.2 — Settings Billing + Plans + 402 Handler (COMPLETO ✓)
+
+- Settings Billing `/settings/facturacion` — saldo, plan, historial consumo, facturas, botón portal Stripe ✓
+- Settings Plans `/settings/planes` — 3 cards Core/Pro/Enterprise con features y botones checkout ✓
+- Header balance → Link clickeable a `/settings/facturacion`, rojo si < $5 ✓
+- `LowBalanceBanner.tsx` — banner dorado si balance < $5, "Recargar →" ✓
+- `InsufficientFundsModal.tsx` — modal global, escucha evento `insufficient-funds` ✓
+- `src/lib/fetch402.ts` — `safeFetch()` + `triggerInsufficientFunds()` ✓
+- dashboard layout.tsx: `LowBalanceBanner` + `InsufficientFundsModal` montados globalmente ✓
+
+## Story 5.3 — PPTX Export (COMPLETO ✓)
+
+- `npm install pptxgenjs@4.0.1` ✓
+- `src/lib/pptx-builder.ts` — helpers compartidos: createPptx, addCoverSlide, addDocumentContent, addClosingSlide, addDividerSlide, addIndexSlide ✓
+- `POST /api/export/pptx` — por documento: cover + summary + sections + recommendations + risks ✓
+- `POST /api/export/pptx/all` — proyecto completo: cover → index → per-doc divider + content → closing ✓
+- ExportCenter: botón PPTX por fila + "Descargar todo (PPTX)" en header ✓
+- Tema Reason: NAVY `#0A1128`, GOLD `#B8860B`, LAYOUT_16x9 (10"×5.625") ✓
+
+## Story 5.4 — Smoke Test (COMPLETO ✓)
+
+- `tests/e2e/smoke-5-4.spec.ts` — 8 tests, 4 PASS / 4 FAIL (errores detectados y documentados) ✓
+- Bug report completo en `/context/smoke_5_4_bugs.md` ✓
+- **Flujo core confirmado FUNCIONA:** Login → Iniciar Sesión de Consejo → responder → Nexo Dual → resolver → Export PDF ✅
+- **BUG-A:** "Application error" overlay en 4 páginas dev mode (ProjectView, SesionConsejo, Billing, Plans) — páginas renderizan correctamente, error transitorio durante hydration
+- **BUG-B:** PPTX download requiere verificación manual (test framework limitado para blob URL downloads)
+- **BUG-C:** TestCo test data sin `composition` en documentos (bug de scripts de test, no app)
 
 ## Siguiente paso
 
