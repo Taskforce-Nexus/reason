@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: FIXES CRÍTICOS COMPLETOS — SeedSession: consejo auto-select, persistencia de paso en Supabase, ConsejoListo → sesion-consejo, botones primarios correctos en todos los pasos.
+Etapa actual: STORY 4.7 COMPLETO — ProjectView tiles reflejan estado real del proyecto. Pipeline progress visual. Sin datos hardcodeados. Flujo core completo: Semilla → Entregables → Consejo → Sesión → Export.
 
 ---
 
@@ -63,6 +63,16 @@ Etapa actual: FIXES CRÍTICOS COMPLETOS — SeedSession: consejo auto-select, pe
 - CofoundersPropuesta — botón Cambiar conectado a CofounderSwapDrawer ✓
 - ConsejoPrincipalPropuesta — botón Cambiar por card conectado a AdvisorSwapDrawer ✓
 - "Ver perfil" ya funcional en ConsejoPrincipalPropuesta, EspecialistasPropuesta, ICPsPropuesta ✓
+- Story 4.7 — ProjectView tiles con estado real ✓
+  - Pipeline progress: Semilla/Entregables/Consejo/Sesión/Entrega con dots ✓/●/○ reales
+  - Tile Semilla: badge Completada/En curso, CTA "Continuar Semilla →" vs "Ver resumen →"
+  - Tile Entregables (NUEVO): lista docs con estado, barra progreso, CTA por estado
+  - Tile Sesión de Consejo: muestra estado real (activa/completada/pendiente), progreso X de N
+  - Tile Consejo Asesor: advisor names + specialty reales (council_advisors join), max 4 + "+N más"
+  - Tile Export Center: count por status (generado/aprobado), barra progreso real
+  - Sidebar: stats con datos reales (entregables, consejeros, sesión)
+  - Eliminados todos los datos hardcodeados (message_count, "hace 2 horas", avatars ficticios, EXPORT_DOCS)
+
 - Fix Part A — ConsejoPrincipalPropuesta muestra solo advisors del council (auto-select) ✓
   - /api/council/auto-select: lee advisors_needed de entregables, mapea categorías, selecciona 5-7 nativos con niveles
   - EntregablesPropuesta: llama auto-select al aprobar, pasa resultado via onCouncilReady
