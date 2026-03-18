@@ -4,35 +4,44 @@ import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Project } from '@/lib/types'
-
-interface DocumentSection {
-  section_name: string
-  content: string
-  key_points: string[]
-}
-
-interface ExportDocument {
-  id: string
-  name: string
-  status: string
-  generated_at: string | null
-  last_edited_at: string | null
-  content_json: { sections?: DocumentSection[] } | null
-  document_specs: { name: string } | null
-}
+import type { ExportDocument, ContentJson } from '@/app/(dashboard)/project/[id]/export/page'
 
 interface Props {
   project: Project
   documents: ExportDocument[]
 }
 
+// ─── Section helpers ────────────────────────────────────────────────────────
+
+function getSectionTitle(s: NonNullable<ContentJson['sections']>[number]) {
+  return s.title ?? s.section_name ?? 'Sección'
+}
+
+function isReady(doc: ExportDocument) {
+  return doc.status === 'generado' || doc.status === 'aprobado'
+}
+
+function formatDate(iso: string | null) {
+  if (!iso) return '—'
+  const d = new Date(iso)
+  const now = new Date()
+  const diff = Math.floor((now.getTime() - d.getTime()) / 1000 / 60)
+  if (diff < 60) return `Hace ${diff}m`
+  if (diff < 1440) return `Hace ${Math.floor(diff / 60)}h`
+  return d.toLocaleDateString('es', { day: 'numeric', month: 'short' })
+}
+
+// ─── Main component ─────────────────────────────────────────────────────────
+
 export default function ExportCenter({ project, documents }: Props) {
   const [downloading, setDownloading] = useState<Record<string, boolean>>({})
   const [bulkLoading, setBulkLoading] = useState(false)
-
-  const readyDocs = documents.filter(d => d.status === 'aprobado' || d.status === 'generado')
-  const readyCount = readyDocs.length
+  const [selectedDoc, setSelectedDoc] = useState<ExportDocument | null>(null)
+  const [copied, setCopied] = useState<string | null>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
+
+  const readyDocs = documents.filter(isReady)
+  const readyCount = readyDocs.length
 
   useEffect(() => {
     if (progressBarRef.current) {
@@ -41,23 +50,28 @@ export default function ExportCenter({ project, documents }: Props) {
     }
   }, [readyCount, documents.length])
 
-  async function downloadDoc(doc: ExportDocument, format: 'pdf' | 'pptx') {
-    const sections = doc.content_json?.sections ?? []
-    if (sections.length === 0) return
-    const key = `${doc.id}-${format}`
+  async function downloadPDF(doc: ExportDocument) {
+    const cj = doc.content_json
+    if (!cj) return
+    const key = `${doc.id}-pdf`
     setDownloading(prev => ({ ...prev, [key]: true }))
     try {
-      const res = await fetch(`/api/export/${format}`, {
+      const res = await fetch('/api/export/pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ docId: doc.id, docName: doc.name, sections }),
+        body: JSON.stringify({
+          docId: doc.id,
+          docName: doc.name,
+          keyQuestion: doc.key_question,
+          contentJson: cj,
+        }),
       })
       if (!res.ok) throw new Error('Export failed')
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `${doc.name.replace(/\s+/g, '_')}.${format === 'pdf' ? 'pdf' : 'pptx'}`
+      a.download = `${doc.name.replace(/\s+/g, '_')}-${project.name.replace(/\s+/g, '_')}.pdf`
       a.click()
       URL.revokeObjectURL(url)
     } catch {
@@ -67,10 +81,21 @@ export default function ExportCenter({ project, documents }: Props) {
     }
   }
 
+  async function copyJSON(doc: ExportDocument) {
+    if (!doc.content_json) return
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(doc.content_json, null, 2))
+      setCopied(doc.id)
+      setTimeout(() => setCopied(null), 2000)
+    } catch {
+      // silent fail
+    }
+  }
+
   async function downloadAll() {
     setBulkLoading(true)
     for (const doc of readyDocs) {
-      await downloadDoc(doc, 'pdf')
+      await downloadPDF(doc)
     }
     setBulkLoading(false)
   }
@@ -78,220 +103,386 @@ export default function ExportCenter({ project, documents }: Props) {
   return (
     <div className="min-h-screen bg-[#0A1128] flex flex-col">
       {/* Nav */}
-      <nav className="h-[60px] flex items-center justify-between px-16 border-b border-[#27282B] shrink-0">
+      <nav className="h-[60px] flex items-center justify-between px-16 border-b border-[#1E2A4A] shrink-0">
         <Link href="/dashboard">
           <Image src="/branding/logo-claro-reason.png" alt="Reason" width={80} height={26} />
         </Link>
-        <div className="flex items-center gap-4 text-[13px] text-[#6E8EAD]">
+        <div className="flex items-center gap-2 text-[13px] text-[#6E8EAD]">
           <Link href={`/project/${project.id}`} className="hover:text-white transition-colors">
             {project.name}
           </Link>
-          <span className="text-[#27282B]">→</span>
-          <Link href={`/project/${project.id}`} className="hover:text-white transition-colors">
-            Proyecto
-          </Link>
+          <span className="text-[#1E2A4A]">→</span>
+          <span className="text-[#e0e0e5]">Export Center</span>
         </div>
       </nav>
 
       {/* Content */}
       <div className="flex-1 px-16 py-10 space-y-8">
+
         {/* Page header */}
         <div className="space-y-2">
           <Link
             href={`/project/${project.id}`}
             className="text-[13px] text-[#6E8EAD] hover:text-white transition-colors"
           >
-            ← {project.name} / Centro de Exportación
+            ← {project.name}
           </Link>
           <div className="flex items-center justify-between">
-            <h1 className="text-[28px] text-white font-bold">Centro de Exportación</h1>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={downloadAll}
-                disabled={bulkLoading || readyCount === 0}
-                className="flex items-center gap-2 px-4 py-2 bg-[#B8860B] hover:bg-[#A07710] disabled:opacity-40 text-black text-[13px] font-semibold rounded-lg transition-colors"
-              >
-                {bulkLoading ? 'Descargando...' : 'Descargar todo (PDF)'}
-              </button>
-              <button
-                type="button"
-                className="flex items-center gap-2 px-4 py-2 border border-[#2A3A60] hover:border-[#4A5568] text-[#B0C4DE] hover:text-white text-[13px] rounded-lg transition-colors"
-              >
-                Exportar paquete ↑
-              </button>
+            <div>
+              <h1 className="text-[28px] text-white font-bold">Export Center</h1>
+              <p className="text-[15px] text-[#8892A4] mt-1">
+                Documentos generados en tu Sesión de Consejo
+              </p>
             </div>
+            <button
+              type="button"
+              onClick={downloadAll}
+              disabled={bulkLoading || readyCount === 0}
+              className="flex items-center gap-2 px-4 py-2 bg-[#B8860B] hover:bg-[#A07710] disabled:opacity-40 text-[#0A1128] text-[13px] font-semibold rounded-lg transition-colors"
+            >
+              {bulkLoading ? 'Descargando...' : 'Descargar todo (PDF)'}
+            </button>
           </div>
-          <p className="text-[15px] text-[#8B9DB7]">
-            Exporta, empaqueta y entrega tus documentos Reason. Desde PDFs individuales hasta paquetes listos para repositorio, pitch o inversionistas.
-          </p>
         </div>
 
-        {/* Progress */}
-        <div className="space-y-2">
+        {/* Progress bar */}
+        <div className="space-y-1.5">
           <p className="text-[13px] text-[#B8860B] font-semibold">
             {readyCount} de {documents.length} documentos listos
           </p>
-          <div className="w-full h-1.5 bg-[#1A2644] rounded-full">
-            <div
-              ref={progressBarRef}
-              className="h-1.5 bg-[#B8860B] rounded-full transition-all"
-            />
+          <div className="w-full h-1.5 bg-[#1E2A4A] rounded-full">
+            <div ref={progressBarRef} className="h-1.5 bg-[#B8860B] rounded-full transition-all" />
           </div>
         </div>
 
-        {/* Table */}
-        <div className="border border-[#27282B] rounded-lg overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center gap-4 px-5 py-3 bg-[#0A1128] border-b border-[#27282B]">
-            <div className="w-4" />
-            <div className="w-[440px] text-[11px] text-[#4A5568] uppercase tracking-wider">Documento</div>
-            <div className="w-[130px] text-[11px] text-[#4A5568] uppercase tracking-wider">Estado</div>
-            <div className="w-[160px] text-[11px] text-[#4A5568] uppercase tracking-wider">Última edición</div>
-            <div className="flex-1 text-[11px] text-[#4A5568] uppercase tracking-wider">Acciones</div>
+        {/* Empty state — no documents at all */}
+        {documents.length === 0 && (
+          <div className="border border-[#1E2A4A] rounded-xl px-8 py-16 text-center">
+            <p className="text-sm text-[#8892A4] mb-4">
+              Aún no tienes documentos generados. Completa tu Sesión de Consejo para ver tus
+              entregables aquí.
+            </p>
+            <Link
+              href={`/project/${project.id}/sesion-consejo`}
+              className="inline-flex items-center gap-2 bg-[#B8860B] hover:bg-[#A07710] text-[#0A1128] text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
+            >
+              Ir a Sesión de Consejo →
+            </Link>
           </div>
+        )}
 
-          {/* Rows */}
-          {documents.map(doc => (
-            <TableRow
-              key={doc.id}
-              doc={doc}
-              projectId={project.id}
-              downloading={downloading}
-              onDownload={downloadDoc}
-            />
-          ))}
-
-          {documents.length === 0 && (
-            <div className="px-5 py-10 text-center text-[13px] text-[#4A5568]">
-              No hay documentos configurados en este proyecto.
+        {/* Table */}
+        {documents.length > 0 && (
+          <div className="border border-[#1E2A4A] rounded-xl overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center gap-4 px-5 py-3 bg-[#0A1128] border-b border-[#1E2A4A]">
+              <div className="flex-1 text-[11px] text-[#4A5568] uppercase tracking-wider">Entregable</div>
+              <div className="w-[130px] text-[11px] text-[#4A5568] uppercase tracking-wider">Estado</div>
+              <div className="w-[120px] text-[11px] text-[#4A5568] uppercase tracking-wider">Generado</div>
+              <div className="w-[260px] text-[11px] text-[#4A5568] uppercase tracking-wider">Acciones</div>
             </div>
-          )}
 
-          {/* Pagination */}
-          {documents.length > 0 && (
-            <div className="flex items-center justify-between px-5 py-3.5 bg-[#0A1128] border-t border-[#27282B]">
+            {documents.map(doc => (
+              <DocumentRow
+                key={doc.id}
+                doc={doc}
+                projectName={project.name}
+                downloading={downloading}
+                copied={copied}
+                onView={() => setSelectedDoc(doc)}
+                onDownload={() => downloadPDF(doc)}
+                onCopy={() => copyJSON(doc)}
+              />
+            ))}
+
+            {/* Pagination placeholder */}
+            <div className="flex items-center justify-between px-5 py-3 bg-[#0A1128] border-t border-[#1E2A4A]">
               <span className="text-[13px] text-[#4A5568]">
-                Mostrando 1-{documents.length} de {documents.length}
+                {documents.length} entregable{documents.length !== 1 ? 's' : ''}
               </span>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   disabled
-                  className="w-7 h-7 flex items-center justify-center border border-[#27282B] rounded text-[#4A5568] text-[12px] disabled:opacity-40"
+                  className="w-7 h-7 flex items-center justify-center border border-[#1E2A4A] rounded text-[#4A5568] text-[12px] disabled:opacity-40"
                 >
                   ←
                 </button>
                 <button
                   type="button"
                   disabled
-                  className="w-7 h-7 flex items-center justify-center border border-[#27282B] rounded text-[#4A5568] text-[12px] disabled:opacity-40"
+                  className="w-7 h-7 flex items-center justify-center border border-[#1E2A4A] rounded text-[#4A5568] text-[12px] disabled:opacity-40"
                 >
                   →
                 </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Document preview drawer */}
+      {selectedDoc && (
+        <DocumentDrawer doc={selectedDoc} onClose={() => setSelectedDoc(null)} />
+      )}
     </div>
   )
 }
 
-function TableRow({
+// ─── Table row ───────────────────────────────────────────────────────────────
+
+function DocumentRow({
   doc,
-  projectId,
   downloading,
+  copied,
+  onView,
   onDownload,
+  onCopy,
 }: {
   doc: ExportDocument
-  projectId: string
+  projectName: string
   downloading: Record<string, boolean>
-  onDownload: (doc: ExportDocument, format: 'pdf' | 'pptx') => void
+  copied: string | null
+  onView: () => void
+  onDownload: () => void
+  onCopy: () => void
 }) {
-  const isReady = doc.status === 'aprobado' || doc.status === 'generado'
-  const hasSections = (doc.content_json?.sections?.length ?? 0) > 0
+  const ready = isReady(doc)
+  const hasContent = (doc.content_json?.sections?.length ?? 0) > 0
 
-  const statusConfig = {
-    aprobado: { label: 'Listo', color: 'text-green-400', dot: 'bg-green-400' },
-    generado: { label: 'Listo', color: 'text-green-400', dot: 'bg-green-400' },
-    en_progreso: { label: 'En progreso', color: 'text-[#B8860B]', dot: 'bg-[#B8860B]' },
-    pendiente: { label: 'Pendiente', color: 'text-[#4A5568]', dot: 'bg-[#4A5568]' },
-  }[doc.status] ?? { label: doc.status, color: 'text-[#4A5568]', dot: 'bg-[#4A5568]' }
-
-  function formatDate(iso: string | null) {
-    if (!iso) return '—'
-    const d = new Date(iso)
-    const now = new Date()
-    const diff = Math.floor((now.getTime() - d.getTime()) / 1000 / 60)
-    if (diff < 60) return `Hace ${diff}m`
-    if (diff < 1440) return `Hace ${Math.floor(diff / 60)}h`
-    return d.toLocaleDateString('es', { day: 'numeric', month: 'short' })
-  }
+  const statusConfig =
+    {
+      generado: { label: 'Listo', color: 'text-green-400', dot: 'bg-green-400' },
+      aprobado: { label: 'Listo', color: 'text-green-400', dot: 'bg-green-400' },
+      en_progreso: { label: 'En progreso', color: 'text-[#B8860B]', dot: 'bg-[#B8860B]' },
+      pendiente: { label: 'Pendiente', color: 'text-[#4A5568]', dot: 'bg-[#4A5568]' },
+    }[doc.status] ?? { label: doc.status, color: 'text-[#4A5568]', dot: 'bg-[#4A5568]' }
 
   return (
     <div
-      className={`flex items-center gap-4 px-5 py-4 border-b border-[#1A2644] last:border-b-0 bg-[#0D1535] ${
-        isReady ? '' : 'opacity-60'
+      className={`flex items-center gap-4 px-5 py-4 border-b border-[#1E2A4A] last:border-b-0 hover:bg-[#0D1535]/60 transition-colors ${
+        ready ? '' : 'opacity-60'
       }`}
     >
-      {/* Checkbox */}
-      <div
-        className={`w-4 h-4 rounded border shrink-0 ${
-          isReady ? 'border-[#27282B]' : 'border-[#1A2644]'
-        }`}
-      />
-
-      {/* Document info */}
-      <div className="w-[440px] space-y-0.5">
+      {/* Name + key question */}
+      <div className="flex-1 min-w-0 space-y-0.5">
         <p className="text-[14px] text-white font-medium truncate">{doc.name}</p>
-        {doc.document_specs?.name && (
-          <p className="text-[11px] text-[#4A5568] truncate">{doc.document_specs.name}</p>
+        {doc.key_question && (
+          <p className="text-[11px] text-[#4A5568] italic truncate">{doc.key_question}</p>
         )}
       </div>
 
       {/* Status */}
-      <div className="w-[130px] flex items-center gap-2">
+      <div className="w-[130px] flex items-center gap-2 shrink-0">
         <div className={`w-2 h-2 rounded-full shrink-0 ${statusConfig.dot}`} />
         <span className={`text-[13px] ${statusConfig.color}`}>{statusConfig.label}</span>
       </div>
 
       {/* Date */}
-      <div className="w-[160px] text-[13px] text-[#4A5568]">
-        {formatDate(doc.generated_at ?? doc.last_edited_at ?? '')}
+      <div className="w-[120px] text-[13px] text-[#4A5568] shrink-0">
+        {formatDate(doc.generated_at)}
       </div>
 
       {/* Actions */}
-      <div className="flex-1 flex items-center gap-5">
-        {isReady ? (
+      <div className="w-[260px] flex items-center gap-4 shrink-0">
+        <button
+          type="button"
+          onClick={onView}
+          className="text-[13px] text-[#B8860B] hover:text-[#D4A017] transition-colors font-medium"
+        >
+          Ver
+        </button>
+        {ready && hasContent && (
           <>
-            <Link
-              href={`/project/${projectId}/documento/${doc.id}`}
-              className="text-[13px] text-[#B8860B] hover:text-[#D4A017] transition-colors font-medium"
-            >
-              Vista previa
-            </Link>
             <button
               type="button"
-              disabled={!hasSections || downloading[`${doc.id}-pdf`]}
-              onClick={() => onDownload(doc, 'pdf')}
-              className="text-[13px] text-[#B0C4DE] hover:text-white transition-colors disabled:opacity-40"
+              onClick={onDownload}
+              disabled={downloading[`${doc.id}-pdf`]}
+              className="text-[13px] text-[#B8860B] hover:text-[#D4A017] font-semibold transition-colors disabled:opacity-40"
             >
-              {downloading[`${doc.id}-pdf`] ? '...' : 'Descargar'}
+              {downloading[`${doc.id}-pdf`] ? '...' : 'PDF'}
             </button>
             <button
               type="button"
-              className="text-[13px] text-[#4A5568] hover:text-[#8892A4] transition-colors"
+              onClick={onCopy}
+              className="text-[13px] text-[#6E8EAD] hover:text-white transition-colors"
             >
-              •••
+              {copied === doc.id ? '✓ Copiado' : 'Copiar JSON'}
             </button>
           </>
-        ) : (
+        )}
+        {!ready && (
           <span className="text-[12px] text-[#4A5568] italic">
-            Pendiente — se activa en la Sesión de Consejo
+            Pendiente de sesión
           </span>
         )}
       </div>
     </div>
+  )
+}
+
+// ─── Preview drawer ──────────────────────────────────────────────────────────
+
+function DocumentDrawer({ doc, onClose }: { doc: ExportDocument; onClose: () => void }) {
+  const cj = doc.content_json
+  const compositionSections = doc.composition?.sections ?? []
+
+  return (
+    <>
+      {/* Overlay */}
+      <div
+        className="fixed inset-0 bg-black/50 z-40"
+        onClick={onClose}
+      />
+
+      {/* Drawer */}
+      <aside className="fixed right-0 top-0 h-full w-[420px] bg-[#0D1535] border-l border-[#1E2A4A] z-50 flex flex-col overflow-hidden">
+        {/* Drawer header */}
+        <div className="shrink-0 px-6 py-5 border-b border-[#1E2A4A] flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h2 className="text-base font-semibold text-white leading-tight">{doc.name}</h2>
+            {doc.key_question && (
+              <p className="text-xs text-[#8892A4] italic mt-1 leading-relaxed">
+                {doc.key_question}
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-[#8892A4] hover:text-white transition-colors shrink-0 text-lg leading-none mt-0.5"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Drawer body */}
+        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+
+          {/* Has content_json */}
+          {cj ? (
+            <>
+              {/* Key question answer */}
+              {cj.key_question_answer && (
+                <div className="bg-[#0A1128] border border-[#B8860B]/20 rounded-xl px-4 py-4">
+                  <p className="text-[10px] text-[#B8860B] uppercase tracking-wider font-medium mb-2">
+                    Respuesta a la pregunta clave
+                  </p>
+                  <p className="text-sm text-[#e0e0e5] leading-relaxed">{cj.key_question_answer}</p>
+                </div>
+              )}
+
+              {/* Sections */}
+              {(cj.sections ?? []).length > 0 && (
+                <div className="space-y-4">
+                  {(cj.sections ?? []).map((sec, i) => (
+                    <div key={i}>
+                      <h3 className="text-xs text-[#B8860B] font-semibold uppercase tracking-wider mb-2">
+                        {getSectionTitle(sec)}
+                      </h3>
+                      <p className="text-sm text-[#e0e0e5] leading-relaxed whitespace-pre-line">
+                        {sec.content}
+                      </p>
+                      {sec.key_points && sec.key_points.length > 0 && (
+                        <ul className="mt-2 space-y-1">
+                          {sec.key_points.map((pt, pi) => (
+                            <li key={pi} className="flex items-start gap-2 text-xs text-[#8892A4]">
+                              <span className="text-[#B8860B] mt-0.5 shrink-0">•</span>
+                              {pt}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Key insights */}
+              {(cj.key_insights ?? []).length > 0 && (
+                <div>
+                  <h3 className="text-xs text-[#B8860B] font-semibold uppercase tracking-wider mb-2">
+                    Insights clave
+                  </h3>
+                  <ul className="space-y-1.5">
+                    {(cj.key_insights ?? []).map((ins, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-[#e0e0e5]">
+                        <span className="text-[#B8860B] mt-0.5 shrink-0">→</span>
+                        {ins}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Recommendations */}
+              {(cj.recommendations ?? []).length > 0 && (
+                <div>
+                  <h3 className="text-xs text-green-400 font-semibold uppercase tracking-wider mb-2">
+                    Recomendaciones
+                  </h3>
+                  <ul className="space-y-1.5">
+                    {(cj.recommendations ?? []).map((rec, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-[#e0e0e5]">
+                        <span className="text-green-400 mt-0.5 shrink-0">✓</span>
+                        {rec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Risks */}
+              {(cj.risks ?? []).length > 0 && (
+                <div>
+                  <h3 className="text-xs text-red-400 font-semibold uppercase tracking-wider mb-2">
+                    Riesgos identificados
+                  </h3>
+                  <ul className="space-y-1.5">
+                    {(cj.risks ?? []).map((risk, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-[#e0e0e5]">
+                        <span className="text-red-400 mt-0.5 shrink-0">!</span>
+                        {risk}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
+          ) : (
+            /* No content_json — show composition placeholders */
+            <div className="space-y-3">
+              <p className="text-xs text-[#8892A4] italic">
+                Este documento se generará al completar la fase correspondiente en la Sesión de Consejo.
+              </p>
+              {compositionSections.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-[10px] text-[#B8860B] uppercase tracking-wider font-medium">
+                    Secciones planificadas
+                  </p>
+                  {compositionSections.map((sec, i) => (
+                    <div key={i} className="flex items-center gap-2 px-3 py-2 bg-[#0A1128] border border-[#1E2A4A] rounded-lg opacity-60">
+                      <div className="w-3 h-3 rounded-full border border-[#1E2A4A] shrink-0" />
+                      <p className="text-xs text-[#8892A4]">{sec.title}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Drawer footer */}
+        <div className="shrink-0 px-6 py-4 border-t border-[#1E2A4A]">
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full text-sm text-[#8892A4] border border-[#1E2A4A] py-2.5 rounded-xl hover:text-white hover:border-[#8892A4] transition-colors"
+          >
+            Cerrar
+          </button>
+        </div>
+      </aside>
+    </>
   )
 }

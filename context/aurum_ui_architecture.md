@@ -54,7 +54,19 @@ Componente: `src/components/sesion-consejo/SesionConsejoView.tsx`
 ## Export Center
 Interfaz de presentación interactiva de los resultados de la Sesión de Consejo.
 El usuario navega los documentos generados en formato visual.
-Exporta a PDF, PPTX o JSON.
+Exporta a PDF o copia JSON. PPTX y Google Slides en v2.
+
+Layout:
+- Header: breadcrumb + subtítulo "Documentos generados en tu Sesión de Consejo" + barra de progreso "X de N listos" + botón "Descargar todo (PDF)"
+- Tabla: fila por entregable con nombre, pregunta clave (itálica), badge estado (Listo/Pendiente), fecha, acciones (Ver / PDF / Copiar JSON)
+- Drawer lateral derecho (420px): preview del document content_json — key_question_answer, secciones, key_insights, recomendaciones, riesgos. Si sin content_json: secciones planificadas como placeholders.
+- Estado vacío: mensaje + botón "Ir a Sesión de Consejo"
+
+content_json esperado de Sesión de Consejo:
+`{ title, key_question_answer, sections[{ title, content }], key_insights[], recommendations[], risks[] }`
+PDF generado server-side vía `/api/export/pdf` con jsPDF.
+Ruta: `/project/[id]/export`
+Componente: `src/components/export/ExportCenter.tsx`
 
 ## Consultoría Activa
 Chat post-sesión entre el usuario y su consejo IA configurado.

@@ -8,7 +8,7 @@ Faber lo actualiza después de cada sesión de trabajo.
 ## Estado general
 
 Fecha última actualización: 2026-03-17
-Etapa actual: STORY 4.3 COMPLETO — UI de Sesión de Consejo reescrita para nuevos endpoints. Layout 3 columnas, Nexo Dual, modos Normal/Autopiloto/Levantar Mano, transiciones de fase.
+Etapa actual: STORY 4.4 COMPLETO — Export Center integrado con content_json. Flujo core completo: Semilla → Entregables → Sesión de Consejo → Export Center.
 
 ---
 
@@ -63,6 +63,16 @@ Etapa actual: STORY 4.3 COMPLETO — UI de Sesión de Consejo reescrita para nue
 - CofoundersPropuesta — botón Cambiar conectado a CofounderSwapDrawer ✓
 - ConsejoPrincipalPropuesta — botón Cambiar por card conectado a AdvisorSwapDrawer ✓
 - "Ver perfil" ya funcional en ConsejoPrincipalPropuesta, EspecialistasPropuesta, ICPsPropuesta ✓
+- Story 4.4 — Export Center integrado con content_json ✓
+  - page.tsx: query actualizada (key_question, composition, deliverable_index, sin document_specs)
+  - ExportCenter.tsx reescrito: tabla, drawer preview, Copiar JSON, estado vacío
+  - Drawer: title + key_question_answer + secciones + key_insights + recomendaciones + riesgos
+  - Estado vacío con botón "Ir a Sesión de Consejo"
+  - /api/export/pdf actualizado: acepta nuevo contentJson (title/key_question_answer/sections/key_insights/recommendations/risks)
+  - PDF incluye páginas de insights, recomendaciones y riesgos
+  - Navegación verificada: SesionConsejoView → /project/[id]/export ✓, ProjectView → /project/[id]/export ✓
+  - TypeScript: clean
+
 - Story 4.3 — UI de Sesión de Consejo ✓
   - SesionConsejoView.tsx reescrito para endpoints start/question/resolve/GET
   - Layout 3 columnas: sidebar fases (260px) + área central + sidebar consejeros (280px)

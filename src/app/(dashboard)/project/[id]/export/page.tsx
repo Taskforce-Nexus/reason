@@ -22,14 +22,14 @@ export default async function ExportPage({ params }: { params: Promise<{ id: str
 
   const { data: documents } = await supabase
     .from('project_documents')
-    .select('id, name, status, generated_at, last_edited_at, content_json, document_specs(name)')
+    .select('id, name, key_question, composition, deliverable_index, status, generated_at, content_json')
     .eq('project_id', id)
-    .order('generated_at', { ascending: true, nullsFirst: true })
+    .order('deliverable_index', { ascending: true, nullsFirst: true })
 
   return (
     <ExportCenter
       project={project as Project}
-      documents={(documents ?? []) as unknown as ExportDocument[]}
+      documents={(documents ?? []) as ExportDocument[]}
     />
   )
 }
@@ -37,9 +37,21 @@ export default async function ExportPage({ params }: { params: Promise<{ id: str
 export interface ExportDocument {
   id: string
   name: string
+  key_question: string | null
+  composition: {
+    sections?: Array<{ title: string; description: string; questions: string[] }>
+  } | null
+  deliverable_index: number | null
   status: string
   generated_at: string | null
-  last_edited_at: string | null
-  content_json: { sections?: { section_name: string; content: string; key_points: string[] }[] } | null
-  document_specs: { name: string } | null
+  content_json: ContentJson | null
+}
+
+export interface ContentJson {
+  title?: string
+  key_question_answer?: string
+  sections?: Array<{ title?: string; section_name?: string; content: string; key_points?: string[] }>
+  key_insights?: string[]
+  recommendations?: string[]
+  risks?: string[]
 }
