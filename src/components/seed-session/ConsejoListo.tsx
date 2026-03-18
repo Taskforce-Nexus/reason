@@ -41,6 +41,13 @@ export default function ConsejoListo({ project, documentSpecs, advisors, cofound
     cofounders.find(c => c.role === 'critico'),
   ].filter(Boolean) as Cofounder[]
 
+  // Completeness validation — hard limits before session can start
+  const missingItems: string[] = []
+  if (advisors.length < 3) missingItems.push(`Consejeros principales: ${advisors.length}/3 mínimo`)
+  if (cofounderPair.length < 2) missingItems.push(`Cofounders: ${cofounderPair.length}/2 (constructivo + crítico)`)
+  if (documentSpecs.length < 1) missingItems.push('Sin entregables configurados')
+  const canStart = missingItems.length === 0
+
   return (
     <main className="flex-1 flex flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto px-8 py-6 space-y-5">
@@ -155,11 +162,24 @@ export default function ConsejoListo({ project, documentSpecs, advisors, cofound
 
       {/* CTA */}
       <div className="border-t border-[#1E2A4A] px-8 py-4 space-y-2 shrink-0">
+        {/* Incomplete warning */}
+        {!canStart && (
+          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-4 py-3 mb-1">
+            <p className="text-xs text-yellow-400 font-medium mb-1">Consejo incompleto</p>
+            <ul className="space-y-0.5">
+              {missingItems.map(item => (
+                <li key={item} className="text-xs text-yellow-400/70 flex gap-1.5">
+                  <span>•</span><span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <button
           type="button"
           onClick={handleStart}
-          disabled={loading}
-          className="w-full bg-[#B8860B] hover:bg-[#b8963f] text-[#0A1128] font-semibold text-sm py-3.5 rounded-xl transition-colors disabled:opacity-40"
+          disabled={loading || !canStart}
+          className="w-full bg-[#B8860B] hover:bg-[#b8963f] text-[#0A1128] font-semibold text-sm py-3.5 rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {loading ? 'Iniciando...' : 'Iniciar Sesión de Consejo →'}
         </button>

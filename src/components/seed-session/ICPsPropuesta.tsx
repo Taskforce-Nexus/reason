@@ -1,40 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Project } from '@/lib/types'
-import AdvisorProfileDrawer from './AdvisorProfileDrawer'
 
-interface PersonaExample {
+const MAX_ACCEPTED = 5
+
+interface PersonaItem {
   id: string
   name: string
   archetype: string
   demographics: string
   quote: string
+  jobs_to_be_done?: string[]
+  pains?: string[]
+  gains?: string[]
+  fears_objections?: string[]
+  current_alternatives?: string[]
+  discovery_channels?: string[]
+  purchase_triggers?: string[]
+  decision_criteria?: string[]
+  behavior_tags?: string[]
 }
-
-export const EXAMPLE_PERSONAS: PersonaExample[] = [
-  {
-    id: 'icp-1',
-    name: 'Millennial Urbano',
-    archetype: 'El profesional independiente',
-    demographics: 'Hombre o mujer, 28-38 años, ingresos medios-altos, vive en ciudad principal de LATAM',
-    quote: '"Quiero controlar mis finanzas pero no tengo tiempo para hacerlo bien."',
-  },
-  {
-    id: 'icp-2',
-    name: 'Freelancer Conservador',
-    archetype: 'El autónomo organizado',
-    demographics: 'Mujer u hombre, 25-40 años, ingresos variables, múltiples fuentes de ingreso',
-    quote: '"Necesito separar mis finanzas personales de las del negocio sin complicarme."',
-  },
-  {
-    id: 'icp-3',
-    name: 'Freelancer Independiente',
-    archetype: 'El emprendedor digital',
-    demographics: 'Hombre o mujer, 22-35 años, ingresos digitales, trabajo remoto o híbrido',
-    quote: '"Manejo dinero de varios proyectos pero siempre pierdo el hilo de cuánto gané realmente."',
-  },
-]
 
 interface Props {
   project: Project
@@ -47,10 +33,34 @@ interface Props {
 export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, onNext }: Props) {
   const [loading, setLoading] = useState(false)
   const [generating, setGenerating] = useState(false)
-  const [personas, setPersonas] = useState<PersonaExample[]>(EXAMPLE_PERSONAS)
-  const [profileItem, setProfileItem] = useState<PersonaExample | null>(null)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [personas, setPersonas] = useState<PersonaItem[]>([])
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
-  async function handleRequestPersona() {
+  // Generate initial set on mount
+  useEffect(() => {
+    async function generateInitial() {
+      setInitialLoading(true)
+      try {
+        const res = await fetch('/api/seed-session/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'buyer_persona', projectId: project.id, count: 4 }),
+        })
+        const data = await res.json()
+        const items: PersonaItem[] = data.items ?? []
+        setPersonas(items)
+        // Start with all accepted
+        onAcceptedChange(items.map(p => p.id))
+      } catch { /* non-blocking */ }
+      setInitialLoading(false)
+    }
+    generateInitial()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project.id])
+
+  async function handleRequestMore() {
+    if (acceptedIds.length >= MAX_ACCEPTED) return
     setGenerating(true)
     try {
       const res = await fetch('/api/seed-session/generate', {
@@ -60,6 +70,7 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
           type: 'buyer_persona',
           projectId: project.id,
           existingItems: personas,
+          count: 1,
         }),
       })
       const { item, error } = await res.json()
@@ -71,8 +82,10 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
   }
 
   function accept(id: string) {
+    if (acceptedIds.length >= MAX_ACCEPTED && !acceptedIds.includes(id)) return
     if (!acceptedIds.includes(id)) onAcceptedChange([...acceptedIds, id])
   }
+
   function discard(id: string) {
     onAcceptedChange(acceptedIds.filter(i => i !== id))
   }
@@ -91,6 +104,15 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
             archetype_label: p.archetype,
             demographics: p.demographics,
             quote: p.quote,
+            jobs_to_be_done: p.jobs_to_be_done,
+            pains: p.pains,
+            gains: p.gains,
+            fears_objections: p.fears_objections,
+            current_alternatives: p.current_alternatives,
+            discovery_channels: p.discovery_channels,
+            purchase_triggers: p.purchase_triggers,
+            decision_criteria: p.decision_criteria,
+            behavior_tags: p.behavior_tags,
           })),
         }),
       })
@@ -99,111 +121,180 @@ export default function ICPsPropuesta({ project, acceptedIds, onAcceptedChange, 
     onNext()
   }
 
+  const acceptedCount = acceptedIds.length
+  const canAddMore = acceptedCount < MAX_ACCEPTED
+
   return (
-    <>
-    <AdvisorProfileDrawer
-      profile={profileItem ? { name: profileItem.name, archetype: profileItem.archetype, demographics: profileItem.demographics, quote: profileItem.quote } : null}
-      isOpen={profileItem !== null}
-      onClose={() => setProfileItem(null)}
-      type="persona"
-    />
     <main className="flex-1 flex flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto px-8 py-6 space-y-5">
         {/* Nexo message */}
         <div className="flex gap-3">
           <div className="w-8 h-8 rounded-full bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] text-xs font-bold shrink-0 mt-1">N</div>
           <div className="max-w-2xl bg-[#0D1535] border border-[#1E2A4A] rounded-2xl rounded-tl-sm px-5 py-4 text-sm text-[#e0e0e5] leading-relaxed">
-            Identifiqué las perspectivas de clientes relevantes para tu proyecto. Estos van a ayudarte a construir desde el lado del cliente real. Agrega o descarta según lo que sabes de tu mercado.
+            {initialLoading
+              ? 'Construyendo los perfiles de clientes relevantes para tu proyecto...'
+              : `Construí estos perfiles de cliente basándome en tu proyecto. Representan los arquetipos más relevantes para tu mercado objetivo. Confirma los que apliquen o descarta los que no encajen. Haz clic en "Ver perfil completo" para ver jobs-to-be-done, pains y más.`}
           </div>
         </div>
+
+        {/* Loading skeleton */}
+        {initialLoading && (
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="bg-[#0D1535] border border-[#1E2A4A] rounded-xl p-5 animate-pulse">
+                <div className="h-4 bg-[#1E2A4A] rounded w-2/5 mb-2" />
+                <div className="h-3 bg-[#1E2A4A] rounded w-1/3 mb-3" />
+                <div className="h-3 bg-[#1E2A4A] rounded w-4/5" />
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Personas list */}
-        <div>
-          <p className="text-xs text-[#B8860B] uppercase tracking-wider font-medium mb-3">
-            Perspectivas del Cliente
-          </p>
-          <div className="space-y-3">
-            {personas.map(persona => {
-              const isAccepted = acceptedIds.includes(persona.id)
-              return (
-                <div key={persona.id} className={`bg-[#0D1535] border rounded-xl px-5 py-4 transition-colors ${isAccepted ? 'border-[#B8860B]/40' : 'border-[#1E2A4A]'}`}>
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="font-semibold text-sm text-white">{persona.name}</p>
-                        <span className="text-xs text-[#8892A4] bg-[#1E2A4A] px-2 py-0.5 rounded-full">{persona.archetype}</span>
-                      </div>
-                      <p className="text-xs text-[#8892A4] leading-relaxed mb-2">{persona.demographics}</p>
-                      <p className="text-xs text-[#B8860B]/80 italic">{persona.quote}</p>
-                    </div>
-                    <div className="flex gap-1.5 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => discard(persona.id)}
-                        className={`text-xs px-2.5 py-1 rounded border transition-colors ${
-                          !isAccepted
-                            ? 'bg-red-500/10 text-red-400 border-red-500/30'
-                            : 'text-[#8892A4] border-[#1E2A4A] hover:text-white'
-                        }`}
-                      >
-                        Descartar
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => accept(persona.id)}
-                        className={`text-xs px-2.5 py-1 rounded border transition-colors ${
-                          isAccepted
-                            ? 'bg-[#B8860B]/20 text-[#B8860B] border-[#B8860B]/30'
-                            : 'text-[#8892A4] border-[#1E2A4A] hover:text-white'
-                        }`}
-                      >
-                        Aceptar
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setProfileItem(persona)}
-                        className="text-xs px-2.5 py-1 rounded border border-[#1E2A4A] text-[#8892A4] hover:text-white transition-colors"
-                      >
-                        Ver perfil
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+        {!initialLoading && (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs text-[#B8860B] uppercase tracking-wider font-medium">
+                Buyer Personas
+              </p>
+              <span className="text-xs text-[#8892A4]">
+                {acceptedCount}/{MAX_ACCEPTED} seleccionadas
+              </span>
+            </div>
+            <div className="space-y-3">
+              {personas.map(persona => {
+                const isAccepted = acceptedIds.includes(persona.id)
+                const isExpanded = expandedId === persona.id
+                const hasTags = (persona.behavior_tags ?? []).length > 0
+                return (
+                  <div
+                    key={persona.id}
+                    className={`bg-[#0D1535] border rounded-xl overflow-hidden transition-colors ${isAccepted ? 'border-[#B8860B]/40' : 'border-[#1E2A4A] opacity-60'}`}
+                  >
+                    {/* Card header */}
+                    <div className="px-5 py-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <p className="font-semibold text-sm text-white">{persona.name}</p>
+                            <span className="text-xs text-[#8892A4] bg-[#1E2A4A] px-2 py-0.5 rounded-full shrink-0">{persona.archetype}</span>
+                          </div>
+                          <p className="text-xs text-[#8892A4] leading-relaxed mb-2">{persona.demographics}</p>
+                          <p className="text-xs text-[#B8860B]/80 italic">"{persona.quote}"</p>
 
-          <button
-            type="button"
-            onClick={handleRequestPersona}
-            disabled={generating}
-            className="mt-3 text-xs text-[#8892A4] hover:text-white transition-colors disabled:opacity-50"
-          >
-            {generating ? 'Generando...' : '+ Agregar perspectiva'}
-          </button>
-        </div>
+                          {/* Behavior tags */}
+                          {hasTags && (
+                            <div className="flex flex-wrap gap-1 mt-2">
+                              {(persona.behavior_tags ?? []).slice(0, 4).map(tag => (
+                                <span key={tag} className="text-[10px] bg-[#0A1128] border border-[#1E2A4A] text-[#8892A4] px-2 py-0.5 rounded-full">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex flex-col gap-1.5 shrink-0">
+                          {isAccepted ? (
+                            <button
+                              type="button"
+                              onClick={() => discard(persona.id)}
+                              className="text-xs px-2.5 py-1 rounded border text-[#8892A4] border-[#1E2A4A] hover:text-red-400 hover:border-red-500/30 transition-colors"
+                            >
+                              Quitar
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => accept(persona.id)}
+                              disabled={!canAddMore}
+                              className="text-xs px-2.5 py-1 rounded border text-[#B8860B] border-[#B8860B]/30 hover:bg-[#B8860B]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                              Agregar
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setExpandedId(isExpanded ? null : persona.id)}
+                            className="text-xs px-2.5 py-1 rounded border border-[#1E2A4A] text-[#8892A4] hover:text-white transition-colors"
+                          >
+                            {isExpanded ? 'Cerrar' : 'Ver perfil'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Expanded profile */}
+                    {isExpanded && (
+                      <div className="border-t border-[#1E2A4A] px-5 py-4 bg-[#070E22]/50 space-y-3">
+                        {[
+                          { label: 'Jobs to be done', items: persona.jobs_to_be_done },
+                          { label: 'Dolores', items: persona.pains },
+                          { label: 'Ganancias buscadas', items: persona.gains },
+                          { label: 'Miedos / Objeciones', items: persona.fears_objections },
+                          { label: 'Alternativas actuales', items: persona.current_alternatives },
+                          { label: 'Canales de descubrimiento', items: persona.discovery_channels },
+                          { label: 'Triggers de compra', items: persona.purchase_triggers },
+                          { label: 'Criterios de decisión', items: persona.decision_criteria },
+                        ].filter(s => s.items && s.items.length > 0).map(section => (
+                          <div key={section.label}>
+                            <p className="text-[10px] text-[#B8860B] uppercase tracking-wider font-medium mb-1">{section.label}</p>
+                            <ul className="space-y-0.5">
+                              {(section.items ?? []).map((item, i) => (
+                                <li key={i} className="text-xs text-[#8892A4] leading-relaxed flex gap-2">
+                                  <span className="text-[#1E2A4A] shrink-0">•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+
+              {/* Request more skeleton */}
+              {generating && (
+                <div className="bg-[#0D1535] border border-[#B8860B]/20 rounded-xl p-5 animate-pulse">
+                  <div className="h-4 bg-[#1E2A4A] rounded w-2/5 mb-2" />
+                  <div className="h-3 bg-[#1E2A4A] rounded w-1/3 mb-3" />
+                  <div className="h-3 bg-[#1E2A4A] rounded w-4/5" />
+                </div>
+              )}
+            </div>
+
+            {/* Request another */}
+            {canAddMore && (
+              <button
+                type="button"
+                onClick={handleRequestMore}
+                disabled={generating}
+                className="mt-3 text-xs text-[#8892A4] hover:text-[#B8860B] transition-colors disabled:opacity-50"
+              >
+                {generating ? 'Generando...' : '+ Pedir otra perspectiva'}
+              </button>
+            )}
+            {!canAddMore && (
+              <p className="mt-3 text-xs text-[#4A5568] italic">
+                Máximo {MAX_ACCEPTED} buyer personas. Quita una para agregar otra.
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* CTA */}
-      <div className="border-t border-[#1E2A4A] px-8 py-4 flex gap-3 shrink-0">
+      <div className="border-t border-[#1E2A4A] px-8 py-4 shrink-0">
         <button
           type="button"
           onClick={handleConfirm}
-          disabled={loading}
-          className="flex-1 bg-[#B8860B] hover:bg-[#b8963f] text-[#0A1128] font-semibold text-sm py-3 rounded-xl transition-colors disabled:opacity-40"
+          disabled={loading || initialLoading}
+          className="w-full bg-[#B8860B] hover:bg-[#b8963f] text-[#0A1128] font-semibold text-sm py-3 rounded-xl transition-colors disabled:opacity-40"
         >
           {loading ? 'Guardando...' : 'Siguiente →'}
         </button>
-        <button
-          type="button"
-          onClick={handleRequestPersona}
-          disabled={generating}
-          className="px-4 py-3 text-sm text-[#8892A4] border border-[#1E2A4A] rounded-xl hover:text-white transition-colors disabled:opacity-50"
-        >
-          {generating ? 'Generando...' : 'Pedir otra perspectiva'}
-        </button>
       </div>
     </main>
-    </>
   )
 }

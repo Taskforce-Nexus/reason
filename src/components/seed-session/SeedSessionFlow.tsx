@@ -7,8 +7,8 @@ import { createClient } from '@/lib/supabase/client'
 import EntregablesPropuesta from './EntregablesPropuesta'
 import CofoundersPropuesta from './CofoundersPropuesta'
 import ConsejoPrincipalPropuesta from './ConsejoPrincipalPropuesta'
-import EspecialistasPropuesta, { EXAMPLE_SPECIALISTS } from './EspecialistasPropuesta'
-import ICPsPropuesta, { EXAMPLE_PERSONAS } from './ICPsPropuesta'
+import EspecialistasPropuesta from './EspecialistasPropuesta'
+import ICPsPropuesta from './ICPsPropuesta'
 import ConsejoListo from './ConsejoListo'
 
 export type SeedStep =
@@ -69,8 +69,8 @@ export default function SeedSessionFlow({ project, cofounders, userEmail, initia
   const [acceptedCofIds,     setAcceptedCofIds]     = useState<string[]>(
     cofounders.filter(c => c.role === 'constructivo' || c.role === 'critico').slice(0, 2).map(c => c.id)
   )
-  const [acceptedSpecIds,    setAcceptedSpecIds]    = useState<string[]>(EXAMPLE_SPECIALISTS.map(s => s.id))
-  const [acceptedPersonaIds, setAcceptedPersonaIds] = useState<string[]>(EXAMPLE_PERSONAS.map(p => p.id))
+  const [acceptedSpecIds,    setAcceptedSpecIds]    = useState<string[]>([])
+  const [acceptedPersonaIds, setAcceptedPersonaIds] = useState<string[]>([])
 
   function handleCouncilReady(advisors: Advisor[]) {
     setCouncilAdvisors(advisors)
