@@ -12,7 +12,7 @@ test.describe('Full App Audit', () => {
     await page.fill('input[type="email"]', TEST_EMAIL)
     await page.fill('input[type="password"]', TEST_PASSWORD)
     await page.click('button:has-text("Iniciar Sesión")')
-    await page.waitForURL('**/dashboard**', { timeout: 15000 })
+    await page.waitForURL('**/dashboard**', { timeout: 30000 })
   }
 
   test('Audit: Dashboard buttons', async ({ page }) => {

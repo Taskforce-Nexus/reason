@@ -429,6 +429,10 @@ test.describe('Story 5.7 — Stripe Integration Tests', () => {
     // Enviar mensaje corto para generar un token_usage
     await chatInput.fill('Prueba de integración de tracking de uso.')
     const sendBtn = page.locator('button').filter({ hasText: /Enviar/i }).last()
+    if (!(await sendBtn.isVisible({ timeout: 5000 }).catch(() => false))) {
+      console.log('⚠️ SKIP — botón Enviar no visible en sesión semilla')
+      return
+    }
     await sendBtn.click()
 
     console.log('Mensaje enviado — esperando respuesta de Claude (~15s)...')

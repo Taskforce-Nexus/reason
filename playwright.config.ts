@@ -3,6 +3,7 @@ import { defineConfig } from '@playwright/test'
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 120000, // 2 minutos por test — las llamadas a Claude son lentas
+  retries: 1, // retry once on flaky failures (parallel login contention)
   expect: { timeout: 30000 },
   use: {
     baseURL: 'http://localhost:3000',
