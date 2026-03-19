@@ -5,6 +5,7 @@ import { COMPOSE_DELIVERABLES_PROMPT } from '@/lib/prompts'
 import { checkBalance, trackUsage } from '@/lib/usage'
 import { getModel } from '@/lib/model-router'
 import { getUserPlan } from '@/lib/plan'
+import { PLAN_LIMITS } from '@/lib/stripe'
 
 export async function POST(req: NextRequest) {
   const { project_id } = await req.json()
@@ -91,7 +92,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to parse composition from Claude' }, { status: 500 })
   }
 
-  const deliverables = composition.deliverables || []
+  const planLimits = PLAN_LIMITS[plan] ?? PLAN_LIMITS['free']
+  const rawDeliverables = composition.deliverables || []
+  const deliverables = rawDeliverables.slice(0, planLimits.deliverables_per_session)
 
   if (deliverables.length < 2) {
     return NextResponse.json({ error: 'Composition returned fewer than 2 deliverables' }, { status: 500 })

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { getUserPlan } from '@/lib/plan'
+import { PLAN_LIMITS } from '@/lib/stripe'
 
 // Maps compose output categories → DB category CHECK values
 const CATEGORY_MAP: Record<string, string> = {
@@ -29,6 +31,9 @@ export async function POST(req: NextRequest) {
   if (!project_id) return NextResponse.json({ error: 'project_id required' }, { status: 400 })
 
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const plan = user ? await getUserPlan(user.id) : 'free'
+  const maxAdvisors = (PLAN_LIMITS[plan] ?? PLAN_LIMITS['free']).advisors_per_session
 
   // 1. Load pending deliverables to extract advisors_needed categories
   const { data: docs } = await supabase
@@ -54,10 +59,11 @@ export async function POST(req: NextRequest) {
     .select('*')
     .in('category', dbCategories)
     .eq('is_native', true)
-    .limit(10)
+    .limit(maxAdvisors + 3)
 
-  // Fallback: if fewer than 5, pull any native advisors to fill
-  if ((advisors ?? []).length < 5) {
+  // Fallback: if fewer than min(3, maxAdvisors), pull any native advisors to fill
+  const minAdvisors = Math.min(3, maxAdvisors)
+  if ((advisors ?? []).length < minAdvisors) {
     const existingIds = (advisors ?? []).map(a => a.id)
     let fallbackQuery = supabase
       .from('advisors')
@@ -66,12 +72,12 @@ export async function POST(req: NextRequest) {
     if (existingIds.length > 0) {
       fallbackQuery = fallbackQuery.not('id', 'in', `(${existingIds.join(',')})`)
     }
-    const { data: fallback } = await fallbackQuery.limit(7 - (advisors ?? []).length)
+    const { data: fallback } = await fallbackQuery.limit(maxAdvisors - (advisors ?? []).length)
     advisors = [...(advisors ?? []), ...(fallback ?? [])]
   }
 
-  // Take max 7
-  const selected = (advisors ?? []).slice(0, 7)
+  // Take max per plan
+  const selected = (advisors ?? []).slice(0, maxAdvisors)
 
   // 3. Assign levels: 1-2 lidera, 3-5 apoya, 6-7 observa
   const withLevels = selected.map((a, i) => ({
@@ -96,7 +102,7 @@ export async function POST(req: NextRequest) {
       .select('id', { count: 'exact', head: true })
       .eq('council_id', councilId)
 
-    if (existingCount && existingCount >= 5 && existingCount <= 7) {
+    if (existingCount && existingCount >= minAdvisors && existingCount <= maxAdvisors) {
       const { data: existingAdvisors } = await supabase
         .from('council_advisors')
         .select('level, advisors(*)')

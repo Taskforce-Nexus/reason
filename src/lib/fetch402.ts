@@ -12,9 +12,9 @@ export function triggerInsufficientFunds(): void {
  * Dispatch 'upgrade-required' custom event — picked up by UpgradeModal
  * anywhere in the dashboard layout.
  */
-export function triggerUpgradeRequired(feature?: string): void {
+export function triggerUpgradeRequired(feature?: string, message?: string): void {
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('upgrade-required', { detail: feature ?? '' }))
+    window.dispatchEvent(new CustomEvent('upgrade-required', { detail: { feature: feature ?? '', message: message ?? '' } }))
   }
 }
 
@@ -35,7 +35,9 @@ export async function safeFetch(
       const clone = response.clone()
       const data = await clone.json()
       if (data.error === 'upgrade_required') {
-        triggerUpgradeRequired(data.feature)
+        triggerUpgradeRequired(data.feature, data.message)
+      } else if (data.error === 'plan_limit') {
+        triggerUpgradeRequired(undefined, data.message)
       }
     } catch { /* non-blocking */ }
   }

@@ -17,11 +17,18 @@ export default function UpgradeModal() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [feature, setFeature] = useState<string>('')
+  const [serverMessage, setServerMessage] = useState<string>('')
 
   useEffect(() => {
     function handler(e: Event) {
-      const detail = (e as CustomEvent<string>).detail
-      setFeature(detail ?? '')
+      const detail = (e as CustomEvent<{ feature?: string; message?: string } | string>).detail
+      if (typeof detail === 'object' && detail !== null) {
+        setFeature(detail.feature ?? '')
+        setServerMessage(detail.message ?? '')
+      } else {
+        setFeature(detail ?? '')
+        setServerMessage('')
+      }
       setOpen(true)
     }
     window.addEventListener('upgrade-required', handler)
@@ -31,6 +38,7 @@ export default function UpgradeModal() {
   if (!open) return null
 
   const info = FEATURE_LABELS[feature] ?? { plan: 'Core', description: 'Esta función' }
+  const bodyText = serverMessage || `${info.description} requiere plan ${info.plan} o superior. Actualiza tu plan para desbloquear esta y todas las funciones avanzadas.`
 
   return (
     <>
@@ -41,10 +49,10 @@ export default function UpgradeModal() {
             <span className="text-[#B8860B] text-lg">↑</span>
           </div>
           <h2 className="text-white text-[18px] font-bold mb-2">
-            Función disponible en plan {info.plan}
+            {serverMessage ? 'Límite de plan alcanzado' : `Función disponible en plan ${info.plan}`}
           </h2>
           <p className="text-[#8892A4] text-sm leading-relaxed">
-            {info.description} requiere plan {info.plan} o superior. Actualiza tu plan para desbloquear esta y todas las funciones avanzadas.
+            {bodyText}
           </p>
         </div>
 

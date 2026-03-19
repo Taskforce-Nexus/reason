@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { checkPlanLimit } from '@/lib/plan-limits'
 
 export async function GET() {
   const supabase = await createClient()
@@ -21,6 +22,11 @@ export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
+
+  const limitCheck = await checkPlanLimit(user.id, 'projects')
+  if (!limitCheck.allowed) {
+    return NextResponse.json({ error: 'plan_limit', message: limitCheck.message, plan: limitCheck.plan }, { status: 403 })
+  }
 
   const admin = createAdminClient()
   const body = await req.json()

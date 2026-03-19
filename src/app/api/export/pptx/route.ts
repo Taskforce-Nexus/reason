@@ -7,12 +7,18 @@ import {
   addClosingSlide,
 } from '@/lib/pptx-builder'
 import type { ContentJson } from '@/app/(dashboard)/project/[id]/export/page'
+import { checkPlanLimit } from '@/lib/plan-limits'
 
 export async function POST(req: NextRequest) {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
+
+    const pptxLimit = await checkPlanLimit(user.id, 'export_pptx')
+    if (!pptxLimit.allowed) {
+      return NextResponse.json({ error: 'plan_limit', message: pptxLimit.message, plan: pptxLimit.plan }, { status: 403 })
+    }
 
     const { document_id, project_name }: { document_id: string; project_name: string } =
       await req.json()
