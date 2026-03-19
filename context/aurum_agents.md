@@ -31,7 +31,7 @@ Nexo filtra y recomienda según propósito + Resumen del usuario.
 
 ### Tamaño del catálogo (objetivo post-generación)
 
-| Tabla | Objetivo | Estado DB (2026-03-18) |
+| Tabla | Objetivo | Estado DB (2026-03-19) |
 |---|---|---|
 | `advisors` | 1,000 | **1,371** — COMPLETO (excede objetivo por runs concurrentes) |
 | `cofounders` | 40 (20+20) | **124** — todos en uso por councils activos, no recortados |
@@ -41,7 +41,7 @@ Nexo filtra y recomienda según propósito + Resumen del usuario.
 
 Script: `scripts/generate-marketplace.ts`
 Modelo: `claude-sonnet-4-20250514` (strong tier)
-Estado: **COMPLETO** — 1,760 entidades generadas (excede objetivo 1,440)
+Estado: **COMPLETO** — 2,158 entidades generadas (excede objetivo 1,440)
 
 ### System Prompts profundos por consejero
 
@@ -60,10 +60,18 @@ Cada advisor y cofounder puede tener un `system_prompt` de 3,000–5,000 palabra
 - `AdvisorProfileDrawer` expone textarea editable con botones Generar / Guardar
 - `NexoCustomPromptEditor` en sidebar de `/project/[id]` para instrucciones personalizadas de Nexo
 
+**Estado del batch (2026-03-19):**
+
+- advisors: 1371/1371 system_prompts ✅ (11K–22K chars, profundos)
+- cofounders: 124/124 ✅
+- specialists: 325/325 ✅
+- buyer_personas: 338/338 ✅
+- **TOTAL: 2158/2158 — BATCH COMPLETO**
+
 **SQL requerido:**
 ```sql
 ALTER TABLE advisors ADD COLUMN IF NOT EXISTS system_prompt text;  -- ya existe
-ALTER TABLE cofounders ADD COLUMN IF NOT EXISTS system_prompt text;  -- pendiente
+ALTER TABLE cofounders ADD COLUMN IF NOT EXISTS system_prompt text;  -- ya existe
 ALTER TABLE projects ADD COLUMN IF NOT EXISTS nexo_custom_prompt text;  -- pendiente
 ```
 
