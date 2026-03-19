@@ -13,6 +13,7 @@ const supabase = createClient(
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
 const MODEL = 'claude-haiku-4-5-20251001'
+const CONCURRENCY = 5
 
 const ELEMENT_DESCRIPTIONS: Record<string, string> = {
   fuego: 'Directo y orientado a la acción. Confronta, empuja decisiones, no tolera ambigüedad. Va al punto sin rodeos.',
@@ -86,24 +87,34 @@ REGLAS CRÍTICAS:
 RESPONDE SOLO CON EL SYSTEM PROMPT. Sin explicaciones, sin markdown, sin formato especial.`
 }
 
-async function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+async function runWithConcurrency<T>(
+  items: T[],
+  concurrency: number,
+  fn: (item: T, index: number) => Promise<void>
+): Promise<void> {
+  let currentIndex = 0
+  const total = items.length
 
-async function generateForAdvisor(advisor: Record<string, unknown>): Promise<string> {
-  const prompt = buildPromptForAdvisor(advisor)
+  async function worker() {
+    while (currentIndex < total) {
+      const index = currentIndex++
+      const item = items[index]
+      try {
+        await fn(item, index)
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : String(e)
+        console.error(`  ❌ Error [${index + 1}/${total}]: ${msg}`)
+      }
+      await new Promise(r => setTimeout(r, 1000))
+    }
+  }
 
-  const response = await anthropic.messages.create({
-    model: MODEL,
-    max_tokens: 8192,
-    messages: [{ role: 'user', content: prompt }],
-  })
-
-  return (response.content[0] as { type: string; text: string }).text
+  const workers = Array.from({ length: Math.min(concurrency, total) }, () => worker())
+  await Promise.all(workers)
 }
 
 async function main() {
-  console.log(`🚀 Generating advisor system prompts with Haiku + few-shot (resumable)...`)
+  console.log(`🚀 [ADVISORS] Generating with Haiku + few-shot — ${CONCURRENCY} workers, 1s delay...`)
 
   const { data: advisors, error } = await supabase
     .from('advisors')
@@ -120,28 +131,24 @@ async function main() {
   console.log(`Found ${total} advisors without system_prompt\n`)
 
   let done = 0
-  for (const advisor of (advisors ?? [])) {
+
+  await runWithConcurrency(advisors ?? [], CONCURRENCY, async (advisor, index) => {
     const category = advisor.advisor_type || advisor.category || 'unknown'
-    try {
-      console.log(`[${done + 1}/${total}] Generating prompt for: ${advisor.name} — ${advisor.specialty} (${category})`)
-      const prompt = await generateForAdvisor(advisor)
+    console.log(`[${index + 1}/${total}] ${advisor.name} — ${advisor.specialty} (${category})`)
 
-      await supabase
-        .from('advisors')
-        .update({ system_prompt: prompt })
-        .eq('id', advisor.id)
+    const response = await anthropic.messages.create({
+      model: MODEL,
+      max_tokens: 8192,
+      messages: [{ role: 'user', content: buildPromptForAdvisor(advisor) }],
+    })
+    const prompt = (response.content[0] as { type: string; text: string }).text
 
-      done++
-      console.log(`  ✅ Generated ${prompt.length.toLocaleString()} chars — saved`)
+    await supabase.from('advisors').update({ system_prompt: prompt }).eq('id', advisor.id)
+    done++
+    console.log(`  ✅ [${index + 1}/${total}] ${advisor.name} — ${prompt.length.toLocaleString()} chars`)
+  })
 
-      await sleep(3000)
-    } catch (e) {
-      console.error(`  ❌ Error for ${advisor.name}:`, e)
-      await sleep(5000)
-    }
-  }
-
-  console.log(`\n✅ Complete. Generated ${done} prompts.`)
+  console.log(`\n✅ [ADVISORS] Complete. Generated ${done}/${total} prompts.`)
 }
 
 main().catch(console.error)
