@@ -1,0 +1,31 @@
+# Reason
+> Strategic Reasoning Partner for Consequential Decisions
+
+## What Reason does
+Reason helps founders, CEOs, and business owners make better strategic decisions
+by applying disciplined, machine-speed reasoning before execution gets expensive.
+
+We do not replace human ambition. We do not eliminate human accountability.
+We do not promise certainty. We improve the quality of thought before action.
+
+## The thesis
+In a world where building is becoming cheap and change is becoming exponential,
+the real advantage belongs to those who can reason better before they commit
+scarce time, capital, and effort.
+
+## Products
+- Reason Core: Strategic reasoning environment for founders and operators
+- Reason Board: Multi-agent AI advisory council for major decisions
+- Reason Command: Institutional reasoning system for executive teams
+
+## Features
+- AI Advisory Council: 1,300+ specialized AI advisors with deep domain expertise
+- Framework Engine: Dynamic deliverable composition using 100+ strategic frameworks
+- Nexo Dual: Constructive vs Critical cofounder debate mechanism
+- Export Center: PDF and PPTX generation of strategic documents
+
+## Links
+- Website: https://reason.guru
+- Register: https://reason.guru/register
+- Privacy: https://reason.guru/privacy
+- Terms: https://reason.guru/terms

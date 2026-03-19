@@ -43,6 +43,30 @@ Autoridad intelectual premium para founders, CEOs y tomadores de decisiones estr
 
 ---
 
+## Offer Architecture
+
+| Producto | Subtítulo | Descripción | Tier Stripe |
+|---|---|---|---|
+| **Reason Core** | "daily reasoning environment" | Strategic reasoning environment for founders and operators | Core ($29/mo) |
+| **Reason Board** | "multi-agent strategic challenge" | Multi-agent AI advisory council for major decisions | Pro ($79/mo) |
+| **Reason Command** | "institutional reasoning system" | Institutional reasoning system for executive teams | Enterprise ($199/mo) |
+
+> Nota: Los IDs de producto en Stripe se mantienen (Core/Pro/Enterprise). Solo el copy de landing y Settings Plans debe reflejar los nombres del brand book.
+
+---
+
+## Manifesto
+
+> We do not replace human ambition.
+> We do not eliminate human accountability.
+> We do not promise certainty.
+> We improve the quality of thought before action.
+
+Reason helps founders, CEOs, and business owners make better strategic decisions
+by applying disciplined, machine-speed reasoning before execution gets expensive.
+
+---
+
 ## Tesis de Marca
 
 > En un mundo donde construir es barato y el cambio es exponencial,
