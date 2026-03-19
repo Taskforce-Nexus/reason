@@ -91,6 +91,7 @@ export type Advisor = {
   specialties_tags?: string[] | null
   industries_tags?: string[] | null
   experience?: string[] | null
+  reason?: string | null
   created_at: string
 }
 

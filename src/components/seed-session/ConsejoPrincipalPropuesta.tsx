@@ -35,6 +35,8 @@ const LEVEL_BORDER: Record<string, string> = {
 
 export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedIds, onAcceptedChange, onNext }: Props) {
   const [loading, setLoading] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [generateError, setGenerateError] = useState('')
   const [profileAdvisor, setProfileAdvisor] = useState<Advisor | null>(null)
   const [localAdvisors, setLocalAdvisors] = useState<Advisor[]>(advisors)
 
@@ -43,6 +45,8 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
   const [swapOptions, setSwapOptions] = useState<Advisor[]>([])
   const [swapLoading, setSwapLoading] = useState(false)
   const [swapOffset, setSwapOffset] = useState(0)
+  const [swapSearch, setSwapSearch] = useState('')
+  const [swapCategory, setSwapCategory] = useState('')
 
   // Custom advisor state
   const [showCustomInput, setShowCustomInput] = useState(false)
@@ -50,17 +54,41 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
   const [generatingCustom, setGeneratingCustom] = useState(false)
   const [customError, setCustomError] = useState('')
 
-  // Sync localAdvisors when prop updates (e.g., after page refresh loads from DB)
+  // Sync localAdvisors when prop updates
   useEffect(() => {
     if (advisors.length > 0) setLocalAdvisors(advisors)
   }, [advisors])
+
+  // Auto-generate council if empty on mount
+  useEffect(() => {
+    if (advisors.length > 0 || localAdvisors.length > 0) return
+    setGenerating(true)
+    setGenerateError('')
+    fetch('/api/council/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ project_id: project.id }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.advisors?.length) {
+          setLocalAdvisors(data.advisors)
+          onAcceptedChange(data.advisors.map((a: Advisor) => a.id))
+        } else {
+          setGenerateError('No se pudo generar el consejo. Intenta de nuevo.')
+        }
+      })
+      .catch(() => setGenerateError('Error de red. Intenta de nuevo.'))
+      .finally(() => setGenerating(false))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const grouped: Record<string, Advisor[]> = { lidera: [], apoya: [], observa: [] }
   for (const a of localAdvisors) {
     if (grouped[a.level]) grouped[a.level].push(a)
   }
 
-  async function loadSwapOptions(advisor: Advisor, offset: number) {
+  async function loadSwapOptions(advisor: Advisor, offset: number, search = swapSearch, cat = swapCategory) {
     setSwapLoading(true)
     try {
       const supabase = createClient()
@@ -69,13 +97,18 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
         .from('advisors')
         .select('id, name, specialty, category, hats, bio, communication_style, is_native, level, element, language, advisor_type, created_at')
         .eq('is_native', true)
-        .range(offset, offset + 3)
+        .range(offset, offset + 11)
 
       if (excludeIds.length > 0) {
         q = q.not('id', 'in', `(${excludeIds.join(',')})`)
       }
-      if (advisor.category) {
+      if (cat) {
+        q = q.eq('category', cat)
+      } else if (advisor.category && !search) {
         q = q.eq('category', advisor.category)
+      }
+      if (search) {
+        q = q.ilike('name', `%${search}%`)
       }
 
       const { data } = await q
@@ -98,14 +131,30 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
     setSwapForAdvisor(advisor)
     setSwapOffset(0)
     setSwapOptions([])
-    loadSwapOptions(advisor, 0)
+    setSwapSearch('')
+    setSwapCategory('')
+    loadSwapOptions(advisor, 0, '', '')
   }
 
   function loadMore() {
     if (!swapForAdvisor) return
-    const newOffset = swapOffset + 4
+    const newOffset = swapOffset + 12
     setSwapOffset(newOffset)
     loadSwapOptions(swapForAdvisor, newOffset)
+  }
+
+  function handleSwapSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = e.target.value
+    setSwapSearch(val)
+    setSwapOffset(0)
+    if (swapForAdvisor) loadSwapOptions(swapForAdvisor, 0, val, swapCategory)
+  }
+
+  function handleSwapCategory(cat: string) {
+    const newCat = cat === swapCategory ? '' : cat
+    setSwapCategory(newCat)
+    setSwapOffset(0)
+    if (swapForAdvisor) loadSwapOptions(swapForAdvisor, 0, swapSearch, newCat)
   }
 
   function applySwap(newAdvisor: Advisor) {
@@ -182,9 +231,38 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
         <div className="flex gap-3">
           <div className="w-8 h-8 rounded-full bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] text-xs font-bold shrink-0 mt-1">N</div>
           <div className="max-w-2xl bg-[#0D1535] border border-[#1E2A4A] rounded-2xl rounded-tl-sm px-5 py-4 text-sm text-[#e0e0e5] leading-relaxed">
-            Armé tu consejo basándome en lo que necesitas para este proyecto. Cada consejero tiene un rol específico: <strong className="text-[#B8860B]">LIDERA</strong> toma la iniciativa en su área, <strong className="text-blue-400">APOYA</strong> aporta perspectiva especializada, <strong className="text-[#8892A4]">OBSERVA</strong> monitorea y alerta. Si quieres cambiar alguno, haz clic en "Cambiar" para ver alternativas.
+            {generating
+              ? 'Nexo está armando tu consejo especializado para este proyecto...'
+              : 'Seleccioné estos expertos específicamente para tu proyecto. Cada uno tiene un rol: '
+            }
+            {!generating && (<><strong className="text-[#B8860B]">LIDERA</strong> toma la iniciativa, <strong className="text-blue-400">APOYA</strong> aporta perspectiva, <strong className="text-[#8892A4]">OBSERVA</strong> monitorea. Puedes cambiar cualquiera por alguien del catálogo.</>)}
           </div>
         </div>
+
+        {/* Generating loader */}
+        {generating && (
+          <div className="bg-[#0D1535] border border-[#1E2A4A] rounded-xl p-8 text-center space-y-3">
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#B8860B] animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 rounded-full bg-[#B8860B] animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 rounded-full bg-[#B8860B] animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+            <p className="text-sm text-[#8892A4]">Nexo está analizando tu proyecto y seleccionando los expertos más relevantes...</p>
+          </div>
+        )}
+
+        {generateError && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-sm text-red-400">
+            {generateError}
+            <button
+              type="button"
+              onClick={() => { setGenerateError(''); setGenerating(true); /* re-trigger effect */ }}
+              className="ml-2 underline hover:no-underline"
+            >
+              Reintentar
+            </button>
+          </div>
+        )}
 
         {/* Estructura del consejo */}
         <div>
@@ -227,8 +305,13 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
                             </div>
                           )}
 
+                          {/* Reason — why this advisor for this project */}
+                          {advisor.reason && (
+                            <p className="text-[11px] text-[#6E8EAD] mb-2 leading-snug italic">"{advisor.reason}"</p>
+                          )}
+
                           {/* Communication style */}
-                          {advisor.communication_style && (
+                          {!advisor.reason && advisor.communication_style && (
                             <p className="text-[10px] italic text-[#4A5568] mb-2 line-clamp-1">"{advisor.communication_style}"</p>
                           )}
 
@@ -254,26 +337,52 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
                           </div>
                         </div>
 
-                        {/* Inline swap panel */}
+                        {/* Inline swap panel — catalog explorer */}
                         {isSwapOpen && (
-                          <div className="border-t border-[#1E2A4A] bg-[#070E22] px-4 py-3">
-                            <p className="text-[10px] text-[#8892A4] uppercase tracking-wider font-medium mb-2">
-                              Alternativas para este rol
+                          <div className="border-t border-[#1E2A4A] bg-[#070E22] px-4 py-3 space-y-2">
+                            <p className="text-[10px] text-[#8892A4] uppercase tracking-wider font-medium">
+                              Explorar catálogo
                             </p>
+                            {/* Search */}
+                            <input
+                              type="text"
+                              value={swapSearch}
+                              onChange={handleSwapSearch}
+                              placeholder="Buscar por nombre..."
+                              className="w-full bg-[#0D1535] border border-[#1E2A4A] rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-[#4A5568] focus:outline-none focus:border-[#B8860B]/40"
+                            />
+                            {/* Category pills */}
+                            <div className="flex flex-wrap gap-1">
+                              {['negocio', 'tecnico', 'ux_producto', 'investigacion', 'precios'].map(cat => (
+                                <button
+                                  key={cat}
+                                  type="button"
+                                  onClick={() => handleSwapCategory(cat)}
+                                  className={`text-[9px] px-2 py-0.5 rounded-full border transition-colors ${
+                                    swapCategory === cat
+                                      ? 'bg-[#B8860B]/20 border-[#B8860B]/40 text-[#B8860B]'
+                                      : 'border-[#1E2A4A] text-[#4A5568] hover:text-[#8892A4]'
+                                  }`}
+                                >
+                                  {cat}
+                                </button>
+                              ))}
+                            </div>
+                            {/* Results */}
                             {swapLoading && swapOptions.length === 0 ? (
-                              <div className="space-y-2">
+                              <div className="space-y-1.5">
                                 {[1, 2, 3].map(i => (
-                                  <div key={i} className="h-10 bg-[#0D1535] rounded-lg animate-pulse" />
+                                  <div key={i} className="h-9 bg-[#0D1535] rounded-lg animate-pulse" />
                                 ))}
                               </div>
                             ) : swapOptions.length === 0 ? (
-                              <p className="text-xs text-[#4A5568] italic">No hay más alternativas en esta categoría.</p>
+                              <p className="text-xs text-[#4A5568] italic py-1">Sin resultados.</p>
                             ) : (
-                              <div className="space-y-2">
+                              <div className="space-y-1.5 max-h-48 overflow-y-auto">
                                 {swapOptions.map(opt => (
-                                  <div key={opt.id} className="flex items-center justify-between bg-[#0D1535] border border-[#1E2A4A] rounded-lg px-3 py-2 gap-2">
+                                  <div key={opt.id} className="flex items-center justify-between bg-[#0D1535] border border-[#1E2A4A] rounded-lg px-2.5 py-1.5 gap-2">
                                     <div className="flex-1 min-w-0">
-                                      <p className="text-xs text-white font-medium truncate">{opt.name}</p>
+                                      <p className="text-[11px] text-white font-medium truncate">{opt.name}</p>
                                       <p className="text-[10px] text-[#8892A4] truncate">{opt.specialty}</p>
                                     </div>
                                     <button
@@ -285,14 +394,16 @@ export default function ConsejoPrincipalPropuesta({ project, advisors, acceptedI
                                     </button>
                                   </div>
                                 ))}
-                                <button
-                                  type="button"
-                                  onClick={loadMore}
-                                  disabled={swapLoading}
-                                  className="w-full text-[10px] text-[#4A5568] hover:text-[#8892A4] transition-colors py-1 disabled:opacity-40"
-                                >
-                                  {swapLoading ? 'Cargando...' : 'Ver más opciones →'}
-                                </button>
+                                {swapOptions.length >= 12 && (
+                                  <button
+                                    type="button"
+                                    onClick={loadMore}
+                                    disabled={swapLoading}
+                                    className="w-full text-[10px] text-[#4A5568] hover:text-[#8892A4] transition-colors py-1 disabled:opacity-40"
+                                  >
+                                    {swapLoading ? 'Cargando...' : 'Ver más →'}
+                                  </button>
+                                )}
                               </div>
                             )}
                           </div>

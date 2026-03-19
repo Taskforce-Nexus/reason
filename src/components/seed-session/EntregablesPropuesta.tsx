@@ -102,19 +102,7 @@ export default function EntregablesPropuesta({ project, onNext, onDeliverablesCo
       })
     } catch { /* non-blocking */ }
 
-    // Auto-select council based on deliverables' advisors_needed
-    try {
-      const res = await safeFetch('/api/council/auto-select', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ project_id: project.id }),
-      })
-      if (res.ok) {
-        const data = await res.json()
-        onCouncilReady(data.advisors ?? [])
-      }
-    } catch { /* non-blocking */ }
-
+    // Council generation happens on-demand in ConsejoPrincipalPropuesta step
     onDeliverablesComposed(deliverables.map(d => ({ id: d.id, name: d.name })))
     setSaving(false)
     onNext()
