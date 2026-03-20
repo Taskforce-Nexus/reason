@@ -1,9 +1,11 @@
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://reason.guru'
+
 function baseTemplate(content: string): string {
   return `
     <div style="background-color: #0A1128; padding: 40px 20px; font-family: 'Open Sans', Arial, sans-serif;">
       <div style="max-width: 560px; margin: 0 auto;">
         <div style="text-align: center; margin-bottom: 32px;">
-          <img src="https://reason-production-e205.up.railway.app/branding/logo-claro-reason.png" alt="Reason" width="140" />
+          <img src="${APP_URL}/branding/logo-claro-reason.png" alt="Reason" width="140" />
         </div>
         <div style="background-color: #0D1535; border: 1px solid #1E2A4A; border-radius: 8px; padding: 32px;">
           ${content}
@@ -32,7 +34,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
         y deja que tu consejo asesor de IA trabaje para ti.
       </p>
       <div style="text-align: center;">
-        <a href="https://reason-production-e205.up.railway.app"
+        <a href="${APP_URL}"
            style="display: inline-block; background: #B8860B; color: #0A1128;
                   padding: 12px 32px; border-radius: 4px; text-decoration: none;
                   font-weight: 600; font-family: 'Outfit', Arial, sans-serif;">
@@ -57,7 +59,7 @@ export function sessionCompletedEmail(name: string, projectName: string, documen
         Revísalos en el Export Center y descarga en PDF o PPTX.
       </p>
       <div style="text-align: center;">
-        <a href="https://reason-production-e205.up.railway.app"
+        <a href="${APP_URL}"
            style="display: inline-block; background: #B8860B; color: #0A1128;
                   padding: 12px 32px; border-radius: 4px; text-decoration: none;
                   font-weight: 600;">
@@ -81,7 +83,7 @@ export function documentReadyEmail(name: string, projectName: string, documentNa
         por tu consejo y está listo para revisión.
       </p>
       <div style="text-align: center;">
-        <a href="https://reason-production-e205.up.railway.app"
+        <a href="${APP_URL}"
            style="display: inline-block; background: #B8860B; color: #0A1128;
                   padding: 12px 32px; border-radius: 4px; text-decoration: none;
                   font-weight: 600;">
@@ -104,7 +106,7 @@ export function lowBalanceEmail(name: string, balance: number): { subject: strin
         Recarga para continuar usando Reason sin interrupciones.
       </p>
       <div style="text-align: center;">
-        <a href="https://reason-production-e205.up.railway.app/settings/facturacion"
+        <a href="${APP_URL}/settings/facturacion"
            style="display: inline-block; background: #B8860B; color: #0A1128;
                   padding: 12px 32px; border-radius: 4px; text-decoration: none;
                   font-weight: 600;">
@@ -133,7 +135,7 @@ export function paymentReceivedEmail(name: string, amount: number, concept: stri
       </div>
       <p style="color: #8892A4; font-size: 13px;">
         Puedes ver tu historial completo en
-        <a href="https://reason-production-e205.up.railway.app/settings/facturacion" style="color: #B8860B;">Facturación</a>.
+        <a href="${APP_URL}/settings/facturacion" style="color: #B8860B;">Facturación</a>.
       </p>
     `),
   };
