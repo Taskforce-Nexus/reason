@@ -5,6 +5,7 @@ import UserMenu from '@/components/dashboard/UserMenu'
 import LowBalanceBanner from '@/components/dashboard/LowBalanceBanner'
 import InsufficientFundsModal from '@/components/dashboard/InsufficientFundsModal'
 import UpgradeModal from '@/components/shared/UpgradeModal'
+import SupportWidget from '@/components/shared/SupportWidget'
 
 export default async function DashboardLayout({
   children,
@@ -83,6 +84,8 @@ export default async function DashboardLayout({
       <InsufficientFundsModal />
       {/* Global 403 upgrade modal */}
       <UpgradeModal />
+      {/* Support widget — visible in all dashboard pages */}
+      <SupportWidget />
     </div>
   )
 }
