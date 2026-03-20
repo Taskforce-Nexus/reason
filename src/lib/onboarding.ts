@@ -4,6 +4,8 @@ import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 
 export function shouldShowTour(key: string): boolean {
+  if (typeof window === 'undefined') return false
+  if (navigator.webdriver) return false // headless/automation
   return !localStorage.getItem(`reason-tour-${key}`)
 }
 
