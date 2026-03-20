@@ -9,52 +9,78 @@ function AuthConfirmInner() {
   const [message, setMessage] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
+  // Create client at component level so it starts processing hash fragment immediately
   const supabase = createClient()
 
   useEffect(() => {
-    async function confirm() {
-      const tokenHash = searchParams.get('token_hash')
-      const type = searchParams.get('type') as 'signup' | 'magiclink' | 'recovery' | null
-
-      // Primary path: token_hash + type (OTP flow)
-      if (tokenHash && type) {
-        const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
-        if (error) {
-          setStatus('error')
-          setMessage(
-            error.message.includes('expired')
-              ? 'El enlace expiró. Solicita uno nuevo.'
-              : 'No pudimos verificar tu cuenta. Intenta de nuevo.'
-          )
+    // 500ms delay: let Supabase client finish processing the hash fragment
+    // (#access_token=xxx is in the URL from Supabase's server-side redirect)
+    const timer = setTimeout(async () => {
+      // MÉTODO 1: Hash fragment — Supabase implicit flow (DEFAULT)
+      // After verifying at supabase.co/auth/v1/verify, Supabase redirects:
+      //   /auth/confirm#access_token=xxx&refresh_token=xxx&type=signup
+      // createBrowserClient auto-processes the hash; just read the session.
+      const hash = window.location.hash
+      if (hash && hash.includes('access_token')) {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session) {
+          setStatus('success')
+          setTimeout(() => router.push('/dashboard'), 1000)
           return
         }
-        if (type === 'recovery') {
-          router.push('/auth/reset-password')
-        } else {
-          setStatus('success')
-          setTimeout(() => router.push('/dashboard'), 1500)
-        }
-        return
       }
 
-      // Fallback: code (PKCE flow — Supabase redirects with ?code=xxx)
+      // MÉTODO 2: Query param code — PKCE flow
       const code = searchParams.get('code')
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code)
-        if (error) {
-          setStatus('error')
-          setMessage('Enlace inválido o expirado.')
+        if (!error) {
+          setStatus('success')
+          setTimeout(() => router.push('/dashboard'), 1000)
           return
         }
+        console.error('[CONFIRM] Code exchange error:', error)
+      }
+
+      // MÉTODO 3: token_hash + type — Email OTP flow
+      const tokenHash = searchParams.get('token_hash')
+      const type = searchParams.get('type') as 'signup' | 'magiclink' | 'recovery' | null
+      if (tokenHash && type) {
+        const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
+        if (!error) {
+          if (type === 'recovery') {
+            router.push('/auth/reset-password')
+          } else {
+            setStatus('success')
+            setTimeout(() => router.push('/dashboard'), 1000)
+          }
+          return
+        }
+        console.error('[CONFIRM] OTP verify error:', error)
+      }
+
+      // MÉTODO 4: error params from Supabase
+      const errorParam = searchParams.get('error')
+      const errorDescription = searchParams.get('error_description')
+      if (errorParam) {
+        setStatus('error')
+        setMessage(errorDescription || errorParam)
+        return
+      }
+
+      // MÉTODO 5: Final fallback — session may already be set by the client
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
         setStatus('success')
-        setTimeout(() => router.push('/dashboard'), 1500)
+        setTimeout(() => router.push('/dashboard'), 1000)
         return
       }
 
       setStatus('error')
       setMessage('Enlace inválido o expirado.')
-    }
-    confirm()
+    }, 500)
+
+    return () => clearTimeout(timer)
   }, [])
 
   return (
